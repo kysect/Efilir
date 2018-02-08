@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GenericLife.Models;
+using GenericLife.Tools;
 
 namespace GenericLife.Services
 {
@@ -11,7 +12,7 @@ namespace GenericLife.Services
         public readonly List<FoodCell> Foods;
         public readonly int Height;
         public readonly int Width;
-
+        public readonly int FieldSize = 100;
         private readonly Random _rand;
 
         public CellFieldService()
@@ -19,13 +20,35 @@ namespace GenericLife.Services
             Cells = new List<SimpleCell>();
             Foods = new List<FoodCell>();
             _rand = new Random();
-            Width = 100;
-            Height = 100;
+            Width = FieldSize;
+            Height = FieldSize;
+        }
+
+        public void AddRandomCell()
+        {
+            int x, y;
+            do
+            {
+                x = GlobalRand.Next(FieldSize);
+                y = GlobalRand.Next(FieldSize);
+            } while (GetPointType(x, y) != PointType.Void);
+            Cells.Add(new SimpleCell(this, x, y));
+        }
+
+        public void AddFood()
+        {
+            int x, y;
+            do
+            {
+                x = GlobalRand.Next(FieldSize);
+                y = GlobalRand.Next(FieldSize);
+            } while (GetPointType(x, y) != PointType.Void);
+            Foods.Add(new FoodCell(x, y));
         }
 
         public PointType GetPointType(int positionX, int positionY)
         {
-            if (positionX < 0 || positionX >= 100 || positionY < 0 || positionY >= 100)
+            if (positionX < 0 || positionX >= FieldSize || positionY < 0 || positionY >= FieldSize)
                 return PointType.OutOfRange;
 
             var isFood = Foods.Any(c => c.PositionX == positionX && c.PositionY == positionY);
