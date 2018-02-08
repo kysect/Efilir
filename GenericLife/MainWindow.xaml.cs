@@ -44,13 +44,11 @@ namespace GenericLife
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 150; i++)
             {
                 Application.Current.Dispatcher.BeginInvoke((Action)delegate
                 {
                     _testingPolygon.RandomMove();
-                    //_cellField.RandomMove();
-                    //_ds.DrawPoints(_cellField.Cells);
                 }, null);
                 Thread.Sleep(100);
             }

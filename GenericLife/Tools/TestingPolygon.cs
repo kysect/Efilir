@@ -21,24 +21,14 @@ namespace GenericLife.Tools
 
         private void Init()
         {
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 64; i++)
             {
-                int x = GlobalRand.Next(100);
-                int y = GlobalRand.Next(100);
-                if (_cellFieldService.GetPointType(x, y) == PointType.Void)
-                {
-                    _cellFieldService.Cells.Add(new SimpleCell(_cellFieldService, x, y, 100));
-                }
+                _cellFieldService.AddRandomCell();
             }
 
             for (int i = 0; i < 200; i++)
             {
-                int x = GlobalRand.Next(100);
-                int y = GlobalRand.Next(100);
-                if (_cellFieldService.GetPointType(x, y) == PointType.Void)
-                {
-                    _cellFieldService.Foods.Add(new FoodCell(x, y));
-                }
+                _cellFieldService.AddFood();
             }
 
             UpdateUi();

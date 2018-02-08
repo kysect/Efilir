@@ -55,6 +55,8 @@ namespace GenericLife.Models
 
         public void RandomMove()
         {
+            if (HitPoint == 0)
+                return;
             int x, y;
             do
             {
@@ -68,22 +70,21 @@ namespace GenericLife.Models
         private void Move(int positionX, int positionY)
         {
             var cellType = _fieldService.GetPointType(positionX, positionY);
+            if (cellType == PointType.Food)
+            {
+                var forCleaning = _fieldService.Foods.First(c => c.PositionY == positionY && c.PositionX == positionX);
+                _fieldService.Foods.Remove(forCleaning);
+                PositionX = positionX;
+                PositionY = positionY;
+                HitPoint += FoodCell.FoodHealthIncome;
+                
+                return;
+            }
+
             if (cellType == PointType.Void)
             {
                 PositionX = positionX;
                 PositionY = positionY;
-                HitPoint -= 1;
-                return;
-            }
-
-            if (cellType == PointType.Food)
-            {
-                PositionX = positionX;
-                PositionY = positionY;
-                HitPoint += FoodCell.FoodHealthIncome;
-                var forCleaning = _fieldService.Foods.First(c => c.PositionY == positionY && c.PositionX == positionX);
-                _fieldService.Foods.Remove(forCleaning);
-                return;
             }
 
             HitPoint -= 1;
