@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GenericLife"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="450" Width="525">
     <Grid>
-        
+        <Image x:Name="ImageView" HorizontalAlignment="Left" Height="400" Margin="10,10,0,0" VerticalAlignment="Top" Width="400"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="433,53,0,0" VerticalAlignment="Top" Width="74" Click="Button_Click"/>
     </Grid>
 </Window>
