@@ -68,6 +68,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\CellField.cs" />
+    <Compile Include="Models\DrawingService.cs" />
+    <Compile Include="Models\PointType.cs" />
+    <Compile Include="Models\SimpleCell.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
