@@ -4,8 +4,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using GenericLife.Models;
 
-namespace GenericLife.Models
+namespace GenericLife.Services
 {
     public class DrawingService
     {
@@ -13,7 +14,7 @@ namespace GenericLife.Models
         private readonly WriteableBitmap _writeableBitmap;
         public readonly int Height;
         public readonly int Width;
-        private ListBox _logList;
+        private byte[,,] _pixels;
 
         public DrawingService(Image image)
         {
@@ -29,49 +30,44 @@ namespace GenericLife.Models
                 null);
 
             image.Source = _writeableBitmap;
+            _pixels = new byte[Height, Width, 4];
         }
 
-        public void DrawPoints(IEnumerable<SimpleCell> SimpleCells)
+        public void DrawPoints(IEnumerable<IBaseCell> cells)
         {
-            var pixels = new byte[Height, Width, 4];
-            pixels = ClearBlack(pixels);
-
-            foreach (var cell in SimpleCells)
-                Parallel.For(0, ScaleSize,
-                    addX =>
+            foreach (var cell in cells)
+                for (int addX = 0; addX < ScaleSize; addX++)
+                {
+                    for (int addY = 0; addY < ScaleSize; addY++)
                     {
-                        Parallel.For(0, ScaleSize, addY =>
-                        {
-                            PutPixel(pixels,
-                                cell.PositionX * ScaleSize + addX,
-                                cell.PositionY * ScaleSize + addY,
-                                cell);
-                        });
-                    });
+                        PutPixel(cell.PositionX * ScaleSize + addX,
+                            cell.PositionY * ScaleSize + addY,
+                            cell);
+                    }
+                }
 
-            PrintPixels(pixels);
+            PrintPixels();
         }
 
-        public void PutPixel(byte[,,] pixels, int positionX, int positionY, SimpleCell cell)
+        private void PutPixel(int positionX, int positionY, IBaseCell cell)
         {
-            pixels[positionY, positionX, 1] = cell.ColorState.G;
-            pixels[positionY, positionX, 2] = cell.ColorState.R;
+            _pixels[positionY, positionX, 0] = cell.GetColor().B;
+            _pixels[positionY, positionX, 1] = cell.GetColor().G;
+            _pixels[positionY, positionX, 2] = cell.GetColor().R;
         }
 
-        private byte[,,] ClearBlack(byte[,,] pixels)
+        public void ClearBlack()
         {
             for (var row = 0; row < Height; row++)
             for (var col = 0; col < Width; col++)
             {
-                for (var i = 0; i < 3; i++)
-                    pixels[row, col, i] = 0;
-                pixels[row, col, 3] = 255;
+                for (int i = 0; i < 3; i++)
+                    _pixels[row, col, i] = 0;
+                _pixels[row, col, 3] = 255;
             }
-
-            return pixels;
         }
 
-        private byte[] TransformTo1D(byte[,,] pixels)
+        private byte[] TransformTo1D()
         {
             var pixels1D = new byte[Height * Width * 4];
 
@@ -79,14 +75,14 @@ namespace GenericLife.Models
             for (var row = 0; row < Height; row++)
             for (var col = 0; col < Width; col++)
             for (var i = 0; i < 4; i++)
-                pixels1D[index++] = pixels[row, col, i];
+                pixels1D[index++] = _pixels[row, col, i];
 
             return pixels1D;
         }
 
-        private void PrintPixels(byte[,,] pixels)
+        private void PrintPixels()
         {
-            var pixels1D = TransformTo1D(pixels);
+            var pixels1D = TransformTo1D();
             var rect = new Int32Rect(0, 0, Width, Height);
             var stride = 4 * Width;
 

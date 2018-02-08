@@ -1,40 +1,92 @@
-﻿using System.Windows.Media;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Media;
+using GenericLife.Services;
+using GenericLife.Tools;
 
 namespace GenericLife.Models
 {
-    public class SimpleCell
+    public class SimpleCell : IBaseCell
     {
-        public int PositionX { get; set; }
-        public int PositionY { get; set; }
+        private readonly CellFieldService _fieldService;
 
-        public int HitPoint { get; set; }
-
-        public Color ColorState
-        {
-            get
-            {
-                var c = new Color();
-                c.G = (byte) (HitPoint * 2);
-                c.R = (byte) (200 - c.G);
-                c.B = 0;
-                return c;
-            }
-        }
-
-        public SimpleCell(int positionX, int positionY)
+        public SimpleCell(CellFieldService fieldService, int positionX, int positionY)
         {
             PositionX = positionX;
             PositionY = positionY;
+            _fieldService = fieldService;
 
             HitPoint = 100;
         }
 
-        public SimpleCell(int positionX, int positionY, byte hitpoint)
+        public SimpleCell(CellFieldService fieldService, int positionX, int positionY, byte hitpoint)
         {
             PositionX = positionX;
             PositionY = positionY;
+            _fieldService = fieldService;
 
             HitPoint = hitpoint;
+        }
+
+        public int HitPoint { get; set; }
+
+        public int PositionX { get; set; }
+        public int PositionY { get; set; }
+
+        public Color GetColor()
+        {
+            if (HitPoint == 0)
+            {
+                return new Color
+                {
+                    R = Byte.MaxValue,
+                    G = Byte.MaxValue,
+                    B = Byte.MaxValue,
+                };
+            }
+            return new Color
+            {
+                G = (byte) (HitPoint * 2),
+                R = (byte) (200 - HitPoint * 2),
+                B = 0
+            };
+        }
+
+        public void RandomMove()
+        {
+            int x, y;
+            do
+            {
+                x = GlobalRand.Next(3) - 1;
+                y = GlobalRand.Next(3) - 1;
+            } while (x == 0 && y == 0);
+
+            Move(PositionX + x, PositionY + y);
+        }
+
+        private void Move(int positionX, int positionY)
+        {
+            var cellType = _fieldService.GetPointType(positionX, positionY);
+            if (cellType == PointType.Void)
+            {
+                PositionX = positionX;
+                PositionY = positionY;
+                HitPoint -= 1;
+                return;
+            }
+
+            if (cellType == PointType.Food)
+            {
+                PositionX = positionX;
+                PositionY = positionY;
+                HitPoint += FoodCell.FoodHealthIncome;
+                var forCleaning = _fieldService.Foods.First(c => c.PositionY == positionY && c.PositionX == positionX);
+                _fieldService.Foods.Remove(forCleaning);
+                return;
+            }
+
+            HitPoint -= 1;
         }
     }
 }

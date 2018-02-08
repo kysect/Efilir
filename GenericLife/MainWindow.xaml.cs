@@ -15,6 +15,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GenericLife.Models;
+using GenericLife.Services;
+using GenericLife.Tools;
 
 namespace GenericLife
 {
@@ -23,24 +25,14 @@ namespace GenericLife
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly DrawingService _ds;
-        private CellField _cellField;
+        TestingPolygon _testingPolygon;
         public MainWindow()
         {
             InitializeComponent();
-            _ds = new DrawingService(ImageView);
-            _cellField = new CellField();
-            Random rand = new Random();
-            for (int i = 0; i < 100; i++)
-            {
-                int x = rand.Next(100);
-                int y = rand.Next(100);
-                if (_cellField.GetPointType(x, y) == PointType.Void)
-                {
-                    _cellField.Cells.Add(new SimpleCell(x, y, 100));
-                }
-            }
-            _ds.DrawPoints(_cellField.Cells);
+
+            var ds = new DrawingService(ImageView);
+            var cellField = new CellFieldService();
+            _testingPolygon = new TestingPolygon(ds, cellField);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -56,8 +48,9 @@ namespace GenericLife
             {
                 Application.Current.Dispatcher.BeginInvoke((Action)delegate
                 {
-                    _cellField.RandomMove();
-                    _ds.DrawPoints(_cellField.Cells);
+                    _testingPolygon.RandomMove();
+                    //_cellField.RandomMove();
+                    //_ds.DrawPoints(_cellField.Cells);
                 }, null);
                 Thread.Sleep(100);
             }

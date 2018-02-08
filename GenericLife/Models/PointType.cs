@@ -4,6 +4,7 @@
     {
         Void,
         Cell,
-        OutOfRange
+        OutOfRange,
+        Food
     }
 }

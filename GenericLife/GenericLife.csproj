@@ -54,6 +54,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Tools\GlobalRand.cs" />
+    <Compile Include="Tools\TestingPolygon.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -68,8 +70,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\CellField.cs" />
-    <Compile Include="Models\DrawingService.cs" />
+    <Compile Include="Models\IBaseCell.cs" />
+    <Compile Include="Services\CellFieldService.cs" />
+    <Compile Include="Services\DrawingService.cs" />
+    <Compile Include="Models\FoodCell.cs" />
     <Compile Include="Models\PointType.cs" />
     <Compile Include="Models\SimpleCell.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -97,5 +101,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
