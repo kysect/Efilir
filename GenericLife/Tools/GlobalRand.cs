@@ -27,5 +27,16 @@ namespace GenericLife.Tools
 
             return list;
         }
+
+        public static List<int> GenerateCommandList()
+        {
+            var list = new List<int>(64);
+            for (int i = 0; i < 64; i++)
+            {
+                list.Add(Next(64));
+            }
+
+            return list;
+        }
     }
 }

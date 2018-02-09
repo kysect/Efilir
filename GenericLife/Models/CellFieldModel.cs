@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using GenericLife.Declaration;
+using GenericLife.Models.Cells;
 using GenericLife.Tools;
 
 namespace GenericLife.Models
@@ -29,10 +30,16 @@ namespace GenericLife.Models
             return new FieldPosition(x, y);
         }
 
-        public void AddRandomCell()
+        public void AddSimpleCell()
         {
             var pos = GetEmptyPosition();
             Cells.Add(new SimpleCell(this, pos));
+        }
+
+        public void AddGenericCell()
+        {
+            var pos = GetEmptyPosition();
+            Cells.Add(new GenericCell(this, pos));
         }
 
         public void AddFood()

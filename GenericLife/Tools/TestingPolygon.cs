@@ -22,7 +22,7 @@ namespace GenericLife.Tools
         {
             for (int i = 0; i < 64; i++)
             {
-                CellFieldModel.AddRandomCell();
+                CellFieldModel.AddGenericCell();
             }
 
             for (int i = 0; i < 200; i++)
