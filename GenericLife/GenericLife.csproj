@@ -54,6 +54,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\GenericCell.cs" />
+    <Compile Include="Tools\AngleRotation.cs" />
     <Compile Include="Tools\GlobalRand.cs" />
     <Compile Include="Tools\TestingPolygon.cs" />
     <Page Include="MainWindow.xaml">
@@ -97,6 +99,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Tools\ClassDiagram.dgml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

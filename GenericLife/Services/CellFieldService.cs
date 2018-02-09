@@ -57,6 +57,11 @@ namespace GenericLife.Services
             return isPoint ? PointType.Cell : PointType.Void;
         }
 
+        public FoodCell GetFoodCell(int positionX, int positionY)
+        {
+            return Foods.First(c => c.PositionX == positionX && c.PositionY == positionY);
+        }
+
         public void RandomMove()
         {
             foreach (var cell in Cells)

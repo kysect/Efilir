@@ -20,15 +20,6 @@ namespace GenericLife.Models
             HitPoint = 100;
         }
 
-        public SimpleCell(CellFieldService fieldService, int positionX, int positionY, byte hitpoint)
-        {
-            PositionX = positionX;
-            PositionY = positionY;
-            _fieldService = fieldService;
-
-            HitPoint = hitpoint;
-        }
-
         public int HitPoint { get; set; }
 
         public int PositionX { get; set; }
@@ -57,6 +48,7 @@ namespace GenericLife.Models
         {
             if (HitPoint == 0)
                 return;
+
             int x, y;
             do
             {
@@ -70,6 +62,8 @@ namespace GenericLife.Models
         private void Move(int positionX, int positionY)
         {
             var cellType = _fieldService.GetPointType(positionX, positionY);
+            HitPoint -= 1;
+
             if (cellType == PointType.Food)
             {
                 var forCleaning = _fieldService.Foods.First(c => c.PositionY == positionY && c.PositionX == positionX);
@@ -77,7 +71,7 @@ namespace GenericLife.Models
                 PositionX = positionX;
                 PositionY = positionY;
                 HitPoint += FoodCell.FoodHealthIncome;
-                
+
                 return;
             }
 
@@ -86,8 +80,19 @@ namespace GenericLife.Models
                 PositionX = positionX;
                 PositionY = positionY;
             }
+        }
 
-            HitPoint -= 1;
+        private void Action(int positionX, int positionY)
+        {
+            var cellType = _fieldService.GetPointType(positionX, positionY);
+            if (cellType == PointType.Food)
+            {
+                var forCleaning = _fieldService.Foods.First(c => c.PositionY == positionY && c.PositionX == positionX);
+                _fieldService.Foods.Remove(forCleaning);
+                HitPoint += FoodCell.FoodHealthIncome;
+
+                return;
+            }
         }
     }
 }
