@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GenericLife.Declaration;
 using GenericLife.Models;
 using GenericLife.Tools;
 
@@ -10,40 +11,48 @@ namespace GenericLife.Services
     {
         public readonly List<SimpleCell> Cells;
         public readonly List<FoodCell> Foods;
-        public readonly int Height;
-        public readonly int Width;
         public readonly int FieldSize = 100;
-        private readonly Random _rand;
 
         public CellFieldService()
         {
             Cells = new List<SimpleCell>();
             Foods = new List<FoodCell>();
-            _rand = new Random();
-            Width = FieldSize;
-            Height = FieldSize;
+        }
+
+        private (int X, int Y) GetEmptyPosition()
+        {
+            int x, y;
+            do
+            {
+                x = GlobalRand.Next(FieldSize);
+                y = GlobalRand.Next(FieldSize);
+            } while (GetPointType(x, y) != PointType.Void);
+
+            return (x, y);
         }
 
         public void AddRandomCell()
         {
-            int x, y;
-            do
-            {
-                x = GlobalRand.Next(FieldSize);
-                y = GlobalRand.Next(FieldSize);
-            } while (GetPointType(x, y) != PointType.Void);
-            Cells.Add(new SimpleCell(this, x, y));
+            var pos = GetEmptyPosition();
+            Cells.Add(new SimpleCell(this, pos.X, pos.Y));
         }
 
         public void AddFood()
         {
-            int x, y;
-            do
+            var pos = GetEmptyPosition();
+            Foods.Add(new FoodCell(pos.X, pos.Y));
+        }
+
+        public IBaseCell GetCellFromCoord(int positionX, int positionY)
+        {
+            IBaseCell cell;
+            cell = Cells.FirstOrDefault(c => c.PositionX == positionX && c.PositionY == positionY);
+            if (cell != null)
             {
-                x = GlobalRand.Next(FieldSize);
-                y = GlobalRand.Next(FieldSize);
-            } while (GetPointType(x, y) != PointType.Void);
-            Foods.Add(new FoodCell(x, y));
+                return cell;
+            }
+            cell = Foods.FirstOrDefault(c => c.PositionX == positionX && c.PositionY == positionY);
+            return cell;
         }
 
         public PointType GetPointType(int positionX, int positionY)
@@ -51,15 +60,10 @@ namespace GenericLife.Services
             if (positionX < 0 || positionX >= FieldSize || positionY < 0 || positionY >= FieldSize)
                 return PointType.OutOfRange;
 
-            var isFood = Foods.Any(c => c.PositionX == positionX && c.PositionY == positionY);
-            if (isFood) return PointType.Food;
-            var isPoint = Cells.Any(c => c.PositionX == positionX && c.PositionY == positionY);
-            return isPoint ? PointType.Cell : PointType.Void;
-        }
-
-        public FoodCell GetFoodCell(int positionX, int positionY)
-        {
-            return Foods.First(c => c.PositionX == positionX && c.PositionY == positionY);
+            IBaseCell cell = GetCellFromCoord(positionX, positionY);
+            if (cell is FoodCell) return PointType.Food;
+            if (cell is ILiveCell) return PointType.Cell;
+            return PointType.Void;
         }
 
         public void RandomMove()

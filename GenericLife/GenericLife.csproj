@@ -54,8 +54,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Declaration\ICellField.cs" />
     <Compile Include="Models\GenericCell.cs" />
+    <Compile Include="Declaration\ILiveCell.cs" />
     <Compile Include="Tools\AngleRotation.cs" />
+    <Compile Include="Tools\CellColorGenerator.cs" />
     <Compile Include="Tools\GlobalRand.cs" />
     <Compile Include="Tools\TestingPolygon.cs" />
     <Page Include="MainWindow.xaml">
@@ -72,7 +75,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\IBaseCell.cs" />
+    <Compile Include="Declaration\IBaseCell.cs" />
     <Compile Include="Services\CellFieldService.cs" />
     <Compile Include="Services\DrawingService.cs" />
     <Compile Include="Models\FoodCell.cs" />

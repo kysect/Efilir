@@ -1,4 +1,5 @@
 ﻿using System.Windows.Media;
+using GenericLife.Declaration;
 
 namespace GenericLife.Models
 {
@@ -20,12 +21,6 @@ namespace GenericLife.Models
         {
             PositionY = positionY;
             PositionX = positionX;
-        }
-
-        public void RestoreHitPoint(GenericCell cell)
-        {
-            //TODO: Think about it (c)
-            cell.HitPoint += FoodHealthIncome;
         }
     }
 }

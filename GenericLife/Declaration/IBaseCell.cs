@@ -1,6 +1,6 @@
 ﻿using System.Windows.Media;
 
-namespace GenericLife.Models
+namespace GenericLife.Declaration
 {
     public interface IBaseCell
     {
