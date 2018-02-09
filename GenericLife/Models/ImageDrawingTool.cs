@@ -38,8 +38,8 @@ namespace GenericLife.Models
                 {
                     for (int addY = 0; addY < ScaleSize; addY++)
                     {
-                        PutPixel(cell.PositionX * ScaleSize + addX,
-                            cell.PositionY * ScaleSize + addY,
+                        PutPixel(cell.Position.X * ScaleSize + addX,
+                            cell.Position.Y * ScaleSize + addY,
                             cell);
                     }
                 }

@@ -17,50 +17,50 @@ namespace GenericLife.Models
             Foods = new List<FoodCell>();
         }
 
-        private (int X, int Y) GetEmptyPosition()
+        private FieldPosition GetEmptyPosition()
         {
             int x, y;
             do
             {
                 x = GlobalRand.Next(FieldSize);
                 y = GlobalRand.Next(FieldSize);
-            } while (GetPointType(x, y) != PointType.Void);
+            } while (GetPointType(new FieldPosition(x, y)) != PointType.Void);
 
-            return (x, y);
+            return new FieldPosition(x, y);
         }
 
         public void AddRandomCell()
         {
             var pos = GetEmptyPosition();
-            Cells.Add(new SimpleCell(this, pos.X, pos.Y));
+            Cells.Add(new SimpleCell(this, pos));
         }
 
         public void AddFood()
         {
             var pos = GetEmptyPosition();
-            Foods.Add(new FoodCell(pos.X, pos.Y));
+            Foods.Add(new FoodCell(pos));
         }
 
-        public IBaseCell GetCellOnPosition(int positionX, int positionY)
+        public IBaseCell GetCellOnPosition(FieldPosition position)
         {
-            IBaseCell cell = Cells.FirstOrDefault(c => c.PositionX == positionX
-                                                       && c.PositionY == positionY);
+            IBaseCell cell = Cells.FirstOrDefault(c => c.Position.X == position.X
+                                                       && c.Position.Y == position.Y);
             if (cell != null)
             {
                 return cell;
             }
 
-            cell = Foods.FirstOrDefault(c => c.PositionX == positionX
-                                             && c.PositionY == positionY);
+            cell = Foods.FirstOrDefault(c => c.Position.X == position.X
+                                             && c.Position.Y == position.Y);
             return cell;
         }
 
-        public PointType GetPointType(int positionX, int positionY)
+        public PointType GetPointType(FieldPosition position)
         {
-            if (positionX < 0 || positionX >= FieldSize || positionY < 0 || positionY >= FieldSize)
+            if (position.X < 0 || position.X >= FieldSize || position.Y < 0 || position.Y >= FieldSize)
                 return PointType.OutOfRange;
 
-            IBaseCell cell = GetCellOnPosition(positionX, positionY);
+            IBaseCell cell = GetCellOnPosition(position);
             if (cell is FoodCell) return PointType.Food;
             if (cell is ILiveCell) return PointType.Cell;
             return PointType.Void;

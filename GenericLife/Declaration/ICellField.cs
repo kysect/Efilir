@@ -8,8 +8,8 @@ namespace GenericLife.Declaration
         //TODO: Use interface
         List<ILiveCell> Cells { get; set; }
         List<FoodCell> Foods { get; set; }
-        IBaseCell GetCellOnPosition(int positionX, int positionY);
-        PointType GetPointType(int positionX, int positionY);
+        IBaseCell GetCellOnPosition(FieldPosition position);
+        PointType GetPointType(FieldPosition position);
 
         void RandomMove();
     }
