@@ -8,12 +8,12 @@ namespace GenericLife.Tools
     public class TestingPolygon
     {
         private readonly ImageDrawingTool _ds;
-        private CellFieldModel _cellFieldModel;
+        public CellFieldModel CellFieldModel;
 
         public TestingPolygon(ImageDrawingTool ds, CellFieldModel cellFieldModel)
         {
             _ds = ds;
-            _cellFieldModel = cellFieldModel;
+            CellFieldModel = cellFieldModel;
 
             Init();
         }
@@ -22,12 +22,12 @@ namespace GenericLife.Tools
         {
             for (int i = 0; i < 64; i++)
             {
-                _cellFieldModel.AddRandomCell();
+                CellFieldModel.AddRandomCell();
             }
 
             for (int i = 0; i < 200; i++)
             {
-                _cellFieldModel.AddFood();
+                CellFieldModel.AddFood();
             }
 
             UpdateUi();
@@ -36,12 +36,12 @@ namespace GenericLife.Tools
         public void UpdateUi()
         {
             _ds.ClearBlack();
-            _ds.DrawPoints(_cellFieldModel.Cells);
-            _ds.DrawPoints(_cellFieldModel.Foods);
+            _ds.DrawPoints(CellFieldModel.Cells);
+            _ds.DrawPoints(CellFieldModel.Foods);
         }
         public void RandomMove()
         {
-            _cellFieldModel.RandomMove();
+            CellFieldModel.RandomMove();
             UpdateUi();
         }
     }

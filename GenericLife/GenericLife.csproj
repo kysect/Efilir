@@ -55,6 +55,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Declaration\ICellField.cs" />
+    <Compile Include="Models\CellBrain.cs" />
     <Compile Include="Models\FieldPosition.cs" />
     <Compile Include="Models\GenericCell.cs" />
     <Compile Include="Declaration\ILiveCell.cs" />

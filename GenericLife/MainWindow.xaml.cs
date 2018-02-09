@@ -43,14 +43,22 @@ namespace GenericLife
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            for (int i = 0; i < 150; i++)
+            for (int i = 0; i < 100; i++)
             {
                 Application.Current.Dispatcher.BeginInvoke((Action)delegate
                 {
                     _testingPolygon.RandomMove();
+                    
                 }, null);
                 Thread.Sleep(100);
             }
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            var cellList = _testingPolygon.CellFieldModel.Cells;
+            var orderByDescending = cellList.OrderByDescending(c => c.Age);
+            CellData.ItemsSource = orderByDescending;
         }
     }
 }
