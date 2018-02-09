@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Media;
+using GenericLife.Declaration;
 using GenericLife.Services;
 using GenericLife.Tools;
 
 namespace GenericLife.Models
 {
-    public class GenericCell : IBaseCell
+    public class GenericCell : ILiveCell
     {
         private readonly CellFieldService _fieldService;
 
@@ -15,7 +16,7 @@ namespace GenericLife.Models
             PositionX = positionX;
             PositionY = positionY;
             CurrentRotate = 0;
-            HitPoint = 100;
+            Health = 100;
 
             ActionCommandList = new List<int>();
         }
@@ -26,20 +27,26 @@ namespace GenericLife.Models
             PositionX = positionX;
             PositionY = positionY;
             CurrentRotate = 0;
-            HitPoint = 100;
+            Health = 100;
 
             ActionCommandList = commandList;
         }
 
         public List<int> ActionCommandList { get; set; }
 
-        public int HitPoint { get; set; }
+        public int Health { get; set; }
+        public int Age { get; set; }
+        public void TurnAction()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public int PositionX { get; set; }
         public int PositionY { get; set; }
         public int CurrentRotate { get; set; }
         public Color GetColor()
         {
-            if (HitPoint == 0)
+            if (Health == 0)
                 return new Color
                 {
                     R = byte.MaxValue,
@@ -47,8 +54,8 @@ namespace GenericLife.Models
                     B = byte.MaxValue
                 };
 
-            var g = HitPoint * 2 < byte.MaxValue ? HitPoint * 2 : byte.MaxValue;
-            var r = 200 - HitPoint * 2 > 0 ? 200 - HitPoint * 2 : 0;
+            var g = Health * 2 < byte.MaxValue ? Health * 2 : byte.MaxValue;
+            var r = 200 - Health * 2 > 0 ? 200 - Health * 2 : 0;
             return new Color
             {
                 G = (byte) g,
@@ -67,7 +74,7 @@ namespace GenericLife.Models
 
             if (directionCellState == PointType.Food)
             {
-                _fieldService.GetFoodCell(newX, newY);
+                //_fieldService.GetFoodCell(newX, newY);
             }
 
             return 0;

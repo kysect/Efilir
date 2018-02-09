@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using GenericLife.Declaration;
 using GenericLife.Models;
 
 namespace GenericLife.Services
@@ -20,12 +21,11 @@ namespace GenericLife.Services
         {
             Height = (int) image.Height;
             Width = (int) image.Width;
-
             _writeableBitmap = new WriteableBitmap(
                 Width,
                 Height,
-                96,
-                96,
+                12,
+                12,
                 PixelFormats.Bgr32,
                 null);
 
