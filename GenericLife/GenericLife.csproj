@@ -55,9 +55,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Declaration\ICellField.cs" />
-    <Compile Include="Models\CellBrain.cs" />
+    <Compile Include="Models\Cells\CellBrain.cs" />
     <Compile Include="Models\FieldPosition.cs" />
-    <Compile Include="Models\GenericCell.cs" />
+    <Compile Include="Models\Cells\GenericCell.cs" />
     <Compile Include="Declaration\ILiveCell.cs" />
     <Compile Include="Tools\AngleRotation.cs" />
     <Compile Include="Tools\CellColorGenerator.cs" />
@@ -80,9 +80,9 @@
     <Compile Include="Declaration\IBaseCell.cs" />
     <Compile Include="Models\CellFieldModel.cs" />
     <Compile Include="Models\ImageDrawingTool.cs" />
-    <Compile Include="Models\FoodCell.cs" />
+    <Compile Include="Models\Cells\FoodCell.cs" />
     <Compile Include="Declaration\PointType.cs" />
-    <Compile Include="Models\SimpleCell.cs" />
+    <Compile Include="Models\Cells\SimpleCell.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

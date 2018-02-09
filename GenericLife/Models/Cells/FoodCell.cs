@@ -1,7 +1,7 @@
 ﻿using System.Windows.Media;
 using GenericLife.Declaration;
 
-namespace GenericLife.Models
+namespace GenericLife.Models.Cells
 {
     public class FoodCell : IBaseCell
     {

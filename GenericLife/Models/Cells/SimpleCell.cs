@@ -1,9 +1,8 @@
-﻿using System.Linq;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 using GenericLife.Declaration;
 using GenericLife.Tools;
 
-namespace GenericLife.Models
+namespace GenericLife.Models.Cells
 {
     public class SimpleCell : ILiveCell
     {
@@ -24,6 +23,9 @@ namespace GenericLife.Models
 
         public void TurnAction()
         {
+            if (Health == 0)
+                return;
+
             RandomMove();
         }
 
@@ -36,9 +38,6 @@ namespace GenericLife.Models
 
         public void RandomMove()
         {
-            if (Health == 0)
-                return;
-
             Age += 1;
             int x, y;
             do

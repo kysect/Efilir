@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using GenericLife.Models;
+using GenericLife.Models.Cells;
 
 namespace GenericLife.Declaration
 {

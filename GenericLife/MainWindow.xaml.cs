@@ -60,5 +60,18 @@ namespace GenericLife
             var orderByDescending = cellList.OrderByDescending(c => c.Age);
             CellData.ItemsSource = orderByDescending;
         }
+
+        private void PassOneTurn(object sender, RoutedEventArgs e)
+        {
+            _testingPolygon.RandomMove();
+        }
+
+        private void PussTenTurn(object sender, RoutedEventArgs e)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                _testingPolygon.RandomMove();
+            }
+        }
     }
 }

@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 using GenericLife.Declaration;
 using GenericLife.Tools;
 
-namespace GenericLife.Models
+namespace GenericLife.Models.Cells
 {
     public class GenericCell : ILiveCell
     {
         private readonly CellFieldModel _fieldModel;
+        private readonly CellBrain _brain;
+        private int _currentRotation;
 
         public GenericCell(CellFieldModel fieldModel, FieldPosition position)
         {
@@ -15,37 +16,29 @@ namespace GenericLife.Models
             Position = position;
             CurrentRotate = 0;
             Health = 100;
-
-            ActionCommandList = new List<int>();
+            _brain = new CellBrain(GlobalRand.GenerateCommandList(), _fieldModel, this);
         }
-
-        public GenericCell(CellFieldModel fieldModel, FieldPosition position, List<int> commandList)
-        {
-            _fieldModel = fieldModel;
-            Position = position;
-            CurrentRotate = 0;
-            Health = 100;
-
-            ActionCommandList = commandList;
-        }
-
-        public List<int> ActionCommandList { get; set; }
-
-        public int Health { get; set; }
-        public int Age { get; set; }
-        public void TurnAction()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        private int _currentRotation;
-        public FieldPosition Position { get; set; }
 
         public int CurrentRotate
         {
             get => _currentRotation;
             set => _currentRotation = value % 8;
         }
+
+        public int Health { get; set; }
+        public int Age { get; set; }
+
+        public void TurnAction()
+        {
+            if (Health == 0)
+            {
+                return;
+            }
+
+            _brain.MakeTurn();
+        }
+
+        public FieldPosition Position { get; set; }
 
         public Color GetColor()
         {
@@ -61,13 +54,9 @@ namespace GenericLife.Models
             var newPos = GetCellOnWay(commandRotate);
             var directionCellState = _fieldModel.GetPointType(newPos);
 
-            if (directionCellState == PointType.Void)
-            {
-                Position = newPos;
-            }
+            if (directionCellState == PointType.Void) Position = newPos;
 
             return 0;
-
         }
 
         public void ActionCommand(int commandRotate)
@@ -89,20 +78,24 @@ namespace GenericLife.Models
             {
                 //Attack?
             }
-
         }
 
         private FieldPosition GetCellOnWay(int commandRotate)
         {
-            int actualRotate = (CurrentRotate + commandRotate) % 8;
+            var actualRotate = (CurrentRotate + commandRotate) % 8;
             var newPosition = AngleRotation.GetRotation(actualRotate);
             return Position + newPosition;
         }
 
-        private void IncreaseAge()
+        public void IncreaseAge()
         {
             Age++;
             Health--;
+        }
+
+        public override string ToString()
+        {
+            return $"Simple cell with {Health} health and {Age} age";
         }
     }
 }
