@@ -55,6 +55,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Declaration\ICellField.cs" />
+    <Compile Include="Models\FieldPosition.cs" />
     <Compile Include="Models\GenericCell.cs" />
     <Compile Include="Declaration\ILiveCell.cs" />
     <Compile Include="Tools\AngleRotation.cs" />
@@ -76,8 +77,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Declaration\IBaseCell.cs" />
-    <Compile Include="Services\CellFieldService.cs" />
-    <Compile Include="Services\DrawingService.cs" />
+    <Compile Include="Models\CellFieldModel.cs" />
+    <Compile Include="Models\ImageDrawingTool.cs" />
     <Compile Include="Models\FoodCell.cs" />
     <Compile Include="Declaration\PointType.cs" />
     <Compile Include="Models\SimpleCell.cs" />

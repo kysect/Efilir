@@ -9,22 +9,20 @@ namespace GenericLife.Models
     {
         private readonly CellFieldModel _fieldModel;
 
-        public GenericCell(CellFieldModel fieldModel, int positionX, int positionY)
+        public GenericCell(CellFieldModel fieldModel, FieldPosition position)
         {
             _fieldModel = fieldModel;
-            PositionX = positionX;
-            PositionY = positionY;
+            Position = position;
             CurrentRotate = 0;
             Health = 100;
 
             ActionCommandList = new List<int>();
         }
 
-        public GenericCell(CellFieldModel fieldModel, int positionX, int positionY, List<int> commandList)
+        public GenericCell(CellFieldModel fieldModel, FieldPosition position, List<int> commandList)
         {
             _fieldModel = fieldModel;
-            PositionX = positionX;
-            PositionY = positionY;
+            Position = position;
             CurrentRotate = 0;
             Health = 100;
 
@@ -40,8 +38,7 @@ namespace GenericLife.Models
             throw new System.NotImplementedException();
         }
 
-        public int PositionX { get; set; }
-        public int PositionY { get; set; }
+        public FieldPosition Position { get; set; }
         private int CurrentRotate { get; set; }
         public Color GetColor()
         {
@@ -54,9 +51,8 @@ namespace GenericLife.Models
         {
             int actualRotate = (CurrentRotate + commandRotate) % 8;
             var movingCoord = AngleRotation.GetRotation(actualRotate);
-            int newX = PositionX + movingCoord.x;
-            int newY = PositionY + movingCoord.y;
-            var directionCellState = _fieldModel.GetPointType(newX, newY);
+            var newPos = Position + movingCoord;
+            var directionCellState = _fieldModel.GetPointType(newPos);
 
             if (directionCellState == PointType.Food)
             {

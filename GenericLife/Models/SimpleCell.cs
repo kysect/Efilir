@@ -9,10 +9,9 @@ namespace GenericLife.Models
     {
         private readonly ICellField _fieldService;
 
-        public SimpleCell(ICellField fieldService, int positionX, int positionY)
+        public SimpleCell(ICellField fieldService, FieldPosition position)
         {
-            PositionX = positionX;
-            PositionY = positionY;
+            Position = position;
             _fieldService = fieldService;
 
             Health = 100;
@@ -20,8 +19,7 @@ namespace GenericLife.Models
 
         public int Health { get; set; }
 
-        public int PositionX { get; set; }
-        public int PositionY { get; set; }
+        public FieldPosition Position { get; set; }
         public int Age { get; set; }
 
         public void TurnAction()
@@ -48,20 +46,19 @@ namespace GenericLife.Models
                 y = GlobalRand.Next(3) - 1;
             } while (x == 0 && y == 0);
 
-            Move(PositionX + x, PositionY + y);
+            Move(Position + new FieldPosition(x, y));
         }
 
-        private void Move(int positionX, int positionY)
+        private void Move(FieldPosition position)
         {
-            var cellType = _fieldService.GetPointType(positionX, positionY);
+            var cellType = _fieldService.GetPointType(position);
             Health -= 1;
             Age += 1;
             if (cellType == PointType.Food)
             {
-                var cellOnWay = _fieldService.GetCellOnPosition(positionX, positionY);
+                var cellOnWay = _fieldService.GetCellOnPosition(position);
                 _fieldService.Foods.Remove(cellOnWay as FoodCell);
-                PositionX = positionX;
-                PositionY = positionY;
+                Position = position;
                 Health += FoodCell.FoodHealthIncome;
 
                 return;
@@ -69,8 +66,7 @@ namespace GenericLife.Models
 
             if (cellType == PointType.Void)
             {
-                PositionX = positionX;
-                PositionY = positionY;
+                Position = position;
             }
         }
     }
