@@ -1,18 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Media;
 using GenericLife.Declaration;
-using GenericLife.Services;
 using GenericLife.Tools;
 
 namespace GenericLife.Models
 {
     public class GenericCell : ILiveCell
     {
-        private readonly CellFieldService _fieldService;
+        private readonly CellFieldModel _fieldModel;
 
-        public GenericCell(CellFieldService fieldService, int positionX, int positionY)
+        public GenericCell(CellFieldModel fieldModel, int positionX, int positionY)
         {
-            _fieldService = fieldService;
+            _fieldModel = fieldModel;
             PositionX = positionX;
             PositionY = positionY;
             CurrentRotate = 0;
@@ -21,9 +20,9 @@ namespace GenericLife.Models
             ActionCommandList = new List<int>();
         }
 
-        public GenericCell(CellFieldService fieldService, int positionX, int positionY, List<int> commandList)
+        public GenericCell(CellFieldModel fieldModel, int positionX, int positionY, List<int> commandList)
         {
-            _fieldService = fieldService;
+            _fieldModel = fieldModel;
             PositionX = positionX;
             PositionY = positionY;
             CurrentRotate = 0;
@@ -43,25 +42,12 @@ namespace GenericLife.Models
 
         public int PositionX { get; set; }
         public int PositionY { get; set; }
-        public int CurrentRotate { get; set; }
+        private int CurrentRotate { get; set; }
         public Color GetColor()
         {
             if (Health == 0)
-                return new Color
-                {
-                    R = byte.MaxValue,
-                    G = byte.MaxValue,
-                    B = byte.MaxValue
-                };
-
-            var g = Health * 2 < byte.MaxValue ? Health * 2 : byte.MaxValue;
-            var r = 200 - Health * 2 > 0 ? 200 - Health * 2 : 0;
-            return new Color
-            {
-                G = (byte) g,
-                R = (byte) r,
-                B = 0
-            };
+                return CellColorGenerator.DeadCell();
+            return CellColorGenerator.HealthIndicator(Health);
         }
 
         public int MoveCommand(int commandRotate)
@@ -70,11 +56,11 @@ namespace GenericLife.Models
             var movingCoord = AngleRotation.GetRotation(actualRotate);
             int newX = PositionX + movingCoord.x;
             int newY = PositionY + movingCoord.y;
-            var directionCellState = _fieldService.GetPointType(newX, newY);
+            var directionCellState = _fieldModel.GetPointType(newX, newY);
 
             if (directionCellState == PointType.Food)
             {
-                //_fieldService.GetFoodCell(newX, newY);
+                //_fieldModel.GetFoodCell(newX, newY);
             }
 
             return 0;

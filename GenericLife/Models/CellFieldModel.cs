@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using GenericLife.Declaration;
-using GenericLife.Models;
 using GenericLife.Tools;
 
-namespace GenericLife.Services
+namespace GenericLife.Models
 {
-    public class CellFieldService
+    public class CellFieldModel : ICellField
     {
-        public readonly List<SimpleCell> Cells;
-        public readonly List<FoodCell> Foods;
+        public List<ILiveCell> Cells { get; set; }
+        public List<FoodCell> Foods { get; set; }
         public readonly int FieldSize = 100;
 
-        public CellFieldService()
+        public CellFieldModel()
         {
-            Cells = new List<SimpleCell>();
+            Cells = new List<ILiveCell>();
             Foods = new List<FoodCell>();
         }
 
@@ -43,15 +41,17 @@ namespace GenericLife.Services
             Foods.Add(new FoodCell(pos.X, pos.Y));
         }
 
-        public IBaseCell GetCellFromCoord(int positionX, int positionY)
+        public IBaseCell GetCellOnPosition(int positionX, int positionY)
         {
-            IBaseCell cell;
-            cell = Cells.FirstOrDefault(c => c.PositionX == positionX && c.PositionY == positionY);
+            IBaseCell cell = Cells.FirstOrDefault(c => c.PositionX == positionX
+                                                       && c.PositionY == positionY);
             if (cell != null)
             {
                 return cell;
             }
-            cell = Foods.FirstOrDefault(c => c.PositionX == positionX && c.PositionY == positionY);
+
+            cell = Foods.FirstOrDefault(c => c.PositionX == positionX
+                                             && c.PositionY == positionY);
             return cell;
         }
 
@@ -60,18 +60,28 @@ namespace GenericLife.Services
             if (positionX < 0 || positionX >= FieldSize || positionY < 0 || positionY >= FieldSize)
                 return PointType.OutOfRange;
 
-            IBaseCell cell = GetCellFromCoord(positionX, positionY);
+            IBaseCell cell = GetCellOnPosition(positionX, positionY);
             if (cell is FoodCell) return PointType.Food;
             if (cell is ILiveCell) return PointType.Cell;
             return PointType.Void;
+        }
+
+        private void UpdateFoodCount()
+        {
+            while (Foods.Count < 200)
+            {
+                AddFood();
+            }
         }
 
         public void RandomMove()
         {
             foreach (var cell in Cells)
             {
-                cell.RandomMove();
+                cell.TurnAction();
             }
+
+            UpdateFoodCount();
         }
     }
 }

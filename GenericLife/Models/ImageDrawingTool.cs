@@ -1,15 +1,13 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GenericLife.Declaration;
-using GenericLife.Models;
 
-namespace GenericLife.Services
+namespace GenericLife.Models
 {
-    public class DrawingService
+    public class ImageDrawingTool
     {
         private const int ScaleSize = 4;
         private readonly WriteableBitmap _writeableBitmap;
@@ -17,7 +15,7 @@ namespace GenericLife.Services
         public readonly int Width;
         private byte[,,] _pixels;
 
-        public DrawingService(Image image)
+        public ImageDrawingTool(Image image)
         {
             Height = (int) image.Height;
             Width = (int) image.Width;

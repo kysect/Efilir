@@ -15,7 +15,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GenericLife.Models;
-using GenericLife.Services;
 using GenericLife.Tools;
 
 namespace GenericLife
@@ -30,8 +29,8 @@ namespace GenericLife
         {
             InitializeComponent();
 
-            var ds = new DrawingService(ImageView);
-            var cellField = new CellFieldService();
+            var ds = new ImageDrawingTool(ImageView);
+            var cellField = new CellFieldModel();
             _testingPolygon = new TestingPolygon(ds, cellField);
         }
 
