@@ -7,12 +7,12 @@ namespace GenericLife.Models
 {
     public class SimpleCell : ILiveCell
     {
-        private readonly ICellField _fieldService;
+        private readonly ICellField _fieldModel;
 
         public SimpleCell(ICellField fieldService, FieldPosition position)
         {
             Position = position;
-            _fieldService = fieldService;
+            _fieldModel = fieldService;
 
             Health = 100;
         }
@@ -39,6 +39,7 @@ namespace GenericLife.Models
             if (Health == 0)
                 return;
 
+            Age += 1;
             int x, y;
             do
             {
@@ -51,13 +52,12 @@ namespace GenericLife.Models
 
         private void Move(FieldPosition position)
         {
-            var cellType = _fieldService.GetPointType(position);
+            var cellType = _fieldModel.GetPointType(position);
             Health -= 1;
-            Age += 1;
             if (cellType == PointType.Food)
             {
-                var cellOnWay = _fieldService.GetCellOnPosition(position);
-                _fieldService.Foods.Remove(cellOnWay as FoodCell);
+                var cellOnWay = _fieldModel.GetCellOnPosition(position);
+                _fieldModel.Foods.Remove(cellOnWay as FoodCell);
                 Position = position;
                 Health += FoodCell.FoodHealthIncome;
 
@@ -68,6 +68,11 @@ namespace GenericLife.Models
             {
                 Position = position;
             }
+        }
+
+        public override string ToString()
+        {
+            return $"Simple cell with {Health} health and {Age} age";
         }
     }
 }

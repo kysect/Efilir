@@ -38,8 +38,15 @@ namespace GenericLife.Models
             throw new System.NotImplementedException();
         }
 
+        private int _currentRotation;
         public FieldPosition Position { get; set; }
-        private int CurrentRotate { get; set; }
+
+        public int CurrentRotate
+        {
+            get => _currentRotation;
+            set => _currentRotation = value % 8;
+        }
+
         public Color GetColor()
         {
             if (Health == 0)
@@ -49,18 +56,53 @@ namespace GenericLife.Models
 
         public int MoveCommand(int commandRotate)
         {
-            int actualRotate = (CurrentRotate + commandRotate) % 8;
-            var movingCoord = AngleRotation.GetRotation(actualRotate);
-            var newPos = Position + movingCoord;
+            ActionCommand(commandRotate);
+
+            var newPos = GetCellOnWay(commandRotate);
             var directionCellState = _fieldModel.GetPointType(newPos);
 
-            if (directionCellState == PointType.Food)
+            if (directionCellState == PointType.Void)
             {
-                //_fieldModel.GetFoodCell(newX, newY);
+                Position = newPos;
             }
 
             return 0;
 
+        }
+
+        public void ActionCommand(int commandRotate)
+        {
+            IncreaseAge();
+
+            var newPos = GetCellOnWay(commandRotate);
+            var directionCellState = _fieldModel.GetPointType(newPos);
+
+            if (directionCellState == PointType.Food)
+            {
+                var cellOnWay = _fieldModel.GetCellOnPosition(newPos);
+                _fieldModel.Foods.Remove(cellOnWay as FoodCell);
+                Health += FoodCell.FoodHealthIncome;
+                return;
+            }
+
+            if (directionCellState == PointType.Cell)
+            {
+                //Attack?
+            }
+
+        }
+
+        private FieldPosition GetCellOnWay(int commandRotate)
+        {
+            int actualRotate = (CurrentRotate + commandRotate) % 8;
+            var newPosition = AngleRotation.GetRotation(actualRotate);
+            return Position + newPosition;
+        }
+
+        private void IncreaseAge()
+        {
+            Age++;
+            Health--;
         }
     }
 }
