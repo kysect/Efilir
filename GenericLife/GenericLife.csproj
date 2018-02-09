@@ -79,7 +79,7 @@
     <Compile Include="Services\CellFieldService.cs" />
     <Compile Include="Services\DrawingService.cs" />
     <Compile Include="Models\FoodCell.cs" />
-    <Compile Include="Models\PointType.cs" />
+    <Compile Include="Declaration\PointType.cs" />
     <Compile Include="Models\SimpleCell.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -102,7 +102,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Tools\ClassDiagram.dgml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

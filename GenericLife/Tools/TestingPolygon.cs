@@ -2,19 +2,18 @@
 using System.Linq;
 using System.Windows.Documents;
 using GenericLife.Models;
-using GenericLife.Services;
 
 namespace GenericLife.Tools
 {
     public class TestingPolygon
     {
-        private readonly DrawingService _ds;
-        private CellFieldService _cellFieldService;
+        private readonly ImageDrawingTool _ds;
+        private CellFieldModel _cellFieldModel;
 
-        public TestingPolygon(DrawingService ds, CellFieldService cellFieldService)
+        public TestingPolygon(ImageDrawingTool ds, CellFieldModel cellFieldModel)
         {
             _ds = ds;
-            _cellFieldService = cellFieldService;
+            _cellFieldModel = cellFieldModel;
 
             Init();
         }
@@ -23,12 +22,12 @@ namespace GenericLife.Tools
         {
             for (int i = 0; i < 64; i++)
             {
-                _cellFieldService.AddRandomCell();
+                _cellFieldModel.AddRandomCell();
             }
 
             for (int i = 0; i < 200; i++)
             {
-                _cellFieldService.AddFood();
+                _cellFieldModel.AddFood();
             }
 
             UpdateUi();
@@ -37,12 +36,12 @@ namespace GenericLife.Tools
         public void UpdateUi()
         {
             _ds.ClearBlack();
-            _ds.DrawPoints(_cellFieldService.Cells);
-            _ds.DrawPoints(_cellFieldService.Foods);
+            _ds.DrawPoints(_cellFieldModel.Cells);
+            _ds.DrawPoints(_cellFieldModel.Foods);
         }
         public void RandomMove()
         {
-            _cellFieldService.RandomMove();
+            _cellFieldModel.RandomMove();
             UpdateUi();
         }
     }

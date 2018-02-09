@@ -1,16 +1,15 @@
 ﻿using System.Linq;
 using System.Windows.Media;
 using GenericLife.Declaration;
-using GenericLife.Services;
 using GenericLife.Tools;
 
 namespace GenericLife.Models
 {
     public class SimpleCell : ILiveCell
     {
-        private readonly CellFieldService _fieldService;
+        private readonly ICellField _fieldService;
 
-        public SimpleCell(CellFieldService fieldService, int positionX, int positionY)
+        public SimpleCell(ICellField fieldService, int positionX, int positionY)
         {
             PositionX = positionX;
             PositionY = positionY;
@@ -59,8 +58,8 @@ namespace GenericLife.Models
             Age += 1;
             if (cellType == PointType.Food)
             {
-                var forCleaning = _fieldService.Foods.First(c => c.PositionY == positionY && c.PositionX == positionX);
-                _fieldService.Foods.Remove(forCleaning);
+                var cellOnWay = _fieldService.GetCellOnPosition(positionX, positionY);
+                _fieldService.Foods.Remove(cellOnWay as FoodCell);
                 PositionX = positionX;
                 PositionY = positionY;
                 Health += FoodCell.FoodHealthIncome;
