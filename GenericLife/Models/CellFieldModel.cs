@@ -8,14 +8,55 @@ namespace GenericLife.Models
 {
     public class CellFieldModel : ICellField
     {
-        public List<ILiveCell> Cells { get; set; }
-        public List<FoodCell> Foods { get; set; }
+        public const int FoodCount = 500;
         public readonly int FieldSize = 100;
 
         public CellFieldModel()
         {
             Cells = new List<ILiveCell>();
             Foods = new List<FoodCell>();
+        }
+
+        public bool IsAnyAlive
+        {
+            get { return Cells.Any(c => c.Health > 0); }
+        }
+
+        public bool IsAliveFew
+        {
+            get { return Cells.Count(c => c.Health > 0) <= 8; }
+        }
+
+        public List<ILiveCell> Cells { get; set; }
+        public List<FoodCell> Foods { get; set; }
+
+        public IBaseCell GetCellOnPosition(FieldPosition position)
+        {
+            IBaseCell cell = Cells.FirstOrDefault(c => c.Position.X == position.X
+                                                       && c.Position.Y == position.Y);
+            if (cell != null) return cell;
+
+            cell = Foods.FirstOrDefault(c => c.Position.X == position.X
+                                             && c.Position.Y == position.Y);
+            return cell;
+        }
+
+        public PointType GetPointType(FieldPosition position)
+        {
+            if (position.X < 0 || position.X >= FieldSize || position.Y < 0 || position.Y >= FieldSize)
+                return PointType.OutOfRange;
+
+            var cell = GetCellOnPosition(position);
+            if (cell is FoodCell) return PointType.Food;
+            if (cell is ILiveCell) return PointType.Cell;
+            return PointType.Void;
+        }
+
+        public void RandomMove()
+        {
+            foreach (var cell in Cells) cell.TurnAction();
+
+            UpdateFoodCount();
         }
 
         private FieldPosition GetEmptyPosition()
@@ -48,47 +89,9 @@ namespace GenericLife.Models
             Foods.Add(new FoodCell(pos));
         }
 
-        public IBaseCell GetCellOnPosition(FieldPosition position)
-        {
-            IBaseCell cell = Cells.FirstOrDefault(c => c.Position.X == position.X
-                                                       && c.Position.Y == position.Y);
-            if (cell != null)
-            {
-                return cell;
-            }
-
-            cell = Foods.FirstOrDefault(c => c.Position.X == position.X
-                                             && c.Position.Y == position.Y);
-            return cell;
-        }
-
-        public PointType GetPointType(FieldPosition position)
-        {
-            if (position.X < 0 || position.X >= FieldSize || position.Y < 0 || position.Y >= FieldSize)
-                return PointType.OutOfRange;
-
-            IBaseCell cell = GetCellOnPosition(position);
-            if (cell is FoodCell) return PointType.Food;
-            if (cell is ILiveCell) return PointType.Cell;
-            return PointType.Void;
-        }
-
         private void UpdateFoodCount()
         {
-            while (Foods.Count < 200)
-            {
-                AddFood();
-            }
-        }
-
-        public void RandomMove()
-        {
-            foreach (var cell in Cells)
-            {
-                cell.TurnAction();
-            }
-
-            UpdateFoodCount();
+            while (Foods.Count < FoodCount) AddFood();
         }
     }
 }

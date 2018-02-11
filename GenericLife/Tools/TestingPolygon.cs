@@ -24,8 +24,8 @@ namespace GenericLife.Tools
             {
                 CellFieldModel.AddGenericCell();
             }
-
-            for (int i = 0; i < 200; i++)
+            
+            for (int i = 0; i < CellFieldModel.FoodCount; i++)
             {
                 CellFieldModel.AddFood();
             }

@@ -7,7 +7,7 @@ namespace GenericLife.Models.Cells
 {
     public class CellBrain
     {
-        private readonly GenericCell _cell;
+        private GenericCell _cell;
         private readonly ICellField _field;
         private int _command;
 
@@ -19,13 +19,31 @@ namespace GenericLife.Models.Cells
             _cell = cell;
         }
 
+        public CellBrain(ICellField field, GenericCell cell)
+        {
+            CurrentCommand = 0;
+            _field = field;
+            _cell = cell;
+        }
+
+        public CellBrain(ICellField field)
+        {
+            CurrentCommand = 0;
+            _field = field;
+        }
+
+        public void SetCell(GenericCell cell)
+        {
+            _cell = cell;
+        }
+
         private int CurrentCommand
         {
             get => _command;
             set => _command = value % 64;
         }
 
-        private List<int> CommandList { get; }
+        public List<int> CommandList { get; set; }
 
         public void MakeTurn()
         {
@@ -41,7 +59,7 @@ namespace GenericLife.Models.Cells
 
             if (recursionDeep == 64)
             {
-                _cell.IncreaseAge();
+                
             }
         }
 
@@ -53,7 +71,7 @@ namespace GenericLife.Models.Cells
             //Command shift
             if (commandId >= 32)
             {
-                CurrentCommand += commandId - 32;
+                CurrentCommand += commandId - 31;
                 return false;
             }
 
@@ -103,6 +121,11 @@ namespace GenericLife.Models.Cells
                 shift = 3;
             if (type == PointType.OutOfRange)
                 shift = 4;
+
+            if (shift == 5)
+            {
+                shift = 1;
+            }
 
             CurrentCommand += shift;
         }

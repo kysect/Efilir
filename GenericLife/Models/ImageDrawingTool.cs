@@ -17,6 +17,8 @@ namespace GenericLife.Models
 
         public ImageDrawingTool(Image image)
         {
+            image.Height = 100 * ScaleSize;
+            image.Width = 100 * ScaleSize;
             Height = (int) image.Height;
             Width = (int) image.Width;
             _writeableBitmap = new WriteableBitmap(
