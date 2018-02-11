@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GenericLife.Models;
 
 namespace GenericLife.Tools
 {
@@ -37,6 +38,13 @@ namespace GenericLife.Tools
             }
 
             return list;
+        }
+
+        public static FieldPosition GeneratePosition()
+        {
+            int x = Next(100);
+            int y = Next(100);
+            return new FieldPosition(x, y);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Windows.Media;
+﻿using System.Collections.Generic;
+using System.Windows.Media;
 using GenericLife.Declaration;
 using GenericLife.Tools;
 
@@ -19,30 +20,47 @@ namespace GenericLife.Models.Cells
             _brain = new CellBrain(GlobalRand.GenerateCommandList(), _fieldModel, this);
         }
 
+        public GenericCell(CellFieldModel fieldModel, FieldPosition position, CellBrain brain)
+        {
+            _fieldModel = fieldModel;
+            Position = position;
+            CurrentRotate = 0;
+            Health = 100;
+            _brain = brain;
+        }
+
         public int CurrentRotate
         {
             get => _currentRotation;
             set => _currentRotation = value % 8;
         }
 
-        public int Health { get; set; }
+        private int _health;
+
+        public int Health
+        {
+            get => _health;
+            set => _health = value > 100 ? 100 : value;
+        }
+
         public int Age { get; set; }
 
         public void TurnAction()
         {
-            if (Health == 0)
+            if (Health <= 0)
             {
                 return;
             }
 
             _brain.MakeTurn();
+            IncreaseAge();
         }
 
         public FieldPosition Position { get; set; }
 
         public Color GetColor()
         {
-            if (Health == 0)
+            if (Health <= 0)
                 return CellColorGenerator.DeadCell();
             return CellColorGenerator.HealthIndicator(Health);
         }
@@ -61,7 +79,7 @@ namespace GenericLife.Models.Cells
 
         public void ActionCommand(int commandRotate)
         {
-            IncreaseAge();
+            //IncreaseAge();
 
             var newPos = GetCellOnWay(commandRotate);
             var directionCellState = _fieldModel.GetPointType(newPos);
@@ -87,7 +105,7 @@ namespace GenericLife.Models.Cells
             return Position + newPosition;
         }
 
-        public void IncreaseAge()
+        private void IncreaseAge()
         {
             Age++;
             Health--;
@@ -96,6 +114,11 @@ namespace GenericLife.Models.Cells
         public override string ToString()
         {
             return $"Simple cell with {Health} health and {Age} age";
+        }
+
+        public List<int> GetCommandList()
+        {
+            return _brain.CommandList;
         }
     }
 }
