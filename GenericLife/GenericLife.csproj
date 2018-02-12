@@ -57,6 +57,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Declaration\ICellBrain.cs" />
     <Compile Include="Declaration\ICellField.cs" />
     <Compile Include="Models\Cells\CellBrain.cs" />
     <Compile Include="Models\FieldPosition.cs" />
@@ -67,7 +68,7 @@
     <Compile Include="Tools\GlobalRand.cs" />
     <Compile Include="Tools\JsonSaver.cs" />
     <Compile Include="Tools\Mutation.cs" />
-    <Compile Include="Tools\TestingPolygon.cs" />
+    <Compile Include="Models\TestingPolygon.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -87,8 +88,7 @@
     <Compile Include="Models\CellFieldModel.cs" />
     <Compile Include="Models\ImageDrawingTool.cs" />
     <Compile Include="Models\Cells\FoodCell.cs" />
-    <Compile Include="Declaration\PointType.cs" />
-    <Compile Include="Models\Cells\SimpleCell.cs" />
+    <Compile Include="Models\PointType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 
 namespace GenericLife.Tools
 {
-    public class JsonSaver
+    public static class JsonSaver
     {
         private const string FileName = @"data.json";
 
@@ -17,7 +17,7 @@ namespace GenericLife.Tools
             var dataList = list
                 .OrderByDescending(c => c.Age).ThenByDescending(c => c.Health)
                 .Take(8)
-                .Select(c => new {c.Age, CommandList = c.GetCommandList()});
+                .Select(c => new {c.Age, c.Brain.CommandList});
             var dataString = JsonConvert.SerializeObject(dataList);
 
             if (!File.Exists(FileName))
@@ -38,7 +38,7 @@ namespace GenericLife.Tools
 
         public static List<List<int>> Load()
         {
-            string dataString = System.IO.File.ReadAllText(FileName);
+            string dataString = File.ReadAllText(FileName);
             var list = JArray.Parse(dataString);
             List<List<int>> gen = new List<List<int>>();
             foreach (var obj in list)

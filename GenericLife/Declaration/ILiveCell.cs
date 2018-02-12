@@ -5,5 +5,6 @@
         int Health { get; set; }
         int Age { get; set; }
         void TurnAction();
+        bool IsAlive { get; }
     }
 }
