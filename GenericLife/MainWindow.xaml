@@ -10,8 +10,6 @@
         <Image x:Name="ImageView" HorizontalAlignment="Left" Height="600" Margin="10,10,0,0" VerticalAlignment="Top" Width="600"/>
         <Button Content="Start(indev)" HorizontalAlignment="Left" Margin="927,35,0,0" VerticalAlignment="Top" Width="74" Click="Button_Click"/>
         <ListBox Name="CellData" HorizontalAlignment="Left" Height="199" Margin="650,25,0,0" VerticalAlignment="Top" Width="272"/>
-        <Button Content="SaveData" HorizontalAlignment="Left" Margin="927,114,0,0" VerticalAlignment="Top" Width="75" Click="SaveCells"/>
-        <Button Content="LoadData" HorizontalAlignment="Left" Margin="927,134,0,0" VerticalAlignment="Top" Width="75" Click="LoadCells"/>
         <Button Content="STOP" HorizontalAlignment="Left" Margin="927,154,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
     </Grid>
 </Window>

@@ -1,5 +1,6 @@
 ﻿using System.Windows.Media;
 using GenericLife.Declaration;
+using GenericLife.Tools;
 
 namespace GenericLife.Models.Cells
 {
@@ -9,11 +10,7 @@ namespace GenericLife.Models.Cells
         public FieldPosition Position { get; set; }
         public Color GetColor()
         {
-            var c = new Color();
-            c.G = 0;
-            c.R = 0;
-            c.B = 255;
-            return c;
+            return CellColorGenerator.FoodColor();
         }
 
         public FoodCell(FieldPosition position)

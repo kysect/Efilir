@@ -31,20 +31,13 @@ namespace GenericLife.Tools
 
         public static List<int> GenerateCommandList()
         {
-            var list = new List<int>(64);
-            for (int i = 0; i < 64; i++)
-            {
-                list.Add(Next(64));
-            }
-
-            return list;
+            return RandomList(64, 64);
         }
 
         public static FieldPosition GeneratePosition()
+        //TODO: Size
         {
-            int x = Next(100);
-            int y = Next(100);
-            return new FieldPosition(x, y);
+            return new FieldPosition(Next(100), Next(100));
         }
     }
 }

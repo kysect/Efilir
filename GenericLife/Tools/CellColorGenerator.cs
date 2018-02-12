@@ -7,6 +7,7 @@ namespace GenericLife.Tools
     {
         public static Color DeadCell()
         {
+            //return Colors.Maroon;
             return new Color
             {
                 R = byte.MaxValue,
@@ -28,12 +29,18 @@ namespace GenericLife.Tools
 
         public static Color FoodColor()
         {
+            //return Colors.AliceBlue;
             return new Color
             {
                 R = 0,
                 G = 0,
                 B = 200
             };
+        }
+
+        public static Color WallColor()
+        {
+            return Colors.Azure;
         }
 
     }

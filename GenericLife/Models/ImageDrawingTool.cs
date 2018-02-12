@@ -11,26 +11,25 @@ namespace GenericLife.Models
     {
         private const int ScaleSize = 4;
         private readonly WriteableBitmap _writeableBitmap;
-        public readonly int Height;
-        public readonly int Width;
+        public readonly int Size;
         private byte[,,] _pixels;
 
         public ImageDrawingTool(Image image)
         {
-            image.Height = 100 * ScaleSize;
-            image.Width = 100 * ScaleSize;
-            Height = (int) image.Height;
-            Width = (int) image.Width;
+            Size = 100 * ScaleSize;
+            image.Height = Size;
+            image.Width = Size;
+            
             _writeableBitmap = new WriteableBitmap(
-                Width,
-                Height,
+                Size,
+                Size,
                 12,
                 12,
                 PixelFormats.Bgr32,
                 null);
 
             image.Source = _writeableBitmap;
-            _pixels = new byte[Height, Width, 4];
+            _pixels = new byte[Size, Size, 4];
         }
 
         public void DrawPoints(IEnumerable<IBaseCell> cells)
@@ -58,8 +57,8 @@ namespace GenericLife.Models
 
         public void ClearBlack()
         {
-            for (var row = 0; row < Height; row++)
-            for (var col = 0; col < Width; col++)
+            for (var row = 0; row < Size; row++)
+            for (var col = 0; col < Size; col++)
             {
                 for (int i = 0; i < 3; i++)
                     _pixels[row, col, i] = 0;
@@ -69,11 +68,11 @@ namespace GenericLife.Models
 
         private byte[] TransformTo1D()
         {
-            var pixels1D = new byte[Height * Width * 4];
+            var pixels1D = new byte[Size * Size * 4];
 
             var index = 0;
-            for (var row = 0; row < Height; row++)
-            for (var col = 0; col < Width; col++)
+            for (var row = 0; row < Size; row++)
+            for (var col = 0; col < Size; col++)
             for (var i = 0; i < 4; i++)
                 pixels1D[index++] = _pixels[row, col, i];
 
@@ -83,8 +82,8 @@ namespace GenericLife.Models
         private void PrintPixels()
         {
             var pixels1D = TransformTo1D();
-            var rect = new Int32Rect(0, 0, Width, Height);
-            var stride = 4 * Width;
+            var rect = new Int32Rect(0, 0, Size, Size);
+            var stride = 4 * Size;
 
             _writeableBitmap.WritePixels(rect, pixels1D, stride, 0);
         }

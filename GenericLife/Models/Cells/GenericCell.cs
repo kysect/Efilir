@@ -7,26 +7,23 @@ namespace GenericLife.Models.Cells
 {
     public class GenericCell : ILiveCell
     {
-        private readonly CellFieldModel _fieldModel;
-        private readonly CellBrain _brain;
+        public CellBrain Brain { get; set; }
+        public ICellField FieldModel { get; set; }
         private int _currentRotation;
+        private int _health;
 
         public GenericCell(CellFieldModel fieldModel, FieldPosition position)
         {
-            _fieldModel = fieldModel;
+            FieldModel = fieldModel;
             Position = position;
             CurrentRotate = 0;
             Health = 100;
-            _brain = new CellBrain(GlobalRand.GenerateCommandList(), _fieldModel, this);
-        }
-
-        public GenericCell(CellFieldModel fieldModel, FieldPosition position, CellBrain brain)
-        {
-            _fieldModel = fieldModel;
-            Position = position;
-            CurrentRotate = 0;
-            Health = 100;
-            _brain = brain;
+            Brain = new CellBrain()
+            {
+                Cell = this,
+                CommandList = GlobalRand.GenerateCommandList(),
+                Field = FieldModel
+            };
         }
 
         public int CurrentRotate
@@ -34,8 +31,6 @@ namespace GenericLife.Models.Cells
             get => _currentRotation;
             set => _currentRotation = value % 8;
         }
-
-        private int _health;
 
         public int Health
         {
@@ -47,14 +42,13 @@ namespace GenericLife.Models.Cells
 
         public void TurnAction()
         {
-            if (Health <= 0)
-            {
-                return;
-            }
+            if (!IsAlive) return;
 
-            _brain.MakeTurn();
+            Brain.MakeTurn();
             IncreaseAge();
         }
+
+        public bool IsAlive => Health > 0;
 
         public FieldPosition Position { get; set; }
 
@@ -65,29 +59,25 @@ namespace GenericLife.Models.Cells
             return CellColorGenerator.HealthIndicator(Health);
         }
 
-        public int MoveCommand(int commandRotate)
+        public void MoveCommand(int commandRotate)
         {
             ActionCommand(commandRotate);
 
             var newPos = GetCellOnWay(commandRotate);
-            var directionCellState = _fieldModel.GetPointType(newPos);
+            var directionCellState = FieldModel.GetPointType(newPos);
 
             if (directionCellState == PointType.Void) Position = newPos;
-
-            return 0;
         }
 
         public void ActionCommand(int commandRotate)
         {
-            //IncreaseAge();
-
             var newPos = GetCellOnWay(commandRotate);
-            var directionCellState = _fieldModel.GetPointType(newPos);
+            var directionCellState = FieldModel.GetPointType(newPos);
 
             if (directionCellState == PointType.Food)
             {
-                var cellOnWay = _fieldModel.GetCellOnPosition(newPos);
-                _fieldModel.Foods.Remove(cellOnWay as FoodCell);
+                var cellOnWay = FieldModel.GetCellOnPosition(newPos);
+                FieldModel.Foods.Remove(cellOnWay as FoodCell);
                 Health += FoodCell.FoodHealthIncome;
                 return;
             }
@@ -114,11 +104,6 @@ namespace GenericLife.Models.Cells
         public override string ToString()
         {
             return $"Simple cell with {Health} health and {Age} age";
-        }
-
-        public List<int> GetCommandList()
-        {
-            return _brain.CommandList;
         }
     }
 }

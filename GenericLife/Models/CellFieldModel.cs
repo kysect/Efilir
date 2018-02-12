@@ -71,12 +71,6 @@ namespace GenericLife.Models
             return new FieldPosition(x, y);
         }
 
-        public void AddSimpleCell()
-        {
-            var pos = GetEmptyPosition();
-            Cells.Add(new SimpleCell(this, pos));
-        }
-
         public void AddGenericCell()
         {
             var pos = GetEmptyPosition();

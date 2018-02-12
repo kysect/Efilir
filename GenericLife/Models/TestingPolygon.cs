@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Documents;
-using GenericLife.Models;
-
-namespace GenericLife.Tools
+﻿namespace GenericLife.Models
 {
     public class TestingPolygon
     {
