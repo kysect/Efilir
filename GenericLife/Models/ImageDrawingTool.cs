@@ -4,19 +4,20 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GenericLife.Declaration;
+using GenericLife.Tools;
 
 namespace GenericLife.Models
 {
     public class ImageDrawingTool
     {
-        private const int ScaleSize = 4;
+        private const int ScaleSize = 6;
         private readonly WriteableBitmap _writeableBitmap;
         public readonly int Size;
         private byte[,,] _pixels;
 
         public ImageDrawingTool(Image image)
         {
-            Size = 100 * ScaleSize;
+            Size = Configuration.FieldSize * ScaleSize;
             image.Height = Size;
             image.Width = Size;
             

@@ -60,14 +60,14 @@
     <Compile Include="Declaration\ICellBrain.cs" />
     <Compile Include="Declaration\ICellField.cs" />
     <Compile Include="Models\Cells\CellBrain.cs" />
-    <Compile Include="Models\FieldPosition.cs" />
+    <Compile Include="Types\FieldPosition.cs" />
     <Compile Include="Models\Cells\GenericCell.cs" />
     <Compile Include="Declaration\ILiveCell.cs" />
-    <Compile Include="Tools\AngleRotation.cs" />
+    <Compile Include="Types\AngleRotation.cs" />
     <Compile Include="Tools\CellColorGenerator.cs" />
+    <Compile Include="Tools\Configuration.cs" />
     <Compile Include="Tools\GlobalRand.cs" />
     <Compile Include="Tools\JsonSaver.cs" />
-    <Compile Include="Tools\Mutation.cs" />
     <Compile Include="Models\TestingPolygon.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Page Include="MainWindow.xaml">
@@ -88,7 +88,7 @@
     <Compile Include="Models\CellFieldModel.cs" />
     <Compile Include="Models\ImageDrawingTool.cs" />
     <Compile Include="Models\Cells\FoodCell.cs" />
-    <Compile Include="Models\PointType.cs" />
+    <Compile Include="Types\PointType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -3,13 +3,13 @@ using System.Linq;
 using GenericLife.Declaration;
 using GenericLife.Models.Cells;
 using GenericLife.Tools;
+using GenericLife.Types;
 
 namespace GenericLife.Models
 {
     public class CellFieldModel : ICellField
     {
-        public const int FoodCount = 500;
-        public readonly int FieldSize = 100;
+        public const int FoodCount = 150;
 
         public CellFieldModel()
         {
@@ -43,7 +43,9 @@ namespace GenericLife.Models
 
         public PointType GetPointType(FieldPosition position)
         {
-            if (position.X < 0 || position.X >= FieldSize || position.Y < 0 || position.Y >= FieldSize)
+            if (position.X < 0 || position.X >= Configuration.FieldSize
+                               || position.Y < 0
+                               || position.Y >= Configuration.FieldSize)
                 return PointType.OutOfRange;
 
             var cell = GetCellOnPosition(position);
@@ -59,28 +61,29 @@ namespace GenericLife.Models
             UpdateFoodCount();
         }
 
+        public void AddCell(ILiveCell cell)
+        {
+            cell.Position = GetEmptyPosition();
+            cell.FieldModel = this;
+            Cells.Add(cell);
+        }
+
         private FieldPosition GetEmptyPosition()
         {
             int x, y;
             do
             {
-                x = GlobalRand.Next(FieldSize);
-                y = GlobalRand.Next(FieldSize);
+                x = GlobalRand.Next(Configuration.FieldSize);
+                y = GlobalRand.Next(Configuration.FieldSize);
             } while (GetPointType(new FieldPosition(x, y)) != PointType.Void);
 
             return new FieldPosition(x, y);
         }
 
-        public void AddGenericCell()
-        {
-            var pos = GetEmptyPosition();
-            Cells.Add(new GenericCell(this, pos));
-        }
-
         public void AddFood()
         {
             var pos = GetEmptyPosition();
-            Foods.Add(new FoodCell(pos));
+            Foods.Add(new FoodCell(pos) {FieldModel = this});
         }
 
         private void UpdateFoodCount()

@@ -1,12 +1,26 @@
-﻿using GenericLife.Models;
-
-namespace GenericLife.Tools
+﻿namespace GenericLife.Types
 {
     public class AngleRotation
     {
-        public static FieldPosition GetRotation(int pos)
+        private int _rotate;
+
+        public int Rotate
         {
-            switch (pos)
+            get => _rotate;
+            set
+            {
+                while (value < 0) value += 8;
+                if (value > 8) _rotate = value % 8;
+            }
+        }
+
+        public AngleRotation(int rotate)
+        {
+            Rotate = rotate;
+        }
+        public FieldPosition GetRotation()
+        {
+            switch (_rotate)
             {
                 case 0:
                     return new FieldPosition(0, -1);
@@ -27,6 +41,11 @@ namespace GenericLife.Tools
                 default:
                     return new FieldPosition(0, -1);
             }
+        }
+
+        public static AngleRotation operator +(AngleRotation left, int right)
+        {
+            return new AngleRotation(left.Rotate + right);
         }
     }
 }

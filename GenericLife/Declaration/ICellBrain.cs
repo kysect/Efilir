@@ -1,4 +1,5 @@
-﻿using GenericLife.Models.Cells;
+﻿using System.Collections.Generic;
+using GenericLife.Models.Cells;
 
 namespace GenericLife.Declaration
 {
@@ -7,7 +8,9 @@ namespace GenericLife.Declaration
     {
         //TODO: Walls
         GenericCell Cell { get; set; }
-        ICellField Field { get; set; }
+        List<int> CommandList { get; set; }
         void MakeTurn();
+        ICellBrain GenerateChild();
+        ICellBrain GenerateChildWithMutant();
     }
 }

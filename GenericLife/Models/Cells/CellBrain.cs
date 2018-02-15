@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using GenericLife.Declaration;
 using GenericLife.Tools;
+using GenericLife.Types;
 
 namespace GenericLife.Models.Cells
 {
@@ -14,16 +15,19 @@ namespace GenericLife.Models.Cells
             CurrentCommand = 0;
         }
 
+        public CellBrain(List<int> commandList)
+        {
+            CurrentCommand = 0;
+            CommandList = commandList;
+        }
+
         public GenericCell Cell { get; set; }
-        public ICellField Field { get; set; }
         public List<int> CommandList { get; set; }
         private int CurrentCommand
         {
             get => _command;
             set => _command = value % 64;
         }
-
-        
 
         public void MakeTurn()
         {
@@ -83,9 +87,8 @@ namespace GenericLife.Models.Cells
 
         private void CommandShift(int commandId)
         {
-            var commandRotation = Cell.CurrentRotate + commandId;
-            commandRotation %= 8;
-            var type = Field.GetPointType(Cell.Position + AngleRotation.GetRotation(commandRotation));
+            var cellOnWay = Cell.GetCellOnWay(commandId);
+            var type = Cell.FieldModel.GetPointType(cellOnWay);
             var shift = 0;
 
             //TODO: More types
@@ -99,6 +102,27 @@ namespace GenericLife.Models.Cells
                 shift = 4;
 
             CurrentCommand += shift;
+        }
+
+        public ICellBrain GenerateChild()
+        {
+            return new CellBrain()
+            {
+                CommandList = new List<int>(CommandList)
+            };
+        }
+
+        public ICellBrain GenerateChildWithMutant()
+        {
+            var list = new List<int>(CommandList);
+
+            int index = GlobalRand.Next(list.Count);
+            list[index] = GlobalRand.Next(64);
+
+            return new CellBrain()
+            {
+                CommandList = list
+            };
         }
     }
 }
