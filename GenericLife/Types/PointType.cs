@@ -4,7 +4,7 @@
     {
         Void,
         Cell,
-        OutOfRange,
+        Wall,
         Food
     }
 }

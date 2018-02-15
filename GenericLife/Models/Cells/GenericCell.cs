@@ -39,13 +39,16 @@ namespace GenericLife.Models.Cells
 
         public void TurnAction()
         {
-            if (!IsAlive) return;
+            if (!IsAlive()) return;
 
             Brain.MakeTurn();
             IncreaseAge();
         }
 
-        public bool IsAlive => Health > 0;
+        public bool IsAlive()
+        {
+            return Health > 0;
+        }
 
         public FieldPosition Position { get; set; }
 

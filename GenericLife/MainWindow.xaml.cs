@@ -49,12 +49,12 @@ namespace GenericLife
             }
         }
 
-        private void HideStart(object sender, RoutedEventArgs e)
+        private void HiddenStart(object sender, RoutedEventArgs e)
         {
             _viewModel.IsActive = true;
             while (_viewModel.IsActive)
             {
-                _viewModel.HideSimulation();
+                _viewModel.HiddenSimulation();
 
                 _viewModel.SaveCells();
                 _viewModel.LoadCells();
@@ -66,12 +66,6 @@ namespace GenericLife
             var cellList = _viewModel.Polygon.CellFieldModel.Cells;
             var orderByDescending = cellList.OrderByDescending(c => c.Age);
             CellData.ItemsSource = orderByDescending;
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            _viewModel.IsActive = false;
-            UpdateInfoBox(null, null);
         }
     }
 }

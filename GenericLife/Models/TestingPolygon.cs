@@ -21,7 +21,6 @@
         public void RandomMove()
         {
             CellFieldModel.RandomMove();
-            //UpdateUi();
         }
     }
 }
