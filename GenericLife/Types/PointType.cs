@@ -1,4 +1,4 @@
-﻿namespace GenericLife.Models
+﻿namespace GenericLife.Types
 {
     public enum PointType
     {

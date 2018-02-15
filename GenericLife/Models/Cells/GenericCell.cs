@@ -1,36 +1,33 @@
-﻿using System.Collections.Generic;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 using GenericLife.Declaration;
 using GenericLife.Tools;
+using GenericLife.Types;
 
 namespace GenericLife.Models.Cells
 {
     public class GenericCell : ILiveCell
     {
-        public CellBrain Brain { get; set; }
-        public ICellField FieldModel { get; set; }
-        private int _currentRotation;
         private int _health;
 
-        public GenericCell(CellFieldModel fieldModel, FieldPosition position)
+        public GenericCell()
         {
-            FieldModel = fieldModel;
-            Position = position;
-            CurrentRotate = 0;
+            CurrentRotate = new AngleRotation(0);
             Health = 100;
-            Brain = new CellBrain()
-            {
-                Cell = this,
-                CommandList = GlobalRand.GenerateCommandList(),
-                Field = FieldModel
-            };
         }
 
-        public int CurrentRotate
+        private ICellBrain _brain;
+        public ICellBrain Brain
         {
-            get => _currentRotation;
-            set => _currentRotation = value % 8;
+            get => _brain;
+            set
+            {
+                _brain = value;
+                _brain.Cell = this;
+            }
         }
+
+        public AngleRotation CurrentRotate { get; set; }
+        public ICellField FieldModel { get; set; }
 
         public int Health
         {
@@ -71,27 +68,27 @@ namespace GenericLife.Models.Cells
 
         public void ActionCommand(int commandRotate)
         {
-            var newPos = GetCellOnWay(commandRotate);
-            var directionCellState = FieldModel.GetPointType(newPos);
+            var posMoveTo = GetCellOnWay(commandRotate);
+            var positionType = FieldModel.GetPointType(posMoveTo);
 
-            if (directionCellState == PointType.Food)
+            if (positionType == PointType.Food)
             {
-                var cellOnWay = FieldModel.GetCellOnPosition(newPos);
+                var cellOnWay = FieldModel.GetCellOnPosition(posMoveTo);
                 FieldModel.Foods.Remove(cellOnWay as FoodCell);
                 Health += FoodCell.FoodHealthIncome;
                 return;
             }
 
-            if (directionCellState == PointType.Cell)
+            if (positionType == PointType.Cell)
             {
                 //Attack?
             }
         }
 
-        private FieldPosition GetCellOnWay(int commandRotate)
+        public FieldPosition GetCellOnWay(int commandRotate)
         {
-            var actualRotate = (CurrentRotate + commandRotate) % 8;
-            var newPosition = AngleRotation.GetRotation(actualRotate);
+            var actualRotate = CurrentRotate + commandRotate;
+            var newPosition = actualRotate.GetRotation();
             return Position + newPosition;
         }
 

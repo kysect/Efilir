@@ -32,9 +32,19 @@ namespace GenericLife.ViewModel
                 {
                     if (IsActive)
                         Polygon.RandomMove();
+                    Polygon.UpdateUi();
                 }, null);
 
                 Thread.Sleep(100);
+            }
+        }
+
+        public void HideSimulation()
+        {
+            while (!Polygon.CellFieldModel.IsAliveFew)
+            {
+                    if (IsActive)
+                        Polygon.RandomMove();
             }
         }
 
@@ -46,50 +56,32 @@ namespace GenericLife.ViewModel
 
         public void LoadCells()
         {
+            Polygon.CellFieldModel.Cells = new List<ILiveCell>();
             var cells = JsonSaver.Load();
-            var newList = new List<ILiveCell>();
             foreach (var cell in cells)
             {
+                var brain = new CellBrain(cell);
+
                 for (var i = 0; i < 2; i++)
                 {
-                    var cellBrain = new CellBrain
+                    var newCell = new GenericCell()
                     {
-                        Field = Polygon.CellFieldModel,
-                        CommandList = Mutation.GenerateMutant(cell)
+                        Brain = brain.GenerateChildWithMutant() as CellBrain
                     };
 
-                    var newCell = new GenericCell(Polygon.CellFieldModel,
-                        GlobalRand.GeneratePosition())
-                    {
-                        Brain = cellBrain
-                    };
-
-                    cellBrain.Cell = newCell;
-                    Polygon.CellFieldModel.Cells.Add(newCell);
-                    newList.Add(newCell);
+                    Polygon.CellFieldModel.AddCell(newCell);
                 }
 
                 for (var i = 0; i < 6; i++)
                 {
-                    var cellBrain = new CellBrain
+                    var newCell = new GenericCell()
                     {
-                        Field = Polygon.CellFieldModel,
-                        CommandList = new List<int>(cell)
+                        Brain = brain.GenerateChild() as CellBrain
                     };
 
-                    var newCell = new GenericCell(Polygon.CellFieldModel,
-                        GlobalRand.GeneratePosition())
-                    {
-                        Brain = cellBrain
-                    };
-
-                    cellBrain.Cell = newCell;
-                    Polygon.CellFieldModel.Cells.Add(newCell);
-                    newList.Add(newCell);
+                    Polygon.CellFieldModel.AddCell(newCell);
                 }
             }
-
-            Polygon.CellFieldModel.Cells = newList;
         }
     }
 }

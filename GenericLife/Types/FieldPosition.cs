@@ -1,4 +1,4 @@
-﻿namespace GenericLife.Models
+﻿namespace GenericLife.Types
 {
     public class FieldPosition
     {
@@ -8,8 +8,8 @@
             X = x;
         }
 
-        public int X { get; set; }
-        public int Y { get; set; }
+        public int X { get; }
+        public int Y { get; }
 
         public static FieldPosition operator +(FieldPosition left, FieldPosition right)
         {

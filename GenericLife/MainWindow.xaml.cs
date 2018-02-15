@@ -47,8 +47,18 @@ namespace GenericLife
                 _viewModel.LoadCells();
                 Thread.Sleep(200);
             }
+        }
 
+        private void HideStart(object sender, RoutedEventArgs e)
+        {
+            _viewModel.IsActive = true;
+            while (_viewModel.IsActive)
+            {
+                _viewModel.HideSimulation();
 
+                _viewModel.SaveCells();
+                _viewModel.LoadCells();
+            }
         }
 
         private void UpdateInfoBox(object sender, RoutedEventArgs e)

@@ -3,30 +3,14 @@
     public class TestingPolygon
     {
         private readonly ImageDrawingTool _ds;
-        public CellFieldModel CellFieldModel;
+        public readonly CellFieldModel CellFieldModel;
 
         public TestingPolygon(ImageDrawingTool ds, CellFieldModel cellFieldModel)
         {
             _ds = ds;
             CellFieldModel = cellFieldModel;
-
-            Init();
         }
 
-        private void Init()
-        {
-            for (int i = 0; i < 64; i++)
-            {
-                CellFieldModel.AddGenericCell();
-            }
-            
-            for (int i = 0; i < CellFieldModel.FoodCount; i++)
-            {
-                CellFieldModel.AddFood();
-            }
-
-            UpdateUi();
-        }
 
         public void UpdateUi()
         {
@@ -37,7 +21,7 @@
         public void RandomMove()
         {
             CellFieldModel.RandomMove();
-            UpdateUi();
+            //UpdateUi();
         }
     }
 }
