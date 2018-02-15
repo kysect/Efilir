@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GenericLife"
         mc:Ignorable="d"
-        Title="MainWindow" Height="699" Width="1059">
+        Title="MainWindow" Height="699" Width="929">
     <Grid>
         <Image x:Name="ImageView" HorizontalAlignment="Left" Height="600" Margin="10,10,0,0" VerticalAlignment="Top" Width="600"/>
-        <Button Content="Start" HorizontalAlignment="Left" Margin="927,35,0,0" VerticalAlignment="Top" Width="74" Click="Button_Click"/>
-        <ListBox Name="CellData" HorizontalAlignment="Left" Height="199" Margin="650,25,0,0" VerticalAlignment="Top" Width="272"/>
-        <Button Content="Start(fast)" HorizontalAlignment="Left" Margin="927,60,0,0" VerticalAlignment="Top" Width="74" Click="HideStart"/>
+        <Button Content="Start" HorizontalAlignment="Left" Margin="635,35,0,0" VerticalAlignment="Top" Width="74" Click="Button_Click"/>
+        <ListBox Name="CellData" HorizontalAlignment="Left" Height="199" Margin="615,60,0,0" VerticalAlignment="Top" Width="272"/>
+        <Button Content="Start(fast)" HorizontalAlignment="Left" Margin="800,35,0,0" VerticalAlignment="Top" Width="74" Click="HiddenStart"/>
     </Grid>
 </Window>

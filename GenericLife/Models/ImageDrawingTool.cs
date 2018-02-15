@@ -35,6 +35,9 @@ namespace GenericLife.Models
 
         public void DrawPoints(IEnumerable<IBaseCell> cells)
         {
+            //TODO: Check position update
+            //TODO: Draw only if changed
+
             foreach (var cell in cells)
                 for (int addX = 0; addX < ScaleSize; addX++)
                 {

@@ -9,7 +9,7 @@ namespace GenericLife.Models
 {
     public class CellFieldModel : ICellField
     {
-        public const int FoodCount = 150;
+        private const int FoodCount = Configuration.FoodCount;
 
         public CellFieldModel()
         {
@@ -17,27 +17,17 @@ namespace GenericLife.Models
             Foods = new List<FoodCell>();
         }
 
-        public bool IsAnyAlive
-        {
-            get { return Cells.Any(c => c.Health > 0); }
-        }
-
-        public bool IsAliveFew
-        {
-            get { return Cells.Count(c => c.Health > 0) <= 8; }
-        }
-
         public List<ILiveCell> Cells { get; set; }
         public List<FoodCell> Foods { get; set; }
 
         public IBaseCell GetCellOnPosition(FieldPosition position)
         {
-            IBaseCell cell = Cells.FirstOrDefault(c => c.Position.X == position.X
-                                                       && c.Position.Y == position.Y);
-            if (cell != null) return cell;
+            var isFood = Foods.FirstOrDefault(c => c.Position.X == position.X
+                                                   && c.Position.Y == position.Y);
 
-            cell = Foods.FirstOrDefault(c => c.Position.X == position.X
-                                             && c.Position.Y == position.Y);
+            if (isFood != null) return isFood;
+            var cell = Cells.FirstOrDefault(c => c.Position.X == position.X
+                                                 && c.Position.Y == position.Y);
             return cell;
         }
 
@@ -46,9 +36,10 @@ namespace GenericLife.Models
             if (position.X < 0 || position.X >= Configuration.FieldSize
                                || position.Y < 0
                                || position.Y >= Configuration.FieldSize)
-                return PointType.OutOfRange;
+                return PointType.Wall;
 
             var cell = GetCellOnPosition(position);
+
             if (cell is FoodCell) return PointType.Food;
             if (cell is ILiveCell) return PointType.Cell;
             return PointType.Void;
@@ -68,6 +59,11 @@ namespace GenericLife.Models
             Cells.Add(cell);
         }
 
+        public bool AliveLessThanEight()
+        {
+            return Cells.Count(c => c.Health > 0) <= 8;
+        }
+
         private FieldPosition GetEmptyPosition()
         {
             int x, y;
@@ -80,7 +76,7 @@ namespace GenericLife.Models
             return new FieldPosition(x, y);
         }
 
-        public void AddFood()
+        private void AddFood()
         {
             var pos = GetEmptyPosition();
             Foods.Add(new FoodCell(pos) {FieldModel = this});

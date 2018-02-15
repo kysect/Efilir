@@ -26,7 +26,7 @@ namespace GenericLife.ViewModel
 
         public void StartSimulator()
         {
-            while (!Polygon.CellFieldModel.IsAliveFew)
+            while (!Polygon.CellFieldModel.AliveLessThanEight())
             {
                 Application.Current.Dispatcher.BeginInvoke((Action) delegate
                 {
@@ -39,9 +39,9 @@ namespace GenericLife.ViewModel
             }
         }
 
-        public void HideSimulation()
+        public void HiddenSimulation()
         {
-            while (!Polygon.CellFieldModel.IsAliveFew)
+            while (!Polygon.CellFieldModel.AliveLessThanEight())
             {
                     if (IsActive)
                         Polygon.RandomMove();

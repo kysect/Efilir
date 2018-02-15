@@ -98,7 +98,7 @@ namespace GenericLife.Models.Cells
                 shift = 2;
             if (type == PointType.Cell)
                 shift = 3;
-            if (type == PointType.OutOfRange)
+            if (type == PointType.Wall)
                 shift = 4;
 
             CurrentCommand += shift;
