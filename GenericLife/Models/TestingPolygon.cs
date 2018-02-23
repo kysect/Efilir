@@ -1,26 +1,37 @@
-﻿namespace GenericLife.Models
+﻿using System.Net.Mime;
+using System.Windows.Controls;
+using GenericLife.Declaration;
+using GenericLife.Declaration.Cells;
+
+namespace GenericLife.Models
 {
     public class TestingPolygon
     {
-        private readonly ImageDrawingTool _ds;
-        public readonly CellFieldModel CellFieldModel;
+        private readonly IPixelDrawer _pd;
+        public readonly ICellField CellField;
 
-        public TestingPolygon(ImageDrawingTool ds, CellFieldModel cellFieldModel)
+        public TestingPolygon(IPixelDrawer pd, ICellField cellField)
         {
-            _ds = ds;
-            CellFieldModel = cellFieldModel;
+            _pd = pd;
+            CellField = cellField;
+        }
+
+        public TestingPolygon(Image image)
+        {
+            _pd = new PixelDrawer(image);
+            CellField = new CellFieldModel();
         }
 
 
         public void UpdateUi()
         {
-            _ds.ClearBlack();
-            _ds.DrawPoints(CellFieldModel.Cells);
-            _ds.DrawPoints(CellFieldModel.Foods);
+            _pd.ClearBlack();
+            _pd.DrawPoints(CellField.Cells);
+            _pd.DrawPoints(CellField.Foods);
         }
         public void RandomMove()
         {
-            CellFieldModel.RandomMove();
+            CellField.MakeCellsMove();
         }
     }
 }

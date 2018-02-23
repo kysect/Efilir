@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using GenericLife.Declaration;
 using GenericLife.Models;
@@ -23,15 +24,15 @@ namespace GenericLife
             _viewModel.LoadCells();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Start_ButtonClick(object sender, RoutedEventArgs e)
         {
             _viewModel.IsActive = true;
             var worker = new BackgroundWorker();
-            worker.DoWork += Endless;
+            worker.DoWork += StartSimulation;
             worker.RunWorkerAsync();
         }
 
-        private void Endless(object sender, DoWorkEventArgs e)
+        private void StartSimulation(object sender, DoWorkEventArgs e)
         {
             while (_viewModel.IsActive)
             {
@@ -49,7 +50,7 @@ namespace GenericLife
             }
         }
 
-        private void HiddenStart(object sender, RoutedEventArgs e)
+        private void UiBlockSimulation_Click(object sender, RoutedEventArgs e)
         {
             _viewModel.IsActive = true;
             while (_viewModel.IsActive)
@@ -63,7 +64,7 @@ namespace GenericLife
 
         private void UpdateInfoBox(object sender, RoutedEventArgs e)
         {
-            var cellList = _viewModel.Polygon.CellFieldModel.Cells;
+            var cellList = _viewModel.Polygon.CellField.Cells;
             var orderByDescending = cellList.OrderByDescending(c => c.Age);
             CellData.ItemsSource = orderByDescending;
         }

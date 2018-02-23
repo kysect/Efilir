@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using GenericLife.Models.Cells;
 
-namespace GenericLife.Declaration
+namespace GenericLife.Declaration.Cells
 {
-    //TODO: Generic cell
+    //TODO: Generic cell type?
     public interface ICellBrain
     {
         //TODO: Walls

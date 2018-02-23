@@ -4,33 +4,34 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GenericLife.Declaration;
+using GenericLife.Declaration.Cells;
 using GenericLife.Tools;
 
 namespace GenericLife.Models
 {
-    public class ImageDrawingTool
+    public class PixelDrawer : IPixelDrawer
     {
         private const int ScaleSize = 6;
-        private readonly WriteableBitmap _writeableBitmap;
-        public readonly int Size;
-        private byte[,,] _pixels;
+        private readonly WriteableBitmap _writableBitmap;
+        private readonly int _size;
+        private readonly byte[,,] _pixels;
 
-        public ImageDrawingTool(Image image)
+        public PixelDrawer(Image image)
         {
-            Size = Configuration.FieldSize * ScaleSize;
-            image.Height = Size;
-            image.Width = Size;
+            _size = Configuration.FieldSize * ScaleSize;
+            image.Height = _size;
+            image.Width = _size;
             
-            _writeableBitmap = new WriteableBitmap(
-                Size,
-                Size,
+            _writableBitmap = new WriteableBitmap(
+                _size,
+                _size,
                 12,
                 12,
                 PixelFormats.Bgr32,
                 null);
 
-            image.Source = _writeableBitmap;
-            _pixels = new byte[Size, Size, 4];
+            image.Source = _writableBitmap;
+            _pixels = new byte[_size, _size, 4];
         }
 
         public void DrawPoints(IEnumerable<IBaseCell> cells)
@@ -54,15 +55,16 @@ namespace GenericLife.Models
 
         private void PutPixel(int positionX, int positionY, IBaseCell cell)
         {
-            _pixels[positionY, positionX, 0] = cell.GetColor().B;
-            _pixels[positionY, positionX, 1] = cell.GetColor().G;
-            _pixels[positionY, positionX, 2] = cell.GetColor().R;
+            var color = CellColorGenerator.GetCellColor(cell);
+            _pixels[positionY, positionX, 0] = color.B;
+            _pixels[positionY, positionX, 1] = color.G;
+            _pixels[positionY, positionX, 2] = color.R;
         }
 
         public void ClearBlack()
         {
-            for (var row = 0; row < Size; row++)
-            for (var col = 0; col < Size; col++)
+            for (var row = 0; row < _size; row++)
+            for (var col = 0; col < _size; col++)
             {
                 for (int i = 0; i < 3; i++)
                     _pixels[row, col, i] = 0;
@@ -72,11 +74,11 @@ namespace GenericLife.Models
 
         private byte[] TransformTo1D()
         {
-            var pixels1D = new byte[Size * Size * 4];
+            var pixels1D = new byte[_size * _size * 4];
 
             var index = 0;
-            for (var row = 0; row < Size; row++)
-            for (var col = 0; col < Size; col++)
+            for (var row = 0; row < _size; row++)
+            for (var col = 0; col < _size; col++)
             for (var i = 0; i < 4; i++)
                 pixels1D[index++] = _pixels[row, col, i];
 
@@ -86,10 +88,10 @@ namespace GenericLife.Models
         private void PrintPixels()
         {
             var pixels1D = TransformTo1D();
-            var rect = new Int32Rect(0, 0, Size, Size);
-            var stride = 4 * Size;
+            var rect = new Int32Rect(0, 0, _size, _size);
+            var stride = 4 * _size;
 
-            _writeableBitmap.WritePixels(rect, pixels1D, stride, 0);
+            _writableBitmap.WritePixels(rect, pixels1D, stride, 0);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace GenericLife.Types
+﻿using System;
+
+namespace GenericLife.Types
 {
     public class AngleRotation
     {
@@ -39,13 +41,17 @@
                 case 7:
                     return new FieldPosition(-1, -1);
                 default:
-                    return new FieldPosition(0, -1);
+                    throw new ArgumentException();
             }
         }
 
         public static AngleRotation operator +(AngleRotation left, int right)
         {
             return new AngleRotation(left.Rotate + right);
+        }
+        public static AngleRotation operator +(AngleRotation left, AngleRotation right)
+        {
+            return new AngleRotation(left.Rotate + right.Rotate);
         }
     }
 }

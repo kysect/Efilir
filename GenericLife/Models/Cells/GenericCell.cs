@@ -1,5 +1,6 @@
 ﻿using System.Windows.Media;
 using GenericLife.Declaration;
+using GenericLife.Declaration.Cells;
 using GenericLife.Tools;
 using GenericLife.Types;
 
@@ -52,43 +53,36 @@ namespace GenericLife.Models.Cells
 
         public FieldPosition Position { get; set; }
 
-        public Color GetColor()
-        {
-            if (Health <= 0)
-                return CellColorGenerator.DeadCell();
-            return CellColorGenerator.HealthIndicator(Health);
-        }
-
         public void MoveCommand(int commandRotate)
         {
             ActionCommand(commandRotate);
 
-            var newPos = GetCellOnWay(commandRotate);
-            var directionCellState = FieldModel.GetPointType(newPos);
+            var targetPosition = GetTargetPosition(commandRotate);
+            var targetCell = FieldModel.GetCellOnPosition(targetPosition);
 
-            if (directionCellState == PointType.Void) Position = newPos;
+            if (targetCell == null) Position = targetPosition;
         }
 
         public void ActionCommand(int commandRotate)
         {
-            var posMoveTo = GetCellOnWay(commandRotate);
-            var positionType = FieldModel.GetPointType(posMoveTo);
+            var targetPosition = GetTargetPosition(commandRotate);
+            var cellType = FieldModel.GetCellOnPosition(targetPosition)?.GetPointType() ?? PointType.Void;
 
-            if (positionType == PointType.Food)
+            if (cellType == PointType.Food)
             {
-                var cellOnWay = FieldModel.GetCellOnPosition(posMoveTo);
+                var cellOnWay = FieldModel.GetCellOnPosition(targetPosition);
                 FieldModel.Foods.Remove(cellOnWay as FoodCell);
                 Health += FoodCell.FoodHealthIncome;
                 return;
             }
 
-            if (positionType == PointType.Cell)
+            if (cellType == PointType.Cell)
             {
                 //Attack?
             }
         }
 
-        public FieldPosition GetCellOnWay(int commandRotate)
+        public FieldPosition GetTargetPosition(int commandRotate)
         {
             var actualRotate = CurrentRotate + commandRotate;
             var newPosition = actualRotate.GetRotation();

@@ -1,15 +1,42 @@
-﻿<Window x:Class="GenericLife.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:GenericLife"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="699" Width="929">
+﻿<Window
+    x:Class="GenericLife.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:GenericLife"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="MainWindow"
+    Width="929"
+    Height="699"
+    mc:Ignorable="d">
     <Grid>
-        <Image x:Name="ImageView" HorizontalAlignment="Left" Height="600" Margin="10,10,0,0" VerticalAlignment="Top" Width="600"/>
-        <Button Content="Start" HorizontalAlignment="Left" Margin="635,35,0,0" VerticalAlignment="Top" Width="74" Click="Button_Click"/>
-        <ListBox Name="CellData" HorizontalAlignment="Left" Height="199" Margin="615,60,0,0" VerticalAlignment="Top" Width="272"/>
-        <Button Content="Start(fast)" HorizontalAlignment="Left" Margin="800,35,0,0" VerticalAlignment="Top" Width="74" Click="HiddenStart"/>
+        <Image
+            x:Name="ImageView"
+            Width="600"
+            Height="600"
+            Margin="10,10,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top" />
+        <Button
+            Width="74"
+            Margin="615,35,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="Start_ButtonClick"
+            Content="Start" />
+        <ListBox
+            Name="CellData"
+            Width="272"
+            Height="199"
+            Margin="615,60,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top" />
+        <Button
+            Width="74"
+            Margin="813,35,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="UiBlockSimulation_Click"
+            Content="Start(UI-block)" />
     </Grid>
 </Window>
