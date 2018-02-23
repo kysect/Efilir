@@ -36,11 +36,11 @@ namespace GenericLife.Tools
             }
         }
 
-        public static List<List<int>> Load()
+        public static IEnumerable<List<int>> Load()
         {
             string dataString = File.ReadAllText(FileName);
             var list = JArray.Parse(dataString);
-            List<List<int>> gen = new List<List<int>>();
+            var gen = new List<List<int>>();
             foreach (var obj in list)
             {
                 gen.Add(obj["CommandList"].ToObject<List<int>>());

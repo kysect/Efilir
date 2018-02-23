@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using GenericLife.Declaration;
+using GenericLife.Declaration.Cells;
 using GenericLife.Models.Cells;
 using GenericLife.Tools;
 using GenericLife.Types;
@@ -22,30 +23,25 @@ namespace GenericLife.Models
 
         public IBaseCell GetCellOnPosition(FieldPosition position)
         {
+            if (position.X < 0 || position.X >= Configuration.FieldSize
+                               || position.Y < 0
+                               || position.Y >= Configuration.FieldSize)
+                return new WallCell
+                {
+                    Position = new FieldPosition(-1, -1)
+                };
+
             var isFood = Foods.FirstOrDefault(c => c.Position.X == position.X
                                                    && c.Position.Y == position.Y);
 
             if (isFood != null) return isFood;
+
             var cell = Cells.FirstOrDefault(c => c.Position.X == position.X
                                                  && c.Position.Y == position.Y);
             return cell;
         }
 
-        public PointType GetPointType(FieldPosition position)
-        {
-            if (position.X < 0 || position.X >= Configuration.FieldSize
-                               || position.Y < 0
-                               || position.Y >= Configuration.FieldSize)
-                return PointType.Wall;
-
-            var cell = GetCellOnPosition(position);
-
-            if (cell is FoodCell) return PointType.Food;
-            if (cell is ILiveCell) return PointType.Cell;
-            return PointType.Void;
-        }
-
-        public void RandomMove()
+        public void MakeCellsMove()
         {
             foreach (var cell in Cells) cell.TurnAction();
 
@@ -71,7 +67,7 @@ namespace GenericLife.Models
             {
                 x = GlobalRand.Next(Configuration.FieldSize);
                 y = GlobalRand.Next(Configuration.FieldSize);
-            } while (GetPointType(new FieldPosition(x, y)) != PointType.Void);
+            } while (GetCellOnPosition(new FieldPosition(x, y)) != null);
 
             return new FieldPosition(x, y);
         }

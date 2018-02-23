@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GenericLife.Declaration;
+using GenericLife.Declaration.Cells;
 using GenericLife.Tools;
 using GenericLife.Types;
 
@@ -59,7 +60,7 @@ namespace GenericLife.Models.Cells
             //Rotation
             if (commandId >= 24)
             {
-                Cell.CurrentRotate = Cell.CurrentRotate + commandId;
+                Cell.CurrentRotate += commandId;
                 CurrentCommand++;
                 return false;
             }
@@ -87,8 +88,8 @@ namespace GenericLife.Models.Cells
 
         private void CommandShift(int commandId)
         {
-            var cellOnWay = Cell.GetCellOnWay(commandId);
-            var type = Cell.FieldModel.GetPointType(cellOnWay);
+            var targetPosition = Cell.GetTargetPosition(commandId);
+            var type = Cell.FieldModel.GetCellOnPosition(targetPosition)?.GetPointType() ?? PointType.Void;
             var shift = 0;
 
             //TODO: More types

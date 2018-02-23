@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using GenericLife.Declaration;
+using GenericLife.Declaration.Cells;
 using GenericLife.Models;
 using GenericLife.Models.Cells;
 using GenericLife.Tools;
@@ -15,9 +17,7 @@ namespace GenericLife.ViewModel
     {
         public MainViewModel(Image image)
         {
-            var drawingTool = new ImageDrawingTool(image);
-            var cellField = new CellFieldModel();
-            Polygon = new TestingPolygon(drawingTool, cellField);
+            Polygon = new TestingPolygon(image);
             IsActive = false;
         }
 
@@ -26,7 +26,7 @@ namespace GenericLife.ViewModel
 
         public void StartSimulator()
         {
-            while (!Polygon.CellFieldModel.AliveLessThanEight())
+            while (!Polygon.CellField.AliveLessThanEight())
             {
                 Application.Current.Dispatcher.BeginInvoke((Action) delegate
                 {
@@ -39,9 +39,21 @@ namespace GenericLife.ViewModel
             }
         }
 
+        public void StartWithDelay()
+        {
+            while (!Polygon.CellField.AliveLessThanEight())
+            {
+                if (IsActive)
+                    Polygon.RandomMove();
+                Polygon.UpdateUi();
+
+                Task.Delay(200);
+            }
+        }
+
         public void HiddenSimulation()
         {
-            while (!Polygon.CellFieldModel.AliveLessThanEight())
+            while (!Polygon.CellField.AliveLessThanEight())
             {
                     if (IsActive)
                         Polygon.RandomMove();
@@ -50,13 +62,13 @@ namespace GenericLife.ViewModel
 
         public void SaveCells()
         {
-            var cells = Polygon.CellFieldModel.Cells.Select(c => c as GenericCell);
+            var cells = Polygon.CellField.Cells.Select(c => c as GenericCell);
             JsonSaver.Save(cells);
         }
 
         public void LoadCells()
         {
-            Polygon.CellFieldModel.Cells = new List<ILiveCell>();
+            Polygon.CellField.Cells = new List<ILiveCell>();
             var cells = JsonSaver.Load();
             foreach (var cell in cells)
             {
@@ -69,7 +81,7 @@ namespace GenericLife.ViewModel
                         Brain = brain.GenerateChildWithMutant() as CellBrain
                     };
 
-                    Polygon.CellFieldModel.AddCell(newCell);
+                    Polygon.CellField.AddCell(newCell);
                 }
 
                 for (var i = 0; i < 6; i++)
@@ -79,7 +91,7 @@ namespace GenericLife.ViewModel
                         Brain = brain.GenerateChild() as CellBrain
                     };
 
-                    Polygon.CellFieldModel.AddCell(newCell);
+                    Polygon.CellField.AddCell(newCell);
                 }
             }
         }
