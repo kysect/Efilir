@@ -30,24 +30,12 @@ namespace GenericLife.ViewModel
             {
                 Application.Current.Dispatcher.BeginInvoke((Action) delegate
                 {
-                    if (IsActive)
-                        Polygon.RandomMove();
+                    if (!IsActive) return;
+                    Polygon.RandomMove();
                     Polygon.UpdateUi();
                 }, null);
 
                 Thread.Sleep(100);
-            }
-        }
-
-        public void StartWithDelay()
-        {
-            while (!Polygon.CellField.AliveLessThanEight())
-            {
-                if (IsActive)
-                    Polygon.RandomMove();
-                Polygon.UpdateUi();
-
-                Task.Delay(200);
             }
         }
 
@@ -69,31 +57,9 @@ namespace GenericLife.ViewModel
         public void LoadCells()
         {
             Polygon.CellField.Cells = new List<ILiveCell>();
-            var cells = JsonSaver.Load();
-            foreach (var cell in cells)
-            {
-                var brain = new CellBrain(cell);
-
-                for (var i = 0; i < 2; i++)
-                {
-                    var newCell = new GenericCell()
-                    {
-                        Brain = brain.GenerateChildWithMutant() as CellBrain
-                    };
-
-                    Polygon.CellField.AddCell(newCell);
-                }
-
-                for (var i = 0; i < 6; i++)
-                {
-                    var newCell = new GenericCell()
-                    {
-                        Brain = brain.GenerateChild() as CellBrain
-                    };
-
-                    Polygon.CellField.AddCell(newCell);
-                }
-            }
+            var jsonData = JsonSaver.Load();
+            var generatedCells = GeneticCellMutation.GenerateNewCells(jsonData);
+            Polygon.CellField.AddCell(generatedCells);
         }
     }
 }

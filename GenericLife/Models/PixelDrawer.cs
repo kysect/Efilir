@@ -11,7 +11,7 @@ namespace GenericLife.Models
 {
     public class PixelDrawer : IPixelDrawer
     {
-        private const int ScaleSize = 6;
+        private const int ScaleSize = Configuration.ScaleSize;
         private readonly WriteableBitmap _writableBitmap;
         private readonly int _size;
         private readonly byte[,,] _pixels;

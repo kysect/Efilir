@@ -36,7 +36,7 @@ namespace GenericLife.Tools
             }
         }
 
-        public static IEnumerable<List<int>> Load()
+        public static List<List<int>> Load()
         {
             string dataString = File.ReadAllText(FileName);
             var list = JArray.Parse(dataString);

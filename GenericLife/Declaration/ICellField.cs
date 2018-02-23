@@ -13,6 +13,7 @@ namespace GenericLife.Declaration
         void MakeCellsMove();
 
         void AddCell(ILiveCell cell);
+        void AddCell(IEnumerable<ILiveCell> cellsList);
         bool AliveLessThanEight();
     }
 }

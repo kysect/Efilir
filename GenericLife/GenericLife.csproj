@@ -62,6 +62,7 @@
     <Compile Include="Declaration\IPixelDrawer.cs" />
     <Compile Include="Models\Cells\CellBrain.cs" />
     <Compile Include="Models\Cells\WallCell.cs" />
+    <Compile Include="Tools\GeneticCellMutation.cs" />
     <Compile Include="Types\FieldPosition.cs" />
     <Compile Include="Models\Cells\GenericCell.cs" />
     <Compile Include="Declaration\Cells\ILiveCell.cs" />
