@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Media;
-using GenericLife.Declaration.Cells;
+using GenericLife.Declaration;
 using GenericLife.Models.Cells;
 
 namespace GenericLife.Tools

@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using GenericLife.Declaration;
-using GenericLife.Models;
-using GenericLife.Models.Cells;
-using GenericLife.Tools;
 using GenericLife.ViewModel;
 
 namespace GenericLife
@@ -21,7 +14,7 @@ namespace GenericLife
         {
             InitializeComponent();
             _viewModel = new MainViewModel(ImageView);
-            _viewModel.LoadCells();
+            _viewModel.Polygon.LoadCells();
         }
 
         private void Start_ButtonClick(object sender, RoutedEventArgs e)
@@ -37,36 +30,26 @@ namespace GenericLife
             while (_viewModel.IsActive)
             {
                 _viewModel.StartSimulator();
+                UpdateInfoBox();
 
-                Application.Current.Dispatcher.BeginInvoke((Action)delegate
-                {
-                    UpdateInfoBox(null, null);
-                }, null);
-                Thread.Sleep(200);
-
-                _viewModel.SaveCells();
-                _viewModel.LoadCells();
-                Thread.Sleep(200);
+                _viewModel.Polygon.SaveCells();
+                _viewModel.Polygon.LoadCells();
+                Thread.Sleep(300);
             }
         }
 
-        private void UiBlockSimulation_Click(object sender, RoutedEventArgs e)
-        {
-            _viewModel.IsActive = true;
-            while (_viewModel.IsActive)
-            {
-                _viewModel.HiddenSimulation();
-
-                _viewModel.SaveCells();
-                _viewModel.LoadCells();
-            }
-        }
-
-        private void UpdateInfoBox(object sender, RoutedEventArgs e)
+        private void UpdateInfoBox()
         {
             var cellList = _viewModel.Polygon.CellField.Cells;
-            var orderByDescending = cellList.OrderByDescending(c => c.Age);
-            CellData.ItemsSource = orderByDescending;
+            var orderByDescending = cellList
+                .OrderByDescending(c => c.Age)
+                .ThenByDescending(c => c.Health);
+
+            //Update UI ListBox
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                CellData.ItemsSource = orderByDescending;
+            });
         }
     }
 }

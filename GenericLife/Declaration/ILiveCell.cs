@@ -1,4 +1,4 @@
-﻿namespace GenericLife.Declaration.Cells
+﻿namespace GenericLife.Declaration
 {
     public interface ILiveCell : IBaseCell
     {

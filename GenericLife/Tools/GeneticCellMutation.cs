@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using GenericLife.Declaration.Cells;
+using GenericLife.Declaration;
 using GenericLife.Models.Cells;
 
 namespace GenericLife.Tools
@@ -17,7 +17,7 @@ namespace GenericLife.Tools
                 {
                     cellsList.Add(new GenericCell()
                     {
-                        Brain = brain.GenerateChildWithMutant() as CellBrain
+                        Brain = brain.GenerateChildWithMutant()
                     });
                 }
 
@@ -25,7 +25,7 @@ namespace GenericLife.Tools
                 {
                     cellsList.Add(new GenericCell()
                     {
-                        Brain = brain.GenerateChildWithMutant() as CellBrain
+                        Brain = brain.GenerateChildWithMutant()
                     });
                 }
             }

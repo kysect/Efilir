@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using GenericLife.Declaration;
-using GenericLife.Declaration.Cells;
 using GenericLife.Tools;
 using GenericLife.Types;
 
@@ -22,7 +21,7 @@ namespace GenericLife.Models.Cells
             CommandList = commandList;
         }
 
-        public GenericCell Cell { get; set; }
+        public IGeneticCell Cell { get; set; }
         public List<int> CommandList { get; set; }
         private int CurrentCommand
         {

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using GenericLife.Declaration;
-using GenericLife.Declaration.Cells;
 using GenericLife.Models.Cells;
 using GenericLife.Tools;
 using GenericLife.Types;

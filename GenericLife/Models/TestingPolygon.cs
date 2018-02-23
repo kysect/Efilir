@@ -1,7 +1,10 @@
-﻿using System.Net.Mime;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Net.Mime;
 using System.Windows.Controls;
 using GenericLife.Declaration;
-using GenericLife.Declaration.Cells;
+using GenericLife.Models.Cells;
+using GenericLife.Tools;
 
 namespace GenericLife.Models
 {
@@ -32,6 +35,20 @@ namespace GenericLife.Models
         public void RandomMove()
         {
             CellField.MakeCellsMove();
+        }
+
+        public void SaveCells()
+        {
+            var cells = CellField.Cells.Select(c => c as IGeneticCell);
+            JsonSaver.Save(cells);
+        }
+
+        public void LoadCells()
+        {
+            CellField.Cells = new List<ILiveCell>();
+            var jsonData = JsonSaver.Load();
+            var generatedCells = GeneticCellMutation.GenerateNewCells(jsonData);
+            CellField.AddCell(generatedCells);
         }
     }
 }

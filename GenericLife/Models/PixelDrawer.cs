@@ -4,7 +4,6 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GenericLife.Declaration;
-using GenericLife.Declaration.Cells;
 using GenericLife.Tools;
 
 namespace GenericLife.Models
