@@ -31,12 +31,5 @@
             Margin="615,60,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top" />
-        <Button
-            Width="74"
-            Margin="813,35,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Click="UiBlockSimulation_Click"
-            Content="Start(UI-block)" />
     </Grid>
 </Window>

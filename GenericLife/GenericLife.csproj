@@ -57,15 +57,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Declaration\Cells\ICellBrain.cs" />
+    <Compile Include="Declaration\ICellBrain.cs" />
     <Compile Include="Declaration\ICellField.cs" />
+    <Compile Include="Declaration\IGeneticCell.cs" />
     <Compile Include="Declaration\IPixelDrawer.cs" />
     <Compile Include="Models\Cells\CellBrain.cs" />
     <Compile Include="Models\Cells\WallCell.cs" />
     <Compile Include="Tools\GeneticCellMutation.cs" />
     <Compile Include="Types\FieldPosition.cs" />
     <Compile Include="Models\Cells\GenericCell.cs" />
-    <Compile Include="Declaration\Cells\ILiveCell.cs" />
+    <Compile Include="Declaration\ILiveCell.cs" />
     <Compile Include="Types\AngleRotation.cs" />
     <Compile Include="Tools\CellColorGenerator.cs" />
     <Compile Include="Tools\Configuration.cs" />
@@ -87,7 +88,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Declaration\Cells\IBaseCell.cs" />
+    <Compile Include="Declaration\IBaseCell.cs" />
     <Compile Include="Models\CellFieldModel.cs" />
     <Compile Include="Models\PixelDrawer.cs" />
     <Compile Include="Models\Cells\FoodCell.cs" />

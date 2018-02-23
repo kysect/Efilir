@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using GenericLife.Declaration.Cells;
 using GenericLife.Models.Cells;
 using GenericLife.Types;
 

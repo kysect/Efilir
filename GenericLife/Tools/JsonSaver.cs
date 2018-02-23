@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using GenericLife.Declaration;
 using GenericLife.Models.Cells;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -12,7 +13,7 @@ namespace GenericLife.Tools
     {
         private const string FileName = @"data.json";
 
-        public static void Save(IEnumerable<GenericCell> list)
+        public static void Save(IEnumerable<IGeneticCell> list)
         {
             var dataList = list
                 .OrderByDescending(c => c.Age).ThenByDescending(c => c.Health)

@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
-using GenericLife.Models.Cells;
 
-namespace GenericLife.Declaration.Cells
+namespace GenericLife.Declaration
 {
     //TODO: Generic cell type?
     public interface ICellBrain
     {
         //TODO: Walls
-        GenericCell Cell { get; set; }
+        IGeneticCell Cell { get; set; }
         List<int> CommandList { get; set; }
         void MakeTurn();
         ICellBrain GenerateChild();

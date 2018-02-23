@@ -1,12 +1,11 @@
 ﻿using System.Windows.Media;
 using GenericLife.Declaration;
-using GenericLife.Declaration.Cells;
 using GenericLife.Tools;
 using GenericLife.Types;
 
 namespace GenericLife.Models.Cells
 {
-    public class GenericCell : ILiveCell
+    public class GenericCell : IGeneticCell
     {
         private int _health;
 

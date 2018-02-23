@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using GenericLife.Declaration.Cells;
 
 namespace GenericLife.Declaration
 {

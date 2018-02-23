@@ -1,6 +1,5 @@
 ﻿using System.Windows.Media;
 using GenericLife.Declaration;
-using GenericLife.Declaration.Cells;
 using GenericLife.Tools;
 using GenericLife.Types;
 
