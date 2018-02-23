@@ -55,6 +55,14 @@ namespace GenericLife.Models
             Cells.Add(cell);
         }
 
+        public void AddCell(IEnumerable<ILiveCell> cellsList)
+        {
+            foreach (var liveCell in cellsList)
+            {
+                AddCell(liveCell);
+            }
+        }
+
         public bool AliveLessThanEight()
         {
             return Cells.Count(c => c.Health > 0) <= 8;
