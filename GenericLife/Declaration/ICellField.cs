@@ -6,13 +6,14 @@ namespace GenericLife.Declaration
 {
     public interface ICellField
     {
-        List<ILiveCell> Cells { get; set; }
-        List<FoodCell> Foods { get; set; }
         IBaseCell GetCellOnPosition(FieldPosition position);
         void MakeCellsMove();
 
-        void AddCell(ILiveCell cell);
-        void AddCell(IEnumerable<ILiveCell> cellsList);
+        void InitializeLiveCells(IEnumerable<ILiveCell> cellsList);
         bool AliveLessThanEight();
+        void RemoveFoodCell(FoodCell cell);
+
+        IEnumerable<IBaseCell> GetAllCells();
+        List<ILiveCell> GetAllLiveCells();
     }
 }

@@ -5,11 +5,14 @@ using GenericLife.Types;
 
 namespace GenericLife.Models.Cells
 {
-    public class FoodCell : IBaseCell
+    public class FoodCell : IFoodCell
     {
-        public static int FoodHealthIncome = 10;
         public FieldPosition Position { get; set; }
         public ICellField FieldModel { get; set; }
+        public int HealthIncome()
+        {
+            return 10;
+        }
 
         public FoodCell(FieldPosition position)
         {

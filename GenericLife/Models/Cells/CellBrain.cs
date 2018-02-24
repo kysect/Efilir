@@ -87,7 +87,7 @@ namespace GenericLife.Models.Cells
 
         private void CommandShift(int commandId)
         {
-            var targetPosition = Cell.GetTargetPosition(commandId);
+            var targetPosition = Cell.AnalyzePosition(commandId);
             var type = Cell.FieldModel.GetCellOnPosition(targetPosition)?.GetPointType() ?? PointType.Void;
             var shift = 0;
 
