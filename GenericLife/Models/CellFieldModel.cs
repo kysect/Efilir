@@ -17,8 +17,10 @@ namespace GenericLife.Models
             Foods = new List<FoodCell>();
         }
 
-        public List<ILiveCell> Cells { get; set; }
-        public List<FoodCell> Foods { get; set; }
+        private List<ILiveCell> Cells { get; set; }
+
+        private List<FoodCell> Foods { get; set; }
+        //public List<ILiveCell> DeadCells { get; set; }
 
         public IBaseCell GetCellOnPosition(FieldPosition position)
         {
@@ -42,29 +44,46 @@ namespace GenericLife.Models
 
         public void MakeCellsMove()
         {
-            foreach (var cell in Cells) cell.TurnAction();
+            foreach (var cell in Cells)
+            {
+                cell.TurnAction();
+                //TODO:Remove dead
+                //if (cell.IsAlive() == false) Cells.Remove(cell);
+            }
 
             UpdateFoodCount();
         }
 
-        public void AddCell(ILiveCell cell)
+        public void InitializeLiveCells(IEnumerable<ILiveCell> cellsList)
         {
-            cell.Position = GetEmptyPosition();
-            cell.FieldModel = this;
-            Cells.Add(cell);
-        }
-
-        public void AddCell(IEnumerable<ILiveCell> cellsList)
-        {
+            Cells.Clear();
             foreach (var liveCell in cellsList)
             {
-                AddCell(liveCell);
+                liveCell.Position = GetEmptyPosition();
+                liveCell.FieldModel = this;
+                Cells.Add(liveCell);
             }
         }
 
         public bool AliveLessThanEight()
         {
             return Cells.Count(c => c.Health > 0) <= 8;
+        }
+
+        public void RemoveFoodCell(FoodCell cell)
+        {
+            Foods.Remove(cell);
+        }
+
+        public IEnumerable<IBaseCell> GetAllCells()
+        {
+            return new List<IBaseCell>(Cells)
+                .Union(Foods);
+        }
+
+        public List<ILiveCell> GetAllLiveCells()
+        {
+            return Cells;
         }
 
         private FieldPosition GetEmptyPosition()

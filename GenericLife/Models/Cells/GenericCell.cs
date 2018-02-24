@@ -16,6 +16,9 @@ namespace GenericLife.Models.Cells
         }
 
         private ICellBrain _brain;
+        public int Generation { get; set; }
+        public int Breed { get; set; }
+
         public ICellBrain Brain
         {
             get => _brain;
@@ -56,7 +59,7 @@ namespace GenericLife.Models.Cells
         {
             ActionCommand(commandRotate);
 
-            var targetPosition = GetTargetPosition(commandRotate);
+            var targetPosition = AnalyzePosition(commandRotate);
             var targetCell = FieldModel.GetCellOnPosition(targetPosition);
 
             if (targetCell == null) Position = targetPosition;
@@ -64,14 +67,14 @@ namespace GenericLife.Models.Cells
 
         public void ActionCommand(int commandRotate)
         {
-            var targetPosition = GetTargetPosition(commandRotate);
+            var targetPosition = AnalyzePosition(commandRotate);
             var cellType = FieldModel.GetCellOnPosition(targetPosition)?.GetPointType() ?? PointType.Void;
 
             if (cellType == PointType.Food)
             {
-                var cellOnWay = FieldModel.GetCellOnPosition(targetPosition);
-                FieldModel.Foods.Remove(cellOnWay as FoodCell);
-                Health += FoodCell.FoodHealthIncome;
+                var cellOnWay = FieldModel.GetCellOnPosition(targetPosition) as FoodCell;
+                Health += cellOnWay.HealthIncome();
+                FieldModel.RemoveFoodCell(cellOnWay);
                 return;
             }
 
@@ -81,7 +84,7 @@ namespace GenericLife.Models.Cells
             }
         }
 
-        public FieldPosition GetTargetPosition(int commandRotate)
+        public FieldPosition AnalyzePosition(int commandRotate)
         {
             var actualRotate = CurrentRotate + commandRotate;
             var newPosition = actualRotate.GetRotation();

@@ -2,10 +2,8 @@
 
 namespace GenericLife.Declaration
 {
-    //TODO: Generic cell type?
     public interface ICellBrain
     {
-        //TODO: Walls
         IGeneticCell Cell { get; set; }
         List<int> CommandList { get; set; }
         void MakeTurn();

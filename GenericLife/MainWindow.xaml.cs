@@ -40,7 +40,7 @@ namespace GenericLife
 
         private void UpdateInfoBox()
         {
-            var cellList = _viewModel.Polygon.CellField.Cells;
+            var cellList = _viewModel.Polygon.CellField.GetAllLiveCells();
             var orderByDescending = cellList
                 .OrderByDescending(c => c.Age)
                 .ThenByDescending(c => c.Health);

@@ -29,8 +29,7 @@ namespace GenericLife.Models
         public void UpdateUi()
         {
             _pd.ClearBlack();
-            _pd.DrawPoints(CellField.Cells);
-            _pd.DrawPoints(CellField.Foods);
+            _pd.DrawPoints(CellField.GetAllCells());
         }
         public void RandomMove()
         {
@@ -39,16 +38,15 @@ namespace GenericLife.Models
 
         public void SaveCells()
         {
-            var cells = CellField.Cells.Select(c => c as IGeneticCell);
+            var cells = CellField.GetAllLiveCells().Select(c => c as IGeneticCell);
             JsonSaver.Save(cells);
         }
 
         public void LoadCells()
         {
-            CellField.Cells = new List<ILiveCell>();
             var jsonData = JsonSaver.Load();
             var generatedCells = GeneticCellMutation.GenerateNewCells(jsonData);
-            CellField.AddCell(generatedCells);
+            CellField.InitializeLiveCells(generatedCells);
         }
     }
 }

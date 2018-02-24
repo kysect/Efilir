@@ -59,6 +59,7 @@
     </ApplicationDefinition>
     <Compile Include="Declaration\ICellBrain.cs" />
     <Compile Include="Declaration\ICellField.cs" />
+    <Compile Include="Declaration\IFoodCell.cs" />
     <Compile Include="Declaration\IGeneticCell.cs" />
     <Compile Include="Declaration\IPixelDrawer.cs" />
     <Compile Include="Models\Cells\CellBrain.cs" />
