@@ -9,11 +9,11 @@ namespace GenericLife.Declaration
         IBaseCell GetCellOnPosition(FieldPosition position);
         void MakeCellsMove();
 
-        void InitializeLiveCells(IEnumerable<ILiveCell> cellsList);
+        void InitializeLiveCells(IEnumerable<IGeneticCell> cellsList);
         bool AliveLessThanEight();
         void RemoveFoodCell(FoodCell cell);
 
         IEnumerable<IBaseCell> GetAllCells();
-        List<ILiveCell> GetAllLiveCells();
+        List<IGeneticCell> GetAllLiveCells();
     }
 }

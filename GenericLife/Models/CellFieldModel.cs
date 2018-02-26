@@ -13,14 +13,14 @@ namespace GenericLife.Models
 
         public CellFieldModel()
         {
-            Cells = new List<ILiveCell>();
+            Cells = new List<IGeneticCell>();
             Foods = new List<FoodCell>();
         }
 
-        private List<ILiveCell> Cells { get; set; }
+        private List<IGeneticCell> Cells { get; set; }
 
         private List<FoodCell> Foods { get; set; }
-        //public List<ILiveCell> DeadCells { get; set; }
+        //public List<IGeneticCell> DeadCells { get; set; }
 
         public IBaseCell GetCellOnPosition(FieldPosition position)
         {
@@ -54,7 +54,7 @@ namespace GenericLife.Models
             UpdateFoodCount();
         }
 
-        public void InitializeLiveCells(IEnumerable<ILiveCell> cellsList)
+        public void InitializeLiveCells(IEnumerable<IGeneticCell> cellsList)
         {
             Cells.Clear();
             foreach (var liveCell in cellsList)
@@ -81,7 +81,7 @@ namespace GenericLife.Models
                 .Union(Foods);
         }
 
-        public List<ILiveCell> GetAllLiveCells()
+        public List<IGeneticCell> GetAllLiveCells()
         {
             return Cells;
         }

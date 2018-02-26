@@ -6,9 +6,9 @@ namespace GenericLife.Tools
 {
     public static class GeneticCellMutation
     {
-        public static List<ILiveCell> GenerateNewCells(IEnumerable<List<int>> jsonData)
+        public static List<IGeneticCell> GenerateNewCells(IEnumerable<List<int>> jsonData)
         {
-            var cellsList = new List<ILiveCell>();
+            var cellsList = new List<IGeneticCell>();
             foreach (var cell in jsonData)
             {
                 var brain = new CellBrain(cell);

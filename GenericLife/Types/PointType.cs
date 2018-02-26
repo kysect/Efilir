@@ -8,6 +8,7 @@ namespace GenericLife.Types
     {
         Void,
         Cell,
+        DeadCell,
         Wall,
         Food
     }
@@ -22,8 +23,8 @@ namespace GenericLife.Types
                     return PointType.Food;
                 case WallCell _:
                     return PointType.Wall;
-                case ILiveCell lc:
-                    return PointType.Cell;
+                case IGeneticCell lc:
+                    return lc.IsAlive() ? PointType.Cell : PointType.DeadCell;
                 default:
                     throw new ArgumentException();
             }

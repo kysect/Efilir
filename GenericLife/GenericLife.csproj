@@ -67,7 +67,6 @@
     <Compile Include="Tools\GeneticCellMutation.cs" />
     <Compile Include="Types\FieldPosition.cs" />
     <Compile Include="Models\Cells\GenericCell.cs" />
-    <Compile Include="Declaration\ILiveCell.cs" />
     <Compile Include="Types\AngleRotation.cs" />
     <Compile Include="Tools\CellColorGenerator.cs" />
     <Compile Include="Tools\Configuration.cs" />
