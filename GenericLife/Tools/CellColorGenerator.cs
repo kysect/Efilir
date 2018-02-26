@@ -13,7 +13,7 @@ namespace GenericLife.Tools
             {
                 case FoodCell _:
                     return FoodColor();
-                case ILiveCell lc:
+                case IGeneticCell lc:
                     return HealthIndicator(lc.Health);
                 case WallCell _:
                     return WallColor();
