@@ -8,8 +8,8 @@ namespace GenericLife.Models
 {
     public class CellFieldModel : ICellField
     {
-        public const int FoodCount = 500;
-        public readonly int FieldSize = 100;
+        public const int FoodCount = 150;
+        public readonly int FieldSize = 50;
 
         public CellFieldModel()
         {

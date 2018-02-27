@@ -37,7 +37,7 @@ namespace GenericLife
             {
                 _viewModel.StartSimulator();
 
-                Application.Current.Dispatcher.BeginInvoke((Action)delegate
+                Application.Current.Dispatcher.Invoke((Action)delegate
                 {
                     UpdateInfoBox(null, null);
                 }, null);

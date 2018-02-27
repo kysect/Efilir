@@ -28,13 +28,11 @@ namespace GenericLife.ViewModel
         {
             while (!Polygon.CellFieldModel.IsAliveFew)
             {
-                Application.Current.Dispatcher.BeginInvoke((Action) delegate
-                {
-                    if (IsActive)
-                        Polygon.RandomMove();
-                }, null);
+                if (IsActive)
+                    Polygon.RandomMove();
+                
 
-                Thread.Sleep(100);
+                //Thread.Sleep(100);
             }
         }
 

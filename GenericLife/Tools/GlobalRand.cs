@@ -37,7 +37,7 @@ namespace GenericLife.Tools
         public static FieldPosition GeneratePosition()
         //TODO: Size
         {
-            return new FieldPosition(Next(100), Next(100));
+            return new FieldPosition(Next(50), Next(50));
         }
     }
 }

@@ -6,7 +6,7 @@ namespace GenericLife.Models.Cells
 {
     public class FoodCell : IBaseCell
     {
-        public static int FoodHealthIncome = 10;
+        public static int FoodHealthIncome = 15;
         public FieldPosition Position { get; set; }
         public Color GetColor()
         {

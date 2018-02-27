@@ -1,4 +1,7 @@
-﻿namespace GenericLife.Models
+﻿using System;
+using System.Windows;
+
+namespace GenericLife.Models
 {
     public class TestingPolygon
     {
@@ -37,7 +40,7 @@
         public void RandomMove()
         {
             CellFieldModel.RandomMove();
-            UpdateUi();
+            Application.Current.Dispatcher.Invoke(UpdateUi);
         }
     }
 }
