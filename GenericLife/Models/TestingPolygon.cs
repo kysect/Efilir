@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mime;
 using System.Windows.Controls;
 using GenericLife.Declaration;
-using GenericLife.Models.Cells;
 using GenericLife.Tools;
 
 namespace GenericLife.Models
@@ -29,7 +27,7 @@ namespace GenericLife.Models
         public void UpdateUi()
         {
             _pd.ClearBlack();
-            _pd.DrawPoints(CellField.GetAllCells());
+            _pd.DrawPoints(CellField.CellsPosition);
         }
         public void RandomMove()
         {
@@ -38,7 +36,7 @@ namespace GenericLife.Models
 
         public void SaveCells()
         {
-            var cells = CellField.GetAllLiveCells().Select(c => c as IGeneticCell);
+            var cells = CellField.GetAllLiveCells().Select(c => c);
             JsonSaver.Save(cells);
         }
 
@@ -46,6 +44,8 @@ namespace GenericLife.Models
         {
             var jsonData = JsonSaver.Load();
             var generatedCells = GeneticCellMutation.GenerateNewCells(jsonData);
+
+            CellField.DeleteAllElements();
             CellField.InitializeLiveCells(generatedCells);
         }
     }

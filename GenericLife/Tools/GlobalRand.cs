@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using GenericLife.Models;
 using GenericLife.Types;
 
 namespace GenericLife.Tools
@@ -35,9 +34,9 @@ namespace GenericLife.Tools
             return RandomList(64, 64);
         }
 
-        public static FieldPosition GeneratePosition()
+        public static FieldPosition GeneratePosition(int maxSize = Configuration.FieldSize)
         {
-            return new FieldPosition(Next(Configuration.FieldSize), Next(Configuration.FieldSize));
+            return new FieldPosition(Next(maxSize), Next(maxSize));
         }
     }
 }

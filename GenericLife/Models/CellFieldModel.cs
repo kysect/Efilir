@@ -11,16 +11,26 @@ namespace GenericLife.Models
     {
         private const int FoodCount = Configuration.FoodCount;
 
+        public IBaseCell[,] CellsPosition { get; private set; } = new IBaseCell[100, 100];
+
         public CellFieldModel()
         {
+            DeleteAllElements();
+            //for (int i = 0; i < Configuration.FoodCount; i++)
+            //    AddFood();
+        }
+
+        public void DeleteAllElements()
+        {
+            CellsPosition = new IBaseCell[100, 100];
             Cells = new List<IGeneticCell>();
             Foods = new List<FoodCell>();
         }
 
         private List<IGeneticCell> Cells { get; set; }
 
+        //TODO: remove food list
         private List<FoodCell> Foods { get; set; }
-        //public List<IGeneticCell> DeadCells { get; set; }
 
         public IBaseCell GetCellOnPosition(FieldPosition position)
         {
@@ -32,18 +42,22 @@ namespace GenericLife.Models
                     Position = new FieldPosition(-1, -1)
                 };
 
-            var isFood = Foods.FirstOrDefault(c => c.Position.X == position.X
-                                                   && c.Position.Y == position.Y);
+            var cCell = CellsPosition[position.Y, position.X];
+            return cCell;
+            
+            //var isFood = Foods.FirstOrDefault(c => c.Position.X == position.X
+            //                                       && c.Position.Y == position.Y);
 
-            if (isFood != null) return isFood;
+            //if (isFood != null) return isFood;
 
-            var cell = Cells.FirstOrDefault(c => c.Position.X == position.X
-                                                 && c.Position.Y == position.Y);
-            return cell;
+            //var cell = Cells.FirstOrDefault(c => c.Position.X == position.X
+            //                                     && c.Position.Y == position.Y);
+            //return cell;
         }
 
         public void MakeCellsMove()
         {
+            UpdateFoodCount();
             foreach (var cell in Cells)
             {
                 cell.TurnAction();
@@ -51,17 +65,19 @@ namespace GenericLife.Models
                 //if (cell.IsAlive() == false) Cells.Remove(cell);
             }
 
-            UpdateFoodCount();
+            //UpdateFoodCount();
         }
 
         public void InitializeLiveCells(IEnumerable<IGeneticCell> cellsList)
         {
-            Cells.Clear();
+            //TODO: check for clean
+            //Cells.Clear();
             foreach (var liveCell in cellsList)
             {
                 liveCell.Position = GetEmptyPosition();
                 liveCell.FieldModel = this;
                 Cells.Add(liveCell);
+                AddCellToField(liveCell);
             }
         }
 
@@ -73,40 +89,50 @@ namespace GenericLife.Models
         public void RemoveFoodCell(FoodCell cell)
         {
             Foods.Remove(cell);
+            CellsPosition[cell.Position.Y, cell.Position.X] = null;
+            AddFood();
         }
 
         public IEnumerable<IBaseCell> GetAllCells()
         {
+            //TODO: remove
             return new List<IBaseCell>(Cells)
                 .Union(Foods);
         }
 
         public List<IGeneticCell> GetAllLiveCells()
         {
+            //TODO: remove
             return Cells;
         }
 
         private FieldPosition GetEmptyPosition()
         {
-            int x, y;
+            FieldPosition newPos;
             do
             {
-                x = GlobalRand.Next(Configuration.FieldSize);
-                y = GlobalRand.Next(Configuration.FieldSize);
-            } while (GetCellOnPosition(new FieldPosition(x, y)) != null);
-
-            return new FieldPosition(x, y);
+                newPos = GlobalRand.GeneratePosition();
+            } while (GetCellOnPosition(newPos) != null);
+            return newPos;
         }
 
         private void AddFood()
         {
             var pos = GetEmptyPosition();
-            Foods.Add(new FoodCell(pos) {FieldModel = this});
+            var newFood = new FoodCell(pos) {FieldModel = this};
+
+            Foods.Add(newFood);
+            AddCellToField(newFood);
         }
 
         private void UpdateFoodCount()
         {
             while (Foods.Count < FoodCount) AddFood();
+        }
+
+        private void AddCellToField(IBaseCell cell)
+        {
+            CellsPosition[cell.Position.Y, cell.Position.X] = cell;
         }
     }
 }
