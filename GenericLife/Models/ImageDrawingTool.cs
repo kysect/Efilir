@@ -9,14 +9,14 @@ namespace GenericLife.Models
 {
     public class ImageDrawingTool
     {
-        private const int ScaleSize = 4;
+        private const int ScaleSize = 6;
         private readonly WriteableBitmap _writeableBitmap;
         public readonly int Size;
         private byte[,,] _pixels;
 
         public ImageDrawingTool(Image image)
         {
-            Size = 100 * ScaleSize;
+            Size = 50 * ScaleSize;
             image.Height = Size;
             image.Width = Size;
             
