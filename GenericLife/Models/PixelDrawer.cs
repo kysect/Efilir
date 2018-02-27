@@ -52,6 +52,32 @@ namespace GenericLife.Models
             PrintPixels();
         }
 
+        public void DrawPoints(IBaseCell[,] cells)
+        {
+            for (int y = 0; y < Configuration.FieldSize; y++)
+            {
+                for (int x = 0; x < Configuration.FieldSize; x++)
+                {
+                    var cell = cells[y, x];
+                    if (cell == null) continue;
+
+                    for (int addX = 0; addX < ScaleSize; addX++)
+                    {
+                        for (int addY = 0; addY < ScaleSize; addY++)
+                        {
+                            PutPixel(cell.Position.X * ScaleSize + addX,
+                                cell.Position.Y * ScaleSize + addY,
+                                cell);
+                        }
+                    }
+                }
+            }
+
+            PrintPixels();
+        }
+
+
+
         private void PutPixel(int positionX, int positionY, IBaseCell cell)
         {
             var color = CellColorGenerator.GetCellColor(cell);
