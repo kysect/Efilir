@@ -1,11 +1,11 @@
 ﻿using System.Windows.Media;
+using GenericLife.Models;
 
-namespace GenericLife.Models
+namespace GenericLife.Declaration
 {
     public interface IBaseCell
     {
-        int PositionX { get; set; }
-        int PositionY { get; set; }
+        FieldPosition Position { get; set; }
 
         Color GetColor();
     }

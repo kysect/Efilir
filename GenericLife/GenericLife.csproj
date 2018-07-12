@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -54,8 +57,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Declaration\ICellBrain.cs" />
+    <Compile Include="Declaration\ICellField.cs" />
+    <Compile Include="Models\Cells\CellBrain.cs" />
+    <Compile Include="Models\FieldPosition.cs" />
+    <Compile Include="Models\Cells\GenericCell.cs" />
+    <Compile Include="Declaration\ILiveCell.cs" />
+    <Compile Include="Tools\AngleRotation.cs" />
+    <Compile Include="Tools\CellColorGenerator.cs" />
     <Compile Include="Tools\GlobalRand.cs" />
-    <Compile Include="Tools\TestingPolygon.cs" />
+    <Compile Include="Tools\JsonSaver.cs" />
+    <Compile Include="Tools\Mutation.cs" />
+    <Compile Include="Models\TestingPolygon.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -70,12 +84,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\IBaseCell.cs" />
-    <Compile Include="Services\CellFieldService.cs" />
-    <Compile Include="Services\DrawingService.cs" />
-    <Compile Include="Models\FoodCell.cs" />
+    <Compile Include="Declaration\IBaseCell.cs" />
+    <Compile Include="Models\CellFieldModel.cs" />
+    <Compile Include="Models\ImageDrawingTool.cs" />
+    <Compile Include="Models\Cells\FoodCell.cs" />
     <Compile Include="Models\PointType.cs" />
-    <Compile Include="Models\SimpleCell.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -93,6 +106,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
