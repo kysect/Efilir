@@ -1,5 +1,5 @@
 ﻿using System;
-using GenericLife.Declaration;
+using GenericLife.Interfaces;
 using GenericLife.Models.Cells;
 
 namespace GenericLife.Types
@@ -23,12 +23,11 @@ namespace GenericLife.Types
                     return PointType.Food;
                 case WallCell _:
                     return PointType.Wall;
-                case IGeneticCell lc:
+                case IGenericCell lc:
                     return lc.IsAlive() ? PointType.Cell : PointType.DeadCell;
                 default:
                     throw new ArgumentException();
             }
         }
-
     }
 }

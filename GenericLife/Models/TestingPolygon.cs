@@ -1,17 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Controls;
-using GenericLife.Declaration;
+﻿using System.Windows.Controls;
 using GenericLife.Tools;
 
 namespace GenericLife.Models
 {
     public class TestingPolygon
     {
-        private readonly IPixelDrawer _pd;
-        public readonly ICellField CellField;
+        private readonly PixelDrawer _pd;
+        public readonly SimulationManger CellField;
 
-        public TestingPolygon(IPixelDrawer pd, ICellField cellField)
+        public TestingPolygon(PixelDrawer pd, SimulationManger cellField)
         {
             _pd = pd;
             CellField = cellField;
@@ -20,15 +17,15 @@ namespace GenericLife.Models
         public TestingPolygon(Image image)
         {
             _pd = new PixelDrawer(image);
-            CellField = new CellFieldModel();
+            CellField = new SimulationManger();
         }
 
 
         public void UpdateUi()
         {
-            _pd.ClearBlack();
-            _pd.DrawPoints(CellField.CellsPosition);
+            _pd.DrawPoints(CellField.GetAllCells());
         }
+
         public void RandomMove()
         {
             CellField.MakeCellsMove();
@@ -36,7 +33,7 @@ namespace GenericLife.Models
 
         public void SaveCells()
         {
-            var cells = CellField.GetAllLiveCells().Select(c => c);
+            var cells = CellField.GetAllLiveCells();
             JsonSaver.Save(cells);
         }
 

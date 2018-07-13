@@ -6,6 +6,11 @@ namespace GenericLife.Types
     {
         private int _rotate;
 
+        public AngleRotation(int rotate)
+        {
+            Rotate = rotate;
+        }
+
         public int Rotate
         {
             get => _rotate;
@@ -16,30 +21,26 @@ namespace GenericLife.Types
             }
         }
 
-        public AngleRotation(int rotate)
-        {
-            Rotate = rotate;
-        }
-        public FieldPosition GetRotation()
+        public Coordinate GetRotation()
         {
             switch (_rotate)
             {
                 case 0:
-                    return new FieldPosition(0, -1);
+                    return new Coordinate(0, -1);
                 case 1:
-                    return new FieldPosition(1, -1);
+                    return new Coordinate(1, -1);
                 case 2:
-                    return new FieldPosition(1, 0);
+                    return new Coordinate(1, 0);
                 case 3:
-                    return new FieldPosition(1, 1);
+                    return new Coordinate(1, 1);
                 case 4:
-                    return new FieldPosition(0, 1);
+                    return new Coordinate(0, 1);
                 case 5:
-                    return new FieldPosition(-1, 1);
+                    return new Coordinate(-1, 1);
                 case 6:
-                    return new FieldPosition(-1, 0);
+                    return new Coordinate(-1, 0);
                 case 7:
-                    return new FieldPosition(-1, -1);
+                    return new Coordinate(-1, -1);
                 default:
                     throw new ArgumentException();
             }
@@ -49,6 +50,7 @@ namespace GenericLife.Types
         {
             return new AngleRotation(left.Rotate + right);
         }
+
         public static AngleRotation operator +(AngleRotation left, AngleRotation right)
         {
             return new AngleRotation(left.Rotate + right.Rotate);

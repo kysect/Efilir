@@ -1,33 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using GenericLife.Declaration;
-using GenericLife.Tools;
+﻿using System.Collections.Generic;
+using GenericLife.Interfaces;
 using GenericLife.Types;
 
 namespace GenericLife.Models.Cells
 {
     public class CellBrain : ICellBrain
     {
+        private readonly IGenericCell _cell;
         private int _command;
 
-        public CellBrain()
-        {
-            CurrentCommand = 0;
-        }
-
-        public CellBrain(List<int> commandList)
+        public CellBrain(IGenericCell cell, List<int> commandList)
         {
             CurrentCommand = 0;
             CommandList = commandList;
+            _cell = cell;
         }
 
-        public IGeneticCell Cell { get; set; }
-        public List<int> CommandList { get; set; }
         private int CurrentCommand
         {
             get => _command;
+            //TODO: Fix this const
             set => _command = value % 64;
         }
+
+        public List<int> CommandList { get; }
 
         public void MakeTurn()
         {
@@ -59,7 +55,7 @@ namespace GenericLife.Models.Cells
             //Rotation
             if (commandId >= 24)
             {
-                Cell.CurrentRotate += commandId;
+                _cell.CurrentRotate += commandId;
                 CurrentCommand++;
                 return false;
             }
@@ -75,20 +71,20 @@ namespace GenericLife.Models.Cells
             if (commandId >= 8)
             {
                 CommandShift(commandId);
-                Cell.ActionCommand(commandId % 8);
+                _cell.ActionCommand(commandId % 8);
                 return true;
             }
 
             //Move
             CommandShift(commandId);
-            Cell.MoveCommand(commandId % 8);
+            _cell.MoveCommand(commandId % 8);
             return true;
         }
 
         private void CommandShift(int commandId)
         {
-            var targetPosition = Cell.AnalyzePosition(commandId);
-            var type = Cell.FieldModel.GetCellOnPosition(targetPosition)?.GetPointType() ?? PointType.Void;
+            var targetPosition = _cell.AnalyzePosition(commandId);
+            var type = _cell.Field.GetCellOnPosition(targetPosition)?.GetPointType() ?? PointType.Void;
             var shift = 0;
 
             //TODO: More types
@@ -102,27 +98,6 @@ namespace GenericLife.Models.Cells
                 shift = 4;
 
             CurrentCommand += shift;
-        }
-
-        public ICellBrain GenerateChild()
-        {
-            return new CellBrain()
-            {
-                CommandList = new List<int>(CommandList)
-            };
-        }
-
-        public ICellBrain GenerateChildWithMutant()
-        {
-            var list = new List<int>(CommandList);
-
-            int index = GlobalRand.Next(list.Count);
-            list[index] = GlobalRand.Next(64);
-
-            return new CellBrain()
-            {
-                CommandList = list
-            };
         }
     }
 }

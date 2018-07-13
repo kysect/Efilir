@@ -1,36 +1,28 @@
-﻿using System.Windows.Media;
-using GenericLife.Declaration;
+﻿using System.Collections.Generic;
+using GenericLife.Interfaces;
 using GenericLife.Tools;
 using GenericLife.Types;
 
 namespace GenericLife.Models.Cells
 {
-    public class GenericCell : IGeneticCell
+    public class GenericCell : IGenericCell
     {
         private int _health;
 
-        public GenericCell()
+        public GenericCell(List<int> commandList)
         {
             CurrentRotate = new AngleRotation(0);
             Health = 100;
+            Brain = new CellBrain(this, commandList);
         }
 
-        private ICellBrain _brain;
         public int Generation { get; set; }
         public int Breed { get; set; }
 
-        public ICellBrain Brain
-        {
-            get => _brain;
-            set
-            {
-                _brain = value;
-                _brain.Cell = this;
-            }
-        }
+        public ICellBrain Brain { get; }
 
         public AngleRotation CurrentRotate { get; set; }
-        public ICellField FieldModel { get; set; }
+        public GameArea Field { get; set; }
 
         public int Health
         {
@@ -53,28 +45,29 @@ namespace GenericLife.Models.Cells
             return Health > 0;
         }
 
-        public FieldPosition Position { get; set; }
+        public Coordinate Position { get; set; }
 
         public void MoveCommand(int commandRotate)
         {
             ActionCommand(commandRotate);
 
             var targetPosition = AnalyzePosition(commandRotate);
-            var targetCell = FieldModel.GetCellOnPosition(targetPosition);
+            var targetCell = Field.GetCellOnPosition(targetPosition);
 
             if (targetCell == null) Position = targetPosition;
         }
 
         public void ActionCommand(int commandRotate)
         {
+            //TODO: return cell, not only type
             var targetPosition = AnalyzePosition(commandRotate);
-            var cellType = FieldModel.GetCellOnPosition(targetPosition)?.GetPointType() ?? PointType.Void;
+            var cellType = Field.GetCellOnPosition(targetPosition)?.GetPointType() ?? PointType.Void;
 
             if (cellType == PointType.Food)
             {
-                var cellOnWay = FieldModel.GetCellOnPosition(targetPosition) as FoodCell;
+                var cellOnWay = Field.GetCellOnPosition(targetPosition) as FoodCell;
                 Health += cellOnWay.HealthIncome();
-                FieldModel.RemoveFoodCell(cellOnWay);
+                Field.RemoveCell(cellOnWay.Position);
                 return;
             }
 
@@ -84,22 +77,22 @@ namespace GenericLife.Models.Cells
             }
         }
 
-        public FieldPosition AnalyzePosition(int commandRotate)
+        public Coordinate AnalyzePosition(int commandRotate)
         {
             var actualRotate = CurrentRotate + commandRotate;
             var newPosition = actualRotate.GetRotation();
             return Position + newPosition;
         }
 
+        public override string ToString()
+        {
+            return $"Simple cell with {Health} health and {Age} age";
+        }
+
         private void IncreaseAge()
         {
             Age++;
             Health--;
-        }
-
-        public override string ToString()
-        {
-            return $"Simple cell with {Health} health and {Age} age";
         }
     }
 }

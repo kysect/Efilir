@@ -1,8 +1,8 @@
 ﻿namespace GenericLife.Types
 {
-    public class FieldPosition
+    public class Coordinate
     {
-        public FieldPosition(int x, int y)
+        public Coordinate(int x, int y)
         {
             Y = y;
             X = x;
@@ -11,11 +11,11 @@
         public int X { get; }
         public int Y { get; }
 
-        public static FieldPosition operator +(FieldPosition left, FieldPosition right)
+        public static Coordinate operator +(Coordinate left, Coordinate right)
         {
             var newX = left.X + right.X;
             var newY = left.Y + right.Y;
-            return new FieldPosition(newX, newY);
+            return new Coordinate(newX, newY);
         }
     }
 }
