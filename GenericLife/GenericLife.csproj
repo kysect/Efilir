@@ -57,15 +57,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Declaration\ICellBrain.cs" />
-    <Compile Include="Declaration\ICellField.cs" />
-    <Compile Include="Declaration\IFoodCell.cs" />
-    <Compile Include="Declaration\IGeneticCell.cs" />
-    <Compile Include="Declaration\IPixelDrawer.cs" />
+    <Compile Include="Interfaces\ICellBrain.cs" />
+    <Compile Include="Interfaces\IFoodCell.cs" />
+    <Compile Include="Interfaces\IGenericCell.cs" />
     <Compile Include="Models\Cells\CellBrain.cs" />
     <Compile Include="Models\Cells\WallCell.cs" />
+    <Compile Include="Models\GameArea.cs" />
     <Compile Include="Tools\GeneticCellMutation.cs" />
-    <Compile Include="Types\FieldPosition.cs" />
+    <Compile Include="Types\Coordinate.cs" />
     <Compile Include="Models\Cells\GenericCell.cs" />
     <Compile Include="Types\AngleRotation.cs" />
     <Compile Include="Tools\CellColorGenerator.cs" />
@@ -88,8 +87,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Declaration\IBaseCell.cs" />
-    <Compile Include="Models\CellFieldModel.cs" />
+    <Compile Include="Interfaces\IBaseCell.cs" />
+    <Compile Include="Models\SimulationManger.cs" />
     <Compile Include="Models\PixelDrawer.cs" />
     <Compile Include="Models\Cells\FoodCell.cs" />
     <Compile Include="Types\PointType.cs" />

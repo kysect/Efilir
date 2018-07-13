@@ -1,34 +1,29 @@
 ﻿using System.Collections.Generic;
-using GenericLife.Declaration;
+using GenericLife.Interfaces;
 using GenericLife.Models.Cells;
 
 namespace GenericLife.Tools
 {
     public static class GeneticCellMutation
     {
-        public static List<IGeneticCell> GenerateNewCells(IEnumerable<List<int>> jsonData)
+        public static List<IGenericCell> GenerateNewCells(IEnumerable<List<int>> jsonData)
         {
-            var cellsList = new List<IGeneticCell>();
-            foreach (var cell in jsonData)
+            var cellsList = new List<IGenericCell>();
+            foreach (var commandList in jsonData)
             {
-                var brain = new CellBrain(cell);
+                for (var i = 0; i < 6; i++)
+                    cellsList.Add(new GenericCell(commandList));
 
                 for (var i = 0; i < 2; i++)
                 {
-                    cellsList.Add(new GenericCell()
-                    {
-                        Brain = brain.GenerateChildWithMutant()
-                    });
-                }
+                    var list = new List<int>(commandList);
+                    var index = GlobalRand.Next(list.Count);
+                    list[index] = GlobalRand.Next(64);
 
-                for (var i = 0; i < 6; i++)
-                {
-                    cellsList.Add(new GenericCell()
-                    {
-                        Brain = brain.GenerateChildWithMutant()
-                    });
+                    cellsList.Add(new GenericCell(list));
                 }
             }
+
             return cellsList;
         }
     }

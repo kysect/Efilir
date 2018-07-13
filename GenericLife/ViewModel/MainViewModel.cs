@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using GenericLife.Declaration;
 using GenericLife.Models;
-using GenericLife.Models.Cells;
-using GenericLife.Tools;
 
 namespace GenericLife.ViewModel
 {
@@ -33,13 +25,13 @@ namespace GenericLife.ViewModel
             }
         }
 
-        public void HiddenSimulation()
-        {
-            while (!Polygon.CellField.AliveLessThanEight())
-            {
-                if (IsActive)
-                    Polygon.RandomMove();
-            }
-        }
+        //public void HiddenSimulation()
+        //{
+        //    while (!Polygon.CellField.AliveLessThanEight())
+        //    {
+        //        if (IsActive)
+        //            Polygon.RandomMove();
+        //    }
+        //}
     }
 }

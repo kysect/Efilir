@@ -1,14 +1,16 @@
 ﻿using GenericLife.Types;
 
-namespace GenericLife.Declaration
+namespace GenericLife.Interfaces
 {
-    public interface IGeneticCell : IBaseCell
+    public interface IGenericCell : IBaseCell
     {
-        int Health { get; set; }
-        int Age { get; set; }
+        int Health { get; }
+        int Age { get; }
+
+        //TODO: implement
         int Generation { get; set; }
         int Breed { get; set; }
-        ICellBrain Brain { get; set; }
+        ICellBrain Brain { get; }
         AngleRotation CurrentRotate { get; set; }
 
         void TurnAction();
@@ -16,6 +18,6 @@ namespace GenericLife.Declaration
 
         void MoveCommand(int commandRotate);
         void ActionCommand(int commandRotate);
-        FieldPosition AnalyzePosition(int commandRotate);
+        Coordinate AnalyzePosition(int commandRotate);
     }
 }

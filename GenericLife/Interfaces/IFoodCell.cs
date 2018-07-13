@@ -1,4 +1,4 @@
-﻿namespace GenericLife.Declaration
+﻿namespace GenericLife.Interfaces
 {
     public interface IFoodCell : IBaseCell
     {

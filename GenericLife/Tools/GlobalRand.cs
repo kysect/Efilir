@@ -21,10 +21,7 @@ namespace GenericLife.Tools
         public static List<int> RandomList(int count, int maxValue)
         {
             var list = new List<int>();
-            for (int i = 0; i < count; i++)
-            {
-                list.Add(Next(maxValue));
-            }
+            for (var i = 0; i < count; i++) list.Add(Next(maxValue));
 
             return list;
         }
@@ -34,9 +31,9 @@ namespace GenericLife.Tools
             return RandomList(64, 64);
         }
 
-        public static FieldPosition GeneratePosition(int maxSize = Configuration.FieldSize)
+        public static Coordinate GeneratePosition(int maxSize = Configuration.FieldSize)
         {
-            return new FieldPosition(Next(maxSize), Next(maxSize));
+            return new Coordinate(Next(maxSize), Next(maxSize));
         }
     }
 }
