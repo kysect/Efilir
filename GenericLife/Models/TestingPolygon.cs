@@ -33,7 +33,7 @@ namespace GenericLife.Models
 
         public void SaveCells()
         {
-            var cells = CellField.GetAllLiveCells();
+            var cells = CellField.GetAllGenericCells();
             JsonSaver.Save(cells);
         }
 

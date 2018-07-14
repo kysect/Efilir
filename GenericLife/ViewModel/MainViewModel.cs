@@ -24,14 +24,5 @@ namespace GenericLife.ViewModel
                 Application.Current.Dispatcher.Invoke(() => Polygon.UpdateUi());
             }
         }
-
-        //public void HiddenSimulation()
-        //{
-        //    while (!Polygon.CellField.AliveLessThanEight())
-        //    {
-        //        if (IsActive)
-        //            Polygon.RandomMove();
-        //    }
-        //}
     }
 }

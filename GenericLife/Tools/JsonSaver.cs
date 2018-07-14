@@ -34,10 +34,21 @@ namespace GenericLife.Tools
 
         public static List<List<int>> Load()
         {
-            var dataString = File.ReadAllText(FileName);
-            var list = JArray.Parse(dataString);
             var gen = new List<List<int>>();
-            foreach (var obj in list) gen.Add(obj["CommandList"].ToObject<List<int>>());
+
+            if (File.Exists(FileName) == false)
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    gen.Add(GlobalRand.GenerateCommandList());
+                }
+            }
+            else
+            {
+                var dataString = File.ReadAllText(FileName);
+                var list = JArray.Parse(dataString);
+                foreach (var obj in list) gen.Add(obj["CommandList"].ToObject<List<int>>());
+            }
 
             return gen;
         }

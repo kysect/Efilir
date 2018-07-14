@@ -9,18 +9,17 @@ namespace GenericLife.Models
 {
     public class PixelDrawer
     {
-        private readonly int _size;
+        private const int Size = Configuration.FieldSize * Configuration.ScaleSize;
         private readonly WriteableBitmap _writableBitmap;
 
         public PixelDrawer(Image image)
         {
-            _size = Configuration.FieldSize * Configuration.ScaleSize;
-            image.Height = _size;
-            image.Width = _size;
+            image.Height = Size;
+            image.Width = Size;
 
             _writableBitmap = new WriteableBitmap(
-                _size,
-                _size,
+                Size,
+                Size,
                 12,
                 12,
                 PixelFormats.Bgr32,
@@ -31,7 +30,7 @@ namespace GenericLife.Models
 
         public void DrawPoints(IBaseCell[,] cells)
         {
-            var pixels = new byte[_size, _size, 4];
+            var pixels = new byte[Size, Size, 4];
             PrintBackgroundWithBlack(pixels);
 
             for (var y = 0; y < Configuration.FieldSize; y++)
@@ -50,7 +49,7 @@ namespace GenericLife.Models
             PrintPixels(pixels);
         }
 
-        private void PutPixel(byte[,,] pixels, int positionX, int positionY, IBaseCell cell)
+        private static void PutPixel(byte[,,] pixels, int positionX, int positionY, IBaseCell cell)
         {
             var color = CellColorGenerator.GetCellColor(cell);
             pixels[positionY, positionX, 0] = color.B;
@@ -58,10 +57,10 @@ namespace GenericLife.Models
             pixels[positionY, positionX, 2] = color.R;
         }
 
-        private void PrintBackgroundWithBlack(byte[,,] pixels)
+        private static void PrintBackgroundWithBlack(byte[,,] pixels)
         {
-            for (var row = 0; row < _size; row++)
-            for (var col = 0; col < _size; col++)
+            for (var row = 0; row < Size; row++)
+            for (var col = 0; col < Size; col++)
             {
                 for (var i = 0; i < 3; i++)
                     pixels[row, col, i] = 0;
@@ -69,13 +68,13 @@ namespace GenericLife.Models
             }
         }
 
-        private byte[] TransformTo1D(byte[,,] pixels)
+        private static byte[] TransformTo1D(byte[,,] pixels)
         {
-            var pixels1D = new byte[_size * _size * 4];
+            var pixels1D = new byte[Size * Size * 4];
 
             var index = 0;
-            for (var row = 0; row < _size; row++)
-            for (var col = 0; col < _size; col++)
+            for (var row = 0; row < Size; row++)
+            for (var col = 0; col < Size; col++)
             for (var i = 0; i < 4; i++)
                 pixels1D[index++] = pixels[row, col, i];
 
@@ -85,8 +84,8 @@ namespace GenericLife.Models
         private void PrintPixels(byte[,,] pixels)
         {
             var pixels1D = TransformTo1D(pixels);
-            var rect = new Int32Rect(0, 0, _size, _size);
-            var stride = 4 * _size;
+            var rect = new Int32Rect(0, 0, Size, Size);
+            var stride = 4 * Size;
 
             _writableBitmap.WritePixels(rect, pixels1D, stride, 0);
         }

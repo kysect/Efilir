@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using GenericLife.Interfaces;
 using GenericLife.Models.Cells;
 using GenericLife.Tools;
@@ -21,9 +22,9 @@ namespace GenericLife.Models
             GenerateRandomWall();
         }
 
-        public int CurrentTypeCount<T>()
+        public IEnumerable<T> Select<T>()
         {
-            return Cells.Cast<IBaseCell>().Count(cell => cell is T);
+            return Cells.Cast<IBaseCell>().Where(cell => cell is T).Cast<T>();
         }
 
         public void AddCell(IBaseCell cell)
@@ -44,9 +45,9 @@ namespace GenericLife.Models
             return Cells[position.Y, position.X];
         }
 
-        public void RemoveCell(Coordinate position)
+        public void RemoveCell(IBaseCell cell)
         {
-            Cells[position.Y, position.X] = null;
+            Cells[cell.Position.Y, cell.Position.X] = null;
         }
 
         public Coordinate GetEmptyPosition()

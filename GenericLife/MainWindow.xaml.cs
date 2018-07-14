@@ -14,12 +14,13 @@ namespace GenericLife
         {
             InitializeComponent();
             _viewModel = new MainViewModel(ImageView);
-            _viewModel.Polygon.LoadCells();
         }
 
         private void Start_ButtonClick(object sender, RoutedEventArgs e)
         {
             _viewModel.IsActive = true;
+            _viewModel.Polygon.LoadCells();
+
             var worker = new BackgroundWorker();
             worker.DoWork += StartSimulation;
             worker.RunWorkerAsync();
@@ -40,12 +41,11 @@ namespace GenericLife
 
         private void UpdateInfoBox()
         {
-            var cellList = _viewModel.Polygon.CellField.GetAllLiveCells();
+            var cellList = _viewModel.Polygon.CellField.GetAllGenericCells();
             var orderByDescending = cellList
                 .OrderByDescending(c => c.Age)
                 .ThenByDescending(c => c.Health);
 
-            //Update UI ListBox
             Application.Current.Dispatcher.Invoke(() =>
             {
                 CellData.ItemsSource = orderByDescending;

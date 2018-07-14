@@ -60,6 +60,7 @@
     <Compile Include="Interfaces\ICellBrain.cs" />
     <Compile Include="Interfaces\IFoodCell.cs" />
     <Compile Include="Interfaces\IGenericCell.cs" />
+    <Compile Include="Interfaces\ILiveCell.cs" />
     <Compile Include="Models\Cells\CellBrain.cs" />
     <Compile Include="Models\Cells\WallCell.cs" />
     <Compile Include="Models\GameArea.cs" />
