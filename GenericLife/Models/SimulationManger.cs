@@ -16,12 +16,14 @@ namespace GenericLife.Models
             DeleteAllElements();
         }
 
-        private List<IGenericCell> Cells { get; set; }
+        public List<IGenericCell> GetAllGenericCells()
+        {
+            return _gameArea.Select<IGenericCell>().ToList();
+        }
 
         public void DeleteAllElements()
         {
             _gameArea.CleanField();
-            Cells = new List<IGenericCell>();
         }
 
         public IBaseCell[,] GetAllCells()
@@ -32,34 +34,32 @@ namespace GenericLife.Models
         public void MakeCellsMove()
         {
             UpdateFoodCount();
-            foreach (var cell in Cells)
-                cell.TurnAction();
-            //TODO:Remove dead
-            //if (cell.IsAlive() == false) Cells.Remove(cell);
+            foreach (var cell in _gameArea.Select<IBaseCell>())
+                cell.MakeTurn();
+
+            //var deadCellList = Cells.Where(c => c.IsAlive() == false).ToList();
+            //foreach (var deadCell in deadCellList)
+            //{
+            //    Cells.Remove(deadCell);
+
+            //    //TODO: replace dead cell with food or ...??
+            //    //_gameArea.RemoveCell(deadCell);
+            //}
         }
 
         public void InitializeLiveCells(IEnumerable<IGenericCell> cellsList)
         {
-            //TODO: check for clean
-            //Cells.Clear();
             foreach (var liveCell in cellsList)
             {
                 liveCell.Position = _gameArea.GetEmptyPosition();
                 liveCell.Field = _gameArea;
-                Cells.Add(liveCell);
-                AddCellToField(liveCell);
+                _gameArea.AddCell(liveCell);
             }
         }
 
         public bool AliveLessThanEight()
         {
-            return Cells.Count(c => c.Health > 0) <= 8;
-        }
-
-        public IEnumerable<IGenericCell> GetAllLiveCells()
-        {
-            //TODO: remove
-            return Cells;
+            return _gameArea.Select<IGenericCell>().Count(c => c.Health > 0) <= 8;
         }
 
         private void AddFood()
@@ -67,17 +67,12 @@ namespace GenericLife.Models
             var pos = _gameArea.GetEmptyPosition();
             var newFood = new FoodCell(pos) {Field = _gameArea};
 
-            AddCellToField(newFood);
+            _gameArea.AddCell(newFood);
         }
 
         private void UpdateFoodCount()
         {
-            while (_gameArea.CurrentTypeCount<IFoodCell>() < FoodCount) AddFood();
-        }
-
-        private void AddCellToField(IBaseCell cell)
-        {
-            _gameArea.AddCell(cell);
+            while (_gameArea.Select<IFoodCell>().Count() < FoodCount) AddFood();
         }
     }
 }

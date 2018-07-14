@@ -7,5 +7,8 @@ namespace GenericLife.Models.Cells
     {
         public Coordinate Position { get; set; }
         public GameArea Field { get; set; }
+        public void MakeTurn()
+        {
+        }
     }
 }

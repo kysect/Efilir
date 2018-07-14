@@ -1,4 +1,5 @@
 ﻿using GenericLife.Interfaces;
+using GenericLife.Tools;
 using GenericLife.Types;
 
 namespace GenericLife.Models.Cells
@@ -12,11 +13,13 @@ namespace GenericLife.Models.Cells
 
         public Coordinate Position { get; set; }
         public GameArea Field { get; set; }
+        public void MakeTurn()
+        {
+        }
 
         public int HealthIncome()
         {
-            //TODO: place in config
-            return 10;
+            return Configuration.HealthIncomeFromFood;
         }
     }
 }

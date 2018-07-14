@@ -11,8 +11,11 @@ namespace GenericLife.Tools
             var cellsList = new List<IGenericCell>();
             foreach (var commandList in jsonData)
             {
+
                 for (var i = 0; i < 6; i++)
-                    cellsList.Add(new GenericCell(commandList));
+                {
+                    cellsList.Add(new GenericCell(new CellBrain(commandList)));
+                }
 
                 for (var i = 0; i < 2; i++)
                 {
@@ -20,7 +23,7 @@ namespace GenericLife.Tools
                     var index = GlobalRand.Next(list.Count);
                     list[index] = GlobalRand.Next(64);
 
-                    cellsList.Add(new GenericCell(list));
+                    cellsList.Add(new GenericCell(new CellBrain(list)));
                 }
             }
 

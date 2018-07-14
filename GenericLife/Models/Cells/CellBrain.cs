@@ -1,28 +1,29 @@
 ﻿using System.Collections.Generic;
 using GenericLife.Interfaces;
+using GenericLife.Tools;
 using GenericLife.Types;
 
 namespace GenericLife.Models.Cells
 {
     public class CellBrain : ICellBrain
     {
-        private readonly IGenericCell _cell;
-        private int _command;
+        public IGenericCell Cell { private get; set; }
+        private int _currentCommandIndex;
 
-        public CellBrain(IGenericCell cell, List<int> commandList)
+        public CellBrain(List<int> commandList)
         {
-            CurrentCommand = 0;
+            CurrentCommandIndex = 0;
             CommandList = commandList;
-            _cell = cell;
         }
 
-        private int CurrentCommand
+        private int CurrentCommandIndex
         {
-            get => _command;
-            //TODO: Fix this const
-            set => _command = value % 64;
+            get => _currentCommandIndex;
+            set => _currentCommandIndex = value % Configuration.CommandListSize;
         }
 
+        public int Generation { get; set; }
+        public int Breed { get; set; }
         public List<int> CommandList { get; }
 
         public void MakeTurn()
@@ -33,13 +34,8 @@ namespace GenericLife.Models.Cells
             while (recursionDeep < 64 && isTurnMade == false)
             {
                 recursionDeep++;
-                var commandId = CommandList[CurrentCommand];
+                var commandId = CommandList[CurrentCommandIndex];
                 isTurnMade = GenerateCommand(commandId);
-            }
-
-            if (recursionDeep == 64)
-            {
-                //Inactive cell
             }
         }
 
@@ -48,15 +44,15 @@ namespace GenericLife.Models.Cells
             //Command shift
             if (commandId >= 32)
             {
-                CurrentCommand += commandId;
+                CurrentCommandIndex += commandId;
                 return false;
             }
 
             //Rotation
             if (commandId >= 24)
             {
-                _cell.CurrentRotate += commandId;
-                CurrentCommand++;
+                Cell.CurrentRotate += commandId;
+                CurrentCommandIndex++;
                 return false;
             }
 
@@ -71,20 +67,20 @@ namespace GenericLife.Models.Cells
             if (commandId >= 8)
             {
                 CommandShift(commandId);
-                _cell.ActionCommand(commandId % 8);
+                Cell.ActionCommand(commandId % 8);
                 return true;
             }
 
             //Move
             CommandShift(commandId);
-            _cell.MoveCommand(commandId % 8);
+            Cell.MoveCommand(commandId % 8);
             return true;
         }
 
         private void CommandShift(int commandId)
         {
-            var targetPosition = _cell.AnalyzePosition(commandId);
-            var type = _cell.Field.GetCellOnPosition(targetPosition)?.GetPointType() ?? PointType.Void;
+            var targetPosition = Cell.AnalyzePosition(commandId);
+            var type = Cell.Field.GetCellOnPosition(targetPosition)?.GetPointType() ?? PointType.Void;
             var shift = 0;
 
             //TODO: More types
@@ -97,7 +93,7 @@ namespace GenericLife.Models.Cells
             if (type == PointType.Wall)
                 shift = 4;
 
-            CurrentCommand += shift;
+            CurrentCommandIndex += shift;
         }
     }
 }

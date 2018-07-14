@@ -7,32 +7,21 @@ namespace GenericLife.Models.Cells
 {
     public class GenericCell : IGenericCell
     {
-        private int _health;
-
-        public GenericCell(List<int> commandList)
+        public GenericCell(CellBrain brain)
         {
             CurrentRotate = new AngleRotation(0);
             Health = 100;
-            Brain = new CellBrain(this, commandList);
+            Brain = brain;
+            brain.Cell = this;
         }
-
-        public int Generation { get; set; }
-        public int Breed { get; set; }
 
         public ICellBrain Brain { get; }
-
         public AngleRotation CurrentRotate { get; set; }
         public GameArea Field { get; set; }
+        public int Health { get; private set; }
+        public int Age { get; private set; }
 
-        public int Health
-        {
-            get => _health;
-            set => _health = value > 100 ? 100 : value;
-        }
-
-        public int Age { get; set; }
-
-        public void TurnAction()
+        public void MakeTurn()
         {
             if (!IsAlive()) return;
 
@@ -61,13 +50,17 @@ namespace GenericLife.Models.Cells
         {
             //TODO: return cell, not only type
             var targetPosition = AnalyzePosition(commandRotate);
-            var cellType = Field.GetCellOnPosition(targetPosition)?.GetPointType() ?? PointType.Void;
+            var cellOnWay = Field.GetCellOnPosition(targetPosition);
+            if (cellOnWay == null)
+            {
+                return;
+            }
 
+            var cellType = cellOnWay?.GetPointType();
             if (cellType == PointType.Food)
             {
-                var cellOnWay = Field.GetCellOnPosition(targetPosition) as FoodCell;
-                Health += cellOnWay.HealthIncome();
-                Field.RemoveCell(cellOnWay.Position);
+                Health += (cellOnWay as FoodCell).HealthIncome();
+                Field.RemoveCell(cellOnWay);
                 return;
             }
 
@@ -86,7 +79,7 @@ namespace GenericLife.Models.Cells
 
         public override string ToString()
         {
-            return $"Simple cell with {Health} health and {Age} age";
+            return $"G{Brain.Breed} with {Health} health and {Age} age";
         }
 
         private void IncreaseAge()

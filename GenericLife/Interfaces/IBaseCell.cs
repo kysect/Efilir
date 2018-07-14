@@ -7,5 +7,6 @@ namespace GenericLife.Interfaces
     {
         Coordinate Position { get; set; }
         GameArea Field { get; set; }
+        void MakeTurn();
     }
 }
