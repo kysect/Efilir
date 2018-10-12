@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GenericLife.Models;
+using GenericLife.Types;
 
 namespace GenericLife.Tools
 {
@@ -21,10 +21,7 @@ namespace GenericLife.Tools
         public static List<int> RandomList(int count, int maxValue)
         {
             var list = new List<int>();
-            for (int i = 0; i < count; i++)
-            {
-                list.Add(Next(maxValue));
-            }
+            for (var i = 0; i < count; i++) list.Add(Next(maxValue));
 
             return list;
         }
@@ -34,10 +31,9 @@ namespace GenericLife.Tools
             return RandomList(64, 64);
         }
 
-        public static FieldPosition GeneratePosition()
-        //TODO: Size
+        public static Coordinate GeneratePosition(int maxSize = Configuration.FieldSize)
         {
-            return new FieldPosition(Next(50), Next(50));
+            return new Coordinate(Next(maxSize), Next(maxSize));
         }
     }
 }
