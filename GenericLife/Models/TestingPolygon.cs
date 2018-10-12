@@ -1,46 +1,49 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows.Controls;
+using GenericLife.Tools;
 
 namespace GenericLife.Models
 {
     public class TestingPolygon
     {
-        private readonly ImageDrawingTool _ds;
-        public CellFieldModel CellFieldModel;
+        private readonly PixelDrawer _pd;
+        public readonly SimulationManger CellField;
 
-        public TestingPolygon(ImageDrawingTool ds, CellFieldModel cellFieldModel)
+        public TestingPolygon(PixelDrawer pd, SimulationManger cellField)
         {
-            _ds = ds;
-            CellFieldModel = cellFieldModel;
-
-            Init();
+            _pd = pd;
+            CellField = cellField;
         }
 
-        private void Init()
+        public TestingPolygon(Image image)
         {
-            for (int i = 0; i < 64; i++)
-            {
-                CellFieldModel.AddGenericCell();
-            }
-            
-            for (int i = 0; i < CellFieldModel.FoodCount; i++)
-            {
-                CellFieldModel.AddFood();
-            }
-
-            UpdateUi();
+            _pd = new PixelDrawer(image);
+            CellField = new SimulationManger();
         }
+
 
         public void UpdateUi()
         {
-            _ds.ClearBlack();
-            _ds.DrawPoints(CellFieldModel.Cells);
-            _ds.DrawPoints(CellFieldModel.Foods);
+            _pd.DrawPoints(CellField.GetAllCells());
         }
+
         public void RandomMove()
         {
-            CellFieldModel.RandomMove();
-            Application.Current.Dispatcher.Invoke(UpdateUi);
+            CellField.MakeCellsMove();
+        }
+
+        public void SaveCells()
+        {
+            var cells = CellField.GetAllGenericCells();
+            JsonSaver.Save(cells);
+        }
+
+        public void LoadCells()
+        {
+            var jsonData = JsonSaver.Load();
+            var generatedCells = GeneticCellMutation.GenerateNewCells(jsonData);
+
+            CellField.DeleteAllElements();
+            CellField.InitializeLiveCells(generatedCells);
         }
     }
 }

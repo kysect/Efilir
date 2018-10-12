@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Windows;
-using GenericLife.Declaration;
-using GenericLife.Models;
-using GenericLife.Models.Cells;
-using GenericLife.Tools;
 using GenericLife.ViewModel;
 
 namespace GenericLife
@@ -20,48 +14,42 @@ namespace GenericLife
         {
             InitializeComponent();
             _viewModel = new MainViewModel(ImageView);
-            _viewModel.LoadCells();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Start_ButtonClick(object sender, RoutedEventArgs e)
         {
             _viewModel.IsActive = true;
+            _viewModel.Polygon.LoadCells();
+
             var worker = new BackgroundWorker();
-            worker.DoWork += Endless;
+            worker.DoWork += StartSimulation;
             worker.RunWorkerAsync();
         }
 
-        private void Endless(object sender, DoWorkEventArgs e)
+        private void StartSimulation(object sender, DoWorkEventArgs e)
         {
             while (_viewModel.IsActive)
             {
                 _viewModel.StartSimulator();
+                UpdateInfoBox();
 
-                Application.Current.Dispatcher.Invoke((Action)delegate
-                {
-                    UpdateInfoBox(null, null);
-                }, null);
-                Thread.Sleep(200);
-
-                _viewModel.SaveCells();
-                _viewModel.LoadCells();
-                Thread.Sleep(200);
+                _viewModel.Polygon.SaveCells();
+                _viewModel.Polygon.LoadCells();
+                Thread.Sleep(300);
             }
-
-
         }
 
-        private void UpdateInfoBox(object sender, RoutedEventArgs e)
+        private void UpdateInfoBox()
         {
-            var cellList = _viewModel.Polygon.CellFieldModel.Cells;
-            var orderByDescending = cellList.OrderByDescending(c => c.Age);
-            CellData.ItemsSource = orderByDescending;
-        }
+            var cellList = _viewModel.Polygon.CellField.GetAllGenericCells();
+            var orderByDescending = cellList
+                .OrderByDescending(c => c.Age)
+                .ThenByDescending(c => c.Health);
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            _viewModel.IsActive = false;
-            UpdateInfoBox(null, null);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                CellData.ItemsSource = orderByDescending;
+            });
         }
     }
 }

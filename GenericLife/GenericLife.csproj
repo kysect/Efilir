@@ -57,17 +57,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Declaration\ICellBrain.cs" />
-    <Compile Include="Declaration\ICellField.cs" />
+    <Compile Include="Interfaces\ICellBrain.cs" />
+    <Compile Include="Interfaces\IFoodCell.cs" />
+    <Compile Include="Interfaces\IGenericCell.cs" />
+    <Compile Include="Interfaces\ILiveCell.cs" />
     <Compile Include="Models\Cells\CellBrain.cs" />
-    <Compile Include="Models\FieldPosition.cs" />
+    <Compile Include="Models\Cells\WallCell.cs" />
+    <Compile Include="Models\GameArea.cs" />
+    <Compile Include="Tools\GeneticCellMutation.cs" />
+    <Compile Include="Types\Coordinate.cs" />
     <Compile Include="Models\Cells\GenericCell.cs" />
-    <Compile Include="Declaration\ILiveCell.cs" />
-    <Compile Include="Tools\AngleRotation.cs" />
+    <Compile Include="Types\AngleRotation.cs" />
     <Compile Include="Tools\CellColorGenerator.cs" />
+    <Compile Include="Tools\Configuration.cs" />
     <Compile Include="Tools\GlobalRand.cs" />
     <Compile Include="Tools\JsonSaver.cs" />
-    <Compile Include="Tools\Mutation.cs" />
     <Compile Include="Models\TestingPolygon.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Page Include="MainWindow.xaml">
@@ -84,11 +88,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Declaration\IBaseCell.cs" />
-    <Compile Include="Models\CellFieldModel.cs" />
-    <Compile Include="Models\ImageDrawingTool.cs" />
+    <Compile Include="Interfaces\IBaseCell.cs" />
+    <Compile Include="Models\SimulationManger.cs" />
+    <Compile Include="Models\PixelDrawer.cs" />
     <Compile Include="Models\Cells\FoodCell.cs" />
-    <Compile Include="Models\PointType.cs" />
+    <Compile Include="Types\PointType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

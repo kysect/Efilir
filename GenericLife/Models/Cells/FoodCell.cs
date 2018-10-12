@@ -1,21 +1,25 @@
-﻿using System.Windows.Media;
-using GenericLife.Declaration;
+﻿using GenericLife.Interfaces;
 using GenericLife.Tools;
+using GenericLife.Types;
 
 namespace GenericLife.Models.Cells
 {
-    public class FoodCell : IBaseCell
+    public class FoodCell : IFoodCell
     {
-        public static int FoodHealthIncome = 15;
-        public FieldPosition Position { get; set; }
-        public Color GetColor()
-        {
-            return CellColorGenerator.FoodColor();
-        }
-
-        public FoodCell(FieldPosition position)
+        public FoodCell(Coordinate position)
         {
             Position = position;
+        }
+
+        public Coordinate Position { get; set; }
+        public GameArea Field { get; set; }
+        public void MakeTurn()
+        {
+        }
+
+        public int HealthIncome()
+        {
+            return Configuration.HealthIncomeFromFood;
         }
     }
 }

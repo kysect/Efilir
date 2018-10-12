@@ -1,109 +1,91 @@
 ﻿using System.Collections.Generic;
-using System.Windows.Media;
-using GenericLife.Declaration;
+using GenericLife.Interfaces;
 using GenericLife.Tools;
+using GenericLife.Types;
 
 namespace GenericLife.Models.Cells
 {
-    public class GenericCell : ILiveCell
+    public class GenericCell : IGenericCell
     {
-        public CellBrain Brain { get; set; }
-        public ICellField FieldModel { get; set; }
-        private int _currentRotation;
-        private int _health;
-
-        public GenericCell(CellFieldModel fieldModel, FieldPosition position)
+        public GenericCell(CellBrain brain)
         {
-            FieldModel = fieldModel;
-            Position = position;
-            CurrentRotate = 0;
+            CurrentRotate = new AngleRotation(0);
             Health = 100;
-            Brain = new CellBrain()
-            {
-                Cell = this,
-                CommandList = GlobalRand.GenerateCommandList(),
-                Field = FieldModel
-            };
+            Brain = brain;
+            brain.Cell = this;
         }
 
-        public int CurrentRotate
-        {
-            get => _currentRotation;
-            set => _currentRotation = value % 8;
-        }
+        public ICellBrain Brain { get; }
+        public AngleRotation CurrentRotate { get; set; }
+        public GameArea Field { get; set; }
+        public int Health { get; private set; }
+        public int Age { get; private set; }
 
-        public int Health
+        public void MakeTurn()
         {
-            get => _health;
-            set => _health = value > 100 ? 100 : value;
-        }
-
-        public int Age { get; set; }
-
-        public void TurnAction()
-        {
-            if (!IsAlive) return;
+            if (!IsAlive()) return;
 
             Brain.MakeTurn();
             IncreaseAge();
         }
 
-        public bool IsAlive => Health > 0;
-
-        public FieldPosition Position { get; set; }
-
-        public Color GetColor()
+        public bool IsAlive()
         {
-            if (Health <= 0)
-                return CellColorGenerator.DeadCell();
-            return CellColorGenerator.HealthIndicator(Health);
+            return Health > 0;
         }
+
+        public Coordinate Position { get; set; }
 
         public void MoveCommand(int commandRotate)
         {
             ActionCommand(commandRotate);
 
-            var newPos = GetCellOnWay(commandRotate);
-            var directionCellState = FieldModel.GetPointType(newPos);
+            var targetPosition = AnalyzePosition(commandRotate);
+            var targetCell = Field.GetCellOnPosition(targetPosition);
 
-            if (directionCellState == PointType.Void) Position = newPos;
+            if (targetCell == null) Position = targetPosition;
         }
 
         public void ActionCommand(int commandRotate)
         {
-            var newPos = GetCellOnWay(commandRotate);
-            var directionCellState = FieldModel.GetPointType(newPos);
-
-            if (directionCellState == PointType.Food)
+            //TODO: return cell, not only type
+            var targetPosition = AnalyzePosition(commandRotate);
+            var cellOnWay = Field.GetCellOnPosition(targetPosition);
+            if (cellOnWay == null)
             {
-                var cellOnWay = FieldModel.GetCellOnPosition(newPos);
-                FieldModel.Foods.Remove(cellOnWay as FoodCell);
-                Health += FoodCell.FoodHealthIncome;
                 return;
             }
 
-            if (directionCellState == PointType.Cell)
+            var cellType = cellOnWay?.GetPointType();
+            if (cellType == PointType.Food)
+            {
+                Health += (cellOnWay as FoodCell).HealthIncome();
+                Field.RemoveCell(cellOnWay);
+                return;
+            }
+
+            if (cellType == PointType.Cell)
             {
                 //Attack?
             }
         }
 
-        private FieldPosition GetCellOnWay(int commandRotate)
+        public Coordinate AnalyzePosition(int commandRotate)
         {
-            var actualRotate = (CurrentRotate + commandRotate) % 8;
-            var newPosition = AngleRotation.GetRotation(actualRotate);
+            var actualRotate = CurrentRotate + commandRotate;
+            var newPosition = actualRotate.GetRotation();
             return Position + newPosition;
+        }
+
+        public override string ToString()
+        {
+            return $"G{Brain.Breed} with {Health} health and {Age} age";
         }
 
         private void IncreaseAge()
         {
             Age++;
             Health--;
-        }
-
-        public override string ToString()
-        {
-            return $"Simple cell with {Health} health and {Age} age";
         }
     }
 }
