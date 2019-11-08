@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2026
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29411.138
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenericLife", "GenericLife\GenericLife.csproj", "{5542D5AD-8AD9-4DD1-8A2F-D194B9BF5A2A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenericLife.Core", "GenericLife.Core\GenericLife.Core.csproj", "{62B20282-D307-4552-8C31-7163F213A389}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{5542D5AD-8AD9-4DD1-8A2F-D194B9BF5A2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5542D5AD-8AD9-4DD1-8A2F-D194B9BF5A2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5542D5AD-8AD9-4DD1-8A2F-D194B9BF5A2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62B20282-D307-4552-8C31-7163F213A389}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62B20282-D307-4552-8C31-7163F213A389}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62B20282-D307-4552-8C31-7163F213A389}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62B20282-D307-4552-8C31-7163F213A389}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

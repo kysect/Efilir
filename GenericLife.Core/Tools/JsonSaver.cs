@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using GenericLife.Interfaces;
+using GenericLife.Core.CellAbstractions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace GenericLife.Tools
+namespace GenericLife.Core.Tools
 {
     public static class JsonSaver
     {

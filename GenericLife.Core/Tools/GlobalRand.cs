@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using GenericLife.Types;
+using GenericLife.Core.Types;
 
-namespace GenericLife.Tools
+namespace GenericLife.Core.Tools
 {
     public static class GlobalRand
     {

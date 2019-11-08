@@ -1,7 +1,7 @@
-﻿using GenericLife.Interfaces;
-using GenericLife.Types;
+﻿using GenericLife.Core.CellAbstractions;
+using GenericLife.Core.Types;
 
-namespace GenericLife.Models.Cells
+namespace GenericLife.Core.Models.Cells
 {
     public class WallCell : IBaseCell
     {

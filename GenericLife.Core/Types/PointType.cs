@@ -1,8 +1,8 @@
 ﻿using System;
-using GenericLife.Interfaces;
-using GenericLife.Models.Cells;
+using GenericLife.Core.CellAbstractions;
+using GenericLife.Core.Models.Cells;
 
-namespace GenericLife.Types
+namespace GenericLife.Core.Types
 {
     public enum PointType
     {
