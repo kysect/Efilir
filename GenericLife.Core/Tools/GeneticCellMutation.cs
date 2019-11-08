@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using GenericLife.Interfaces;
-using GenericLife.Models.Cells;
+using GenericLife.Core.CellAbstractions;
+using GenericLife.Core.Models.Cells;
 
-namespace GenericLife.Tools
+namespace GenericLife.Core.Tools
 {
     public static class GeneticCellMutation
     {

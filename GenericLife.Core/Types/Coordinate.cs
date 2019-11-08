@@ -1,4 +1,4 @@
-﻿namespace GenericLife.Types
+﻿namespace GenericLife.Core.Types
 {
     public class Coordinate
     {

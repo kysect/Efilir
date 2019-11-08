@@ -1,7 +1,8 @@
 ﻿using System.Windows.Controls;
-using GenericLife.Tools;
+using GenericLife.Core.Models;
+using GenericLife.Core.Tools;
 
-namespace GenericLife.Models
+namespace GenericLife.Tools
 {
     public class TestingPolygon
     {

@@ -1,8 +1,8 @@
-﻿using GenericLife.Interfaces;
-using GenericLife.Tools;
-using GenericLife.Types;
+﻿using GenericLife.Core.CellAbstractions;
+using GenericLife.Core.Tools;
+using GenericLife.Core.Types;
 
-namespace GenericLife.Models.Cells
+namespace GenericLife.Core.Models.Cells
 {
     public class FoodCell : IFoodCell
     {

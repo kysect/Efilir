@@ -1,4 +1,4 @@
-﻿namespace GenericLife.Tools
+﻿namespace GenericLife.Core.Tools
 {
     public static class Configuration
     {

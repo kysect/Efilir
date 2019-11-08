@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Media;
-using GenericLife.Interfaces;
-using GenericLife.Models.Cells;
+using GenericLife.Core.CellAbstractions;
+using GenericLife.Core.Models.Cells;
 
 namespace GenericLife.Tools
 {

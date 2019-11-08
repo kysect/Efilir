@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using GenericLife.Models;
+using GenericLife.Tools;
 
 namespace GenericLife.ViewModel
 {

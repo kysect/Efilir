@@ -2,10 +2,10 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using GenericLife.Interfaces;
-using GenericLife.Tools;
+using GenericLife.Core.CellAbstractions;
+using GenericLife.Core.Tools;
 
-namespace GenericLife.Models
+namespace GenericLife.Tools
 {
     public class PixelDrawer
     {
