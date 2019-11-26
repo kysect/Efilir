@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using GenericLife.Core.CellAbstractions;
 
-namespace GenericLife.Core
+namespace GenericLife.Core.Algorithms
 {
     public interface ICellBrain
     {

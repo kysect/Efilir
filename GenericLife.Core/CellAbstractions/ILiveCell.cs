@@ -1,4 +1,5 @@
-﻿using GenericLife.Core.Types;
+using GenericLife.Core.Algorithms;
+using GenericLife.Core.Types;
 
 namespace GenericLife.Core.CellAbstractions
 {

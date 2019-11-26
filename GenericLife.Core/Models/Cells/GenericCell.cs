@@ -1,11 +1,12 @@
-﻿using GenericLife.Core.CellAbstractions;
+using GenericLife.Core.Algorithms;
+using GenericLife.Core.CellAbstractions;
 using GenericLife.Core.Types;
 
 namespace GenericLife.Core.Models.Cells
 {
     public class GenericCell : IGenericCell
     {
-        public GenericCell(CellBrain brain)
+        public GenericCell(ICellBrain brain)
         {
             CurrentRotate = new AngleRotation(0);
             Health = 100;
