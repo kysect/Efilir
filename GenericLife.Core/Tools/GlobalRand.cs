@@ -6,12 +6,7 @@ namespace GenericLife.Core.Tools
 {
     public static class GlobalRand
     {
-        private static readonly Random Rnd;
-
-        static GlobalRand()
-        {
-            Rnd = new Random();
-        }
+        private static readonly Random Rnd = new Random();
 
         public static int Next(int count)
         {
@@ -31,7 +26,7 @@ namespace GenericLife.Core.Tools
             return RandomList(64, 64);
         }
 
-        public static Coordinate GeneratePosition(int maxSize = Configuration.FieldSize)
+        public static Coordinate GeneratePosition(int maxSize)
         {
             return new Coordinate(Next(maxSize), Next(maxSize));
         }

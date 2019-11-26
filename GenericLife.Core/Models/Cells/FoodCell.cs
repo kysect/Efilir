@@ -4,7 +4,7 @@ using GenericLife.Core.Types;
 
 namespace GenericLife.Core.Models.Cells
 {
-    public class FoodCell : IFoodCell
+    public class FoodCell : IBaseCell
     {
         public FoodCell(Coordinate position)
         {
@@ -15,6 +15,7 @@ namespace GenericLife.Core.Models.Cells
         public GameArea Field { get; set; }
         public void MakeTurn()
         {
+            // Do nothing
         }
 
         public int HealthIncome()

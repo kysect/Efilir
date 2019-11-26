@@ -22,7 +22,7 @@ namespace GenericLife.Core.Models
             GenerateRandomWall();
         }
 
-        public IEnumerable<T> Select<T>()
+        public IEnumerable<T> SelectIf<T>()
         {
             return Cells.Cast<IBaseCell>().Where(cell => cell is T).Cast<T>();
         }
