@@ -39,12 +39,12 @@ namespace GenericLife.Tools
         public void SaveCells()
         {
             List<IGenericCell> cells = CellField.GetAllGenericCells();
-            JsonSaver.Save(cells);
+            DataSaver.Save(cells);
         }
 
         public void LoadCells()
         {
-            List<List<int>> jsonData = JsonSaver.Load();
+            List<List<int>> jsonData = DataSaver.Load();
             List<IGenericCell> generatedCells = GeneticCellMutation.GenerateNewCells(jsonData);
 
             CellField.DeleteAllElements();
