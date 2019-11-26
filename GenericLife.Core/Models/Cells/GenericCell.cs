@@ -1,4 +1,4 @@
-using GenericLife.Core.Algorithms;
+﻿using GenericLife.Core.Algorithms;
 using GenericLife.Core.CellAbstractions;
 using GenericLife.Core.Types;
 
@@ -18,6 +18,7 @@ namespace GenericLife.Core.Models.Cells
         public GameArea Field { get; set; }
         public int Health { get; private set; }
         public int Age { get; private set; }
+        public Coordinate Position { get; set; }
 
         public void MakeTurn()
         {
@@ -33,32 +34,31 @@ namespace GenericLife.Core.Models.Cells
             return Health > 0;
         }
 
-        public Coordinate Position { get; set; }
-
         public void MoveCommand(int commandRotate)
         {
             ActionCommand(commandRotate);
+            
+            Coordinate targetPosition = AnalyzePosition(commandRotate);
+            IBaseCell targetCell = Field.GetCellOnPosition(targetPosition);
 
-            var targetPosition = AnalyzePosition(commandRotate);
-            var targetCell = Field.GetCellOnPosition(targetPosition);
-
-            if (targetCell == null) Position = targetPosition;
+            if (targetCell == null)
+                Position = targetPosition;
         }
 
         public void ActionCommand(int commandRotate)
         {
             //TODO: return cell, not only type
-            var targetPosition = AnalyzePosition(commandRotate);
-            var cellOnWay = Field.GetCellOnPosition(targetPosition);
+            Coordinate targetPosition = AnalyzePosition(commandRotate);
+            IBaseCell cellOnWay = Field.GetCellOnPosition(targetPosition);
             if (cellOnWay == null)
             {
                 return;
             }
 
-            var cellType = cellOnWay?.GetPointType();
+            PointType cellType = cellOnWay.GetPointType();
             if (cellType == PointType.Food)
             {
-                Health += (cellOnWay as FoodCell).HealthIncome();
+                Health += ((FoodCell)cellOnWay).HealthIncome();
                 Field.RemoveCell(cellOnWay);
                 return;
             }
@@ -71,8 +71,8 @@ namespace GenericLife.Core.Models.Cells
 
         public Coordinate AnalyzePosition(int commandRotate)
         {
-            var actualRotate = CurrentRotate + commandRotate;
-            var newPosition = actualRotate.GetRotation();
+            AngleRotation actualRotate = CurrentRotate + commandRotate;
+            Coordinate newPosition = actualRotate.GetRotation();
             return Position + newPosition;
         }
 

@@ -13,8 +13,8 @@
 
         public static Coordinate operator +(Coordinate left, Coordinate right)
         {
-            var newX = left.X + right.X;
-            var newY = left.Y + right.Y;
+            int newX = left.X + right.X;
+            int newY = left.Y + right.Y;
             return new Coordinate(newX, newY);
         }
     }

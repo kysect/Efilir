@@ -3,6 +3,7 @@ using System.Linq;
 using GenericLife.Core.CellAbstractions;
 using GenericLife.Core.Models.Cells;
 using GenericLife.Core.Tools;
+using GenericLife.Core.Types;
 
 namespace GenericLife.Core.Models
 {
@@ -18,7 +19,7 @@ namespace GenericLife.Core.Models
 
         public List<IGenericCell> GetAllGenericCells()
         {
-            return _gameArea.Select<IGenericCell>().ToList();
+            return _gameArea.SelectIf<IGenericCell>().ToList();
         }
 
         public void DeleteAllElements()
@@ -34,7 +35,7 @@ namespace GenericLife.Core.Models
         public void MakeCellsMove()
         {
             UpdateFoodCount();
-            foreach (var cell in _gameArea.Select<IBaseCell>())
+            foreach (var cell in _gameArea.SelectIf<IBaseCell>())
                 cell.MakeTurn();
 
             //var deadCellList = Cells.Where(c => c.IsAlive() == false).ToList();
@@ -59,12 +60,12 @@ namespace GenericLife.Core.Models
 
         public bool AliveLessThanEight()
         {
-            return _gameArea.Select<IGenericCell>().Count(c => c.Health > 0) <= 8;
+            return _gameArea.SelectIf<IGenericCell>().Count(c => c.Health > 0) <= 8;
         }
 
         private void AddFood()
         {
-            var pos = _gameArea.GetEmptyPosition();
+            Coordinate pos = _gameArea.GetEmptyPosition();
             var newFood = new FoodCell(pos) {Field = _gameArea};
 
             _gameArea.AddCell(newFood);
@@ -72,7 +73,7 @@ namespace GenericLife.Core.Models
 
         private void UpdateFoodCount()
         {
-            while (_gameArea.Select<IFoodCell>().Count() < FoodCount) AddFood();
+            while (_gameArea.SelectIf<FoodCell>().Count() < FoodCount) AddFood();
         }
     }
 }

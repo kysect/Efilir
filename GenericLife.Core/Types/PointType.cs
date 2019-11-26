@@ -6,11 +6,11 @@ namespace GenericLife.Core.Types
 {
     public enum PointType
     {
-        Void,
-        Cell,
-        DeadCell,
-        Wall,
-        Food
+        Void = 0,
+        Cell = 1,
+        DeadCell = 2,
+        Wall = 3,
+        Food = 4
     }
 
     public static class Extension

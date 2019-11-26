@@ -19,8 +19,10 @@ namespace GenericLife.ViewModel
         {
             while (!Polygon.CellField.AliveLessThanEight())
             {
-                if (!IsActive) return;
+                if (!IsActive)
+                    return;
                 Polygon.RandomMove();
+                //TODO: Fix
                 Application.Current.Dispatcher.Invoke(() => Polygon.UpdateUi());
             }
         }
