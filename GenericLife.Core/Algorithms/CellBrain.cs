@@ -3,7 +3,7 @@ using GenericLife.Core.CellAbstractions;
 using GenericLife.Core.Tools;
 using GenericLife.Core.Types;
 
-namespace GenericLife.Core.Models.Cells
+namespace GenericLife.Core.Algorithms
 {
     public class CellBrain : ICellBrain
     {

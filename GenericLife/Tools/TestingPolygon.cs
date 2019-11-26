@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Controls;
+using GenericLife.Core.Algorithms;
 using GenericLife.Core.CellAbstractions;
 using GenericLife.Core.Models;
 using GenericLife.Core.Tools;
