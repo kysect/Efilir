@@ -1,6 +1,5 @@
 ﻿using System;
-using GenericLife.Core.CellAbstractions;
-using GenericLife.Core.Models.Cells;
+using GenericLife.Core.Cells;
 
 namespace GenericLife.Core.Types
 {

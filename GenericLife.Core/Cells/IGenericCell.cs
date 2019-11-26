@@ -1,6 +1,6 @@
 ﻿using GenericLife.Core.Types;
 
-namespace GenericLife.Core.CellAbstractions
+namespace GenericLife.Core.Cells
 {
     public interface IGenericCell : ILiveCell
     {

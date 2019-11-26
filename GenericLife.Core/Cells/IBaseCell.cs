@@ -1,7 +1,7 @@
-﻿using GenericLife.Core.Models;
+﻿using GenericLife.Core.Environment;
 using GenericLife.Core.Types;
 
-namespace GenericLife.Core.CellAbstractions
+namespace GenericLife.Core.Cells
 {
     public interface IBaseCell
     {
