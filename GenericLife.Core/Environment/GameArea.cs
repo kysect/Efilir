@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using GenericLife.Core.Algorithms;
 using GenericLife.Core.Cells;
 using GenericLife.Core.Tools;
 using GenericLife.Core.Types;
 
 namespace GenericLife.Core.Environment
 {
-    public class GameArea
+    public class GameArea : IGameArea
     {
         public IBaseCell[,] Cells { get; private set; }
 
@@ -40,6 +42,17 @@ namespace GenericLife.Core.Environment
             return Cells[position.Y, position.X];
         }
 
+        public void TryEat(IGenericCell sender, Coordinate foodPosition)
+        {
+            IBaseCell cellOnWay = GetCellOnPosition(foodPosition);
+            PointType cellType = cellOnWay.GetPointType();
+            if (cellType != PointType.Food)
+                throw new ArgumentException();
+
+            sender.Health += ((FoodCell)cellOnWay).HealthIncome();
+            RemoveCell(cellOnWay);
+        }
+
         public void RemoveCell(IBaseCell cell)
         {
             Cells[cell.Position.Y, cell.Position.X] = null;
@@ -60,7 +73,7 @@ namespace GenericLife.Core.Environment
         {
             //TODO: random, heh
             for (var i = 0; i < Configuration.FieldSize / 3; i++)
-                AddCell(new WallCell {Field = this, Position = new Coordinate(i, Configuration.FieldSize / 3)});
+                AddCell(new WallCell {Position = new Coordinate(i, Configuration.FieldSize / 3)});
         }
     }
 }

@@ -35,7 +35,7 @@ namespace GenericLife.Core.Environment
         {
             UpdateFoodCount();
             foreach (var cell in _gameArea.SelectIf<IBaseCell>())
-                cell.MakeTurn();
+                cell.MakeTurn(_gameArea);
 
             //var deadCellList = Cells.Where(c => c.IsAlive() == false).ToList();
             //foreach (var deadCell in deadCellList)
@@ -49,24 +49,22 @@ namespace GenericLife.Core.Environment
 
         public void InitializeLiveCells(IEnumerable<IGenericCell> cellsList)
         {
-            foreach (var liveCell in cellsList)
+            foreach (IGenericCell liveCell in cellsList)
             {
                 liveCell.Position = _gameArea.GetEmptyPosition();
-                liveCell.Field = _gameArea;
                 _gameArea.AddCell(liveCell);
             }
         }
 
-        public bool AliveLessThanEight()
+        public int GetAliveCellCount()
         {
-            return _gameArea.SelectIf<IGenericCell>().Count(c => c.Health > 0) <= 8;
+            return _gameArea.SelectIf<IGenericCell>().Count(c => c.Health > 0);
         }
 
         private void AddFood()
         {
             Coordinate pos = _gameArea.GetEmptyPosition();
-            var newFood = new FoodCell(pos) {Field = _gameArea};
-
+            var newFood = new FoodCell(pos);
             _gameArea.AddCell(newFood);
         }
 

@@ -17,7 +17,7 @@ namespace GenericLife.ViewModel
 
         public void StartSimulator()
         {
-            while (!Polygon.CellField.AliveLessThanEight())
+            while (Polygon.CellField.GetAliveCellCount() > 8)
             {
                 if (!IsActive)
                     return;
