@@ -1,4 +1,4 @@
-﻿using GenericLife.Core.Environment;
+﻿using GenericLife.Core.Algorithms;
 using GenericLife.Core.Types;
 
 namespace GenericLife.Core.Cells
@@ -6,8 +6,7 @@ namespace GenericLife.Core.Cells
     public class WallCell : IBaseCell
     {
         public Coordinate Position { get; set; }
-        public GameArea Field { get; set; }
-        public void MakeTurn()
+        public void MakeTurn(IGameArea gameArea)
         {
         }
     }

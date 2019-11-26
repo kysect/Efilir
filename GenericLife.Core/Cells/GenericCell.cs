@@ -1,5 +1,4 @@
 ﻿using GenericLife.Core.Algorithms;
-using GenericLife.Core.Environment;
 using GenericLife.Core.Types;
 
 namespace GenericLife.Core.Cells
@@ -15,17 +14,16 @@ namespace GenericLife.Core.Cells
 
         public ICellBrain Brain { get; }
         public AngleRotation CurrentRotate { get; set; }
-        public GameArea Field { get; set; }
-        public int Health { get; private set; }
+        public int Health { get; set; }
         public int Age { get; private set; }
         public Coordinate Position { get; set; }
 
-        public void MakeTurn()
+        public void MakeTurn(IGameArea gameArea)
         {
             if (!IsAlive())
                 return;
 
-            Brain.MakeTurn(this);
+            Brain.MakeTurn(this, gameArea);
             IncreaseAge();
         }
 
@@ -34,22 +32,22 @@ namespace GenericLife.Core.Cells
             return Health > 0;
         }
 
-        public void MoveCommand(int commandRotate)
+        public void MoveCommand(int commandRotate, IGameArea gameArea)
         {
-            ActionCommand(commandRotate);
+            ActionCommand(commandRotate, gameArea);
             
             Coordinate targetPosition = AnalyzePosition(commandRotate);
-            IBaseCell targetCell = Field.GetCellOnPosition(targetPosition);
+            IBaseCell targetCell = gameArea.GetCellOnPosition(targetPosition);
 
             if (targetCell == null)
                 Position = targetPosition;
         }
 
-        public void ActionCommand(int commandRotate)
+        public void ActionCommand(int commandRotate, IGameArea gameArea)
         {
             //TODO: return cell, not only type
             Coordinate targetPosition = AnalyzePosition(commandRotate);
-            IBaseCell cellOnWay = Field.GetCellOnPosition(targetPosition);
+            IBaseCell cellOnWay = gameArea.GetCellOnPosition(targetPosition);
             if (cellOnWay == null)
             {
                 return;
@@ -58,8 +56,8 @@ namespace GenericLife.Core.Cells
             PointType cellType = cellOnWay.GetPointType();
             if (cellType == PointType.Food)
             {
-                Health += ((FoodCell)cellOnWay).HealthIncome();
-                Field.RemoveCell(cellOnWay);
+                gameArea.TryEat(this, targetPosition);
+                
                 return;
             }
 

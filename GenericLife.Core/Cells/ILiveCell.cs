@@ -5,7 +5,7 @@ namespace GenericLife.Core.Cells
 {
     public interface ILiveCell : IBaseCell
     {
-        int Health { get; }
+        int Health { get; set; }
         int Age { get; }
         ICellBrain Brain { get; }
         AngleRotation CurrentRotate { get; set; }

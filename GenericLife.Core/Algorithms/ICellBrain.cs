@@ -6,6 +6,6 @@ namespace GenericLife.Core.Algorithms
     public interface ICellBrain
     {
         List<int> CommandList { get; }
-        void MakeTurn(IGenericCell cell);
+        void MakeTurn(IGenericCell cell, IGameArea gameArea);
     }
 }
