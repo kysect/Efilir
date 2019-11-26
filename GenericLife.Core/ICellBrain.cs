@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
+using GenericLife.Core.CellAbstractions;
 
 namespace GenericLife.Core
 {
     public interface ICellBrain
     {
-        //TODO: implement
-        int Generation { get; set; }
-        int Breed { get; set; }
         List<int> CommandList { get; }
-        void MakeTurn();
+        void MakeTurn(IGenericCell cell);
     }
 }
