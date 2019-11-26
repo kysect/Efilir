@@ -7,7 +7,6 @@ namespace GenericLife.Core.Models.Cells
 {
     public class CellBrain : ICellBrain
     {
-        public IGenericCell Cell { private get; set; }
         private int _currentCommandIndex;
 
         public CellBrain(List<int> commandList)
@@ -22,24 +21,22 @@ namespace GenericLife.Core.Models.Cells
             set => _currentCommandIndex = value % Configuration.CommandListSize;
         }
 
-        public int Generation { get; set; }
-        public int Breed { get; set; }
         public List<int> CommandList { get; }
 
-        public void MakeTurn()
+        public void MakeTurn(IGenericCell cell)
         {
             var recursionDeep = 0;
             var isTurnMade = false;
 
-            while (recursionDeep < 64 && isTurnMade == false)
+            while (recursionDeep < 64 && !isTurnMade)
             {
                 recursionDeep++;
-                var commandId = CommandList[CurrentCommandIndex];
-                isTurnMade = GenerateCommand(commandId);
+                int commandId = CommandList[CurrentCommandIndex];
+                isTurnMade = GenerateCommand(commandId, cell);
             }
         }
 
-        private bool GenerateCommand(int commandId)
+        private bool GenerateCommand(int commandId, IGenericCell cell)
         {
             //Command shift
             if (commandId >= 32)
@@ -51,7 +48,7 @@ namespace GenericLife.Core.Models.Cells
             //Rotation
             if (commandId >= 24)
             {
-                Cell.CurrentRotate += commandId;
+                cell.CurrentRotate += commandId;
                 CurrentCommandIndex++;
                 return false;
             }
@@ -59,28 +56,28 @@ namespace GenericLife.Core.Models.Cells
             //Check
             if (commandId >= 16)
             {
-                CommandShift(commandId);
+                CommandShift(commandId, cell);
                 return false;
             }
 
             //Action
             if (commandId >= 8)
             {
-                CommandShift(commandId);
-                Cell.ActionCommand(commandId % 8);
+                CommandShift(commandId, cell);
+                cell.ActionCommand(commandId % 8);
                 return true;
             }
 
             //Move
-            CommandShift(commandId);
-            Cell.MoveCommand(commandId % 8);
+            CommandShift(commandId, cell);
+            cell.MoveCommand(commandId % 8);
             return true;
         }
 
-        private void CommandShift(int commandId)
+        private void CommandShift(int commandId, IGenericCell cell)
         {
-            var targetPosition = Cell.AnalyzePosition(commandId);
-            var type = Cell.Field.GetCellOnPosition(targetPosition)?.GetPointType() ?? PointType.Void;
+            Coordinate targetPosition = cell.AnalyzePosition(commandId);
+            PointType type = cell.Field.GetCellOnPosition(targetPosition)?.GetPointType() ?? PointType.Void;
             var shift = 0;
 
             //TODO: More types

@@ -10,7 +10,6 @@ namespace GenericLife.Core.Models.Cells
             CurrentRotate = new AngleRotation(0);
             Health = 100;
             Brain = brain;
-            brain.Cell = this;
         }
 
         public ICellBrain Brain { get; }
@@ -21,9 +20,10 @@ namespace GenericLife.Core.Models.Cells
 
         public void MakeTurn()
         {
-            if (!IsAlive()) return;
+            if (!IsAlive())
+                return;
 
-            Brain.MakeTurn();
+            Brain.MakeTurn(this);
             IncreaseAge();
         }
 
@@ -77,7 +77,7 @@ namespace GenericLife.Core.Models.Cells
 
         public override string ToString()
         {
-            return $"G{Brain.Breed} with {Health} health and {Age} age";
+            return $"G0 with {Health} health and {Age} age";
         }
 
         private void IncreaseAge()
