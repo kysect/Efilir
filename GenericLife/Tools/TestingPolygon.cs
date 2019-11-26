@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using System.Collections.Generic;
+using System.Windows.Controls;
+using GenericLife.Core.CellAbstractions;
 using GenericLife.Core.Models;
 using GenericLife.Core.Tools;
 
@@ -24,7 +26,8 @@ namespace GenericLife.Tools
 
         public void UpdateUi()
         {
-            _pd.DrawPoints(CellField.GetAllCells());
+            IBaseCell[,] cells = CellField.GetAllCells();
+            _pd.DrawPoints(cells);
         }
 
         public void RandomMove()
@@ -34,14 +37,14 @@ namespace GenericLife.Tools
 
         public void SaveCells()
         {
-            var cells = CellField.GetAllGenericCells();
+            List<IGenericCell> cells = CellField.GetAllGenericCells();
             JsonSaver.Save(cells);
         }
 
         public void LoadCells()
         {
-            var jsonData = JsonSaver.Load();
-            var generatedCells = GeneticCellMutation.GenerateNewCells(jsonData);
+            List<List<int>> jsonData = JsonSaver.Load();
+            List<IGenericCell> generatedCells = GeneticCellMutation.GenerateNewCells(jsonData);
 
             CellField.DeleteAllElements();
             CellField.InitializeLiveCells(generatedCells);
