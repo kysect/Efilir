@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using GenericLife.Core.CellAbstractions;
+using GenericLife.Core.Cells;
 using Newtonsoft.Json;
 
 namespace GenericLife.Core.Tools

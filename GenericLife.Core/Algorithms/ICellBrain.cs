@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using GenericLife.Core.CellAbstractions;
+using GenericLife.Core.Cells;
 
 namespace GenericLife.Core.Algorithms
 {

@@ -1,19 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GenericLife.Core.CellAbstractions;
-using GenericLife.Core.Models.Cells;
+using GenericLife.Core.Cells;
 using GenericLife.Core.Tools;
 using GenericLife.Core.Types;
 
-namespace GenericLife.Core.Models
+namespace GenericLife.Core.Environment
 {
     public class GameArea
     {
-        public GameArea()
-        {
-            CleanField();
-        }
-
         public IBaseCell[,] Cells { get; private set; }
 
         public void CleanField()
@@ -34,9 +28,10 @@ namespace GenericLife.Core.Models
 
         public IBaseCell GetCellOnPosition(Coordinate position)
         {
-            if (position.X < 0 || position.X >= Configuration.FieldSize
-                               || position.Y < 0
-                               || position.Y >= Configuration.FieldSize)
+            if (position.X < 0
+                || position.X >= Configuration.FieldSize
+                || position.Y < 0
+                || position.Y >= Configuration.FieldSize)
                 return new WallCell
                 {
                     Position = position
@@ -63,6 +58,7 @@ namespace GenericLife.Core.Models
 
         private void GenerateRandomWall()
         {
+            //TODO: random, heh
             for (var i = 0; i < Configuration.FieldSize / 3; i++)
                 AddCell(new WallCell {Field = this, Position = new Coordinate(i, Configuration.FieldSize / 3)});
         }

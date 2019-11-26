@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using GenericLife.Core.CellAbstractions;
+using GenericLife.Core.Cells;
 using GenericLife.Core.Tools;
 
 namespace GenericLife.Tools

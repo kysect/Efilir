@@ -1,7 +1,7 @@
 ﻿using GenericLife.Core.Algorithms;
 using GenericLife.Core.Types;
 
-namespace GenericLife.Core.CellAbstractions
+namespace GenericLife.Core.Cells
 {
     public interface ILiveCell : IBaseCell
     {

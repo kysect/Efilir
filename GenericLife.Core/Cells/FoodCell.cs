@@ -1,8 +1,8 @@
-﻿using GenericLife.Core.CellAbstractions;
+﻿using GenericLife.Core.Environment;
 using GenericLife.Core.Tools;
 using GenericLife.Core.Types;
 
-namespace GenericLife.Core.Models.Cells
+namespace GenericLife.Core.Cells
 {
     public class FoodCell : IBaseCell
     {

@@ -1,8 +1,8 @@
 ﻿using GenericLife.Core.Algorithms;
-using GenericLife.Core.CellAbstractions;
+using GenericLife.Core.Environment;
 using GenericLife.Core.Types;
 
-namespace GenericLife.Core.Models.Cells
+namespace GenericLife.Core.Cells
 {
     public class GenericCell : IGenericCell
     {

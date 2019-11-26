@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GenericLife.Core.CellAbstractions;
-using GenericLife.Core.Models.Cells;
+using GenericLife.Core.Cells;
 using GenericLife.Core.Tools;
 using GenericLife.Core.Types;
 
-namespace GenericLife.Core.Models
+namespace GenericLife.Core.Environment
 {
     public class SimulationManger
     {

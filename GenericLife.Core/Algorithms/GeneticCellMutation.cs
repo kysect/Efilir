@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GenericLife.Core.CellAbstractions;
-using GenericLife.Core.Models.Cells;
+using GenericLife.Core.Cells;
 using GenericLife.Core.Tools;
 
 namespace GenericLife.Core.Algorithms
