@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Media;
-using GenericLife.Interfaces;
-using GenericLife.Models.Cells;
+using GenericLife.Core.Cells;
 
 namespace GenericLife.Tools
 {
@@ -12,35 +11,16 @@ namespace GenericLife.Tools
             switch (cell)
             {
                 case FoodCell _:
-                    return FoodColor();
-                case IGenericCell lc:
-                    return HealthIndicator(lc.Health);
+                    return Colors.GreenYellow;
+                case IGenericCell lc when lc.Health <= 0:
+                    return Colors.IndianRed;
+                case IGenericCell _:
+                    return Colors.AliceBlue;
                 case WallCell _:
-                    return WallColor();
+                    return Colors.Gold;
                 default:
-                    throw new ArgumentException();
+                    throw new ArgumentException($"{cell.GetType()}");
             }
-        }
-
-        public static Color DeadCell()
-        {
-            return Colors.IndianRed;
-        }
-
-        public static Color HealthIndicator(int health)
-        {
-            if (health <= 0) return DeadCell();
-            return Colors.AliceBlue;
-        }
-
-        public static Color FoodColor()
-        {
-            return Colors.GreenYellow;
-        }
-
-        public static Color WallColor()
-        {
-            return Colors.Gold;
         }
     }
 }

@@ -1,10 +1,11 @@
-﻿using GenericLife.Types;
+﻿using GenericLife.Core.Algorithms;
+using GenericLife.Core.Types;
 
-namespace GenericLife.Interfaces
+namespace GenericLife.Core.Cells
 {
     public interface ILiveCell : IBaseCell
     {
-        int Health { get; }
+        int Health { get; set; }
         int Age { get; }
         ICellBrain Brain { get; }
         AngleRotation CurrentRotate { get; set; }

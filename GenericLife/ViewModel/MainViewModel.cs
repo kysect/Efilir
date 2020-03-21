@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using GenericLife.Models;
+using GenericLife.Tools;
 
 namespace GenericLife.ViewModel
 {
@@ -17,10 +17,12 @@ namespace GenericLife.ViewModel
 
         public void StartSimulator()
         {
-            while (!Polygon.CellField.AliveLessThanEight())
+            while (Polygon.CellField.GetAliveCellCount() > 8)
             {
-                if (!IsActive) return;
+                if (!IsActive)
+                    return;
                 Polygon.RandomMove();
+                //TODO: Fix
                 Application.Current.Dispatcher.Invoke(() => Polygon.UpdateUi());
             }
         }

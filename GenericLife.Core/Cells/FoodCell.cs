@@ -1,10 +1,10 @@
-﻿using GenericLife.Interfaces;
-using GenericLife.Tools;
-using GenericLife.Types;
+﻿using GenericLife.Core.Algorithms;
+using GenericLife.Core.Tools;
+using GenericLife.Core.Types;
 
-namespace GenericLife.Models.Cells
+namespace GenericLife.Core.Cells
 {
-    public class FoodCell : IFoodCell
+    public class FoodCell : IBaseCell
     {
         public FoodCell(Coordinate position)
         {
@@ -12,9 +12,9 @@ namespace GenericLife.Models.Cells
         }
 
         public Coordinate Position { get; set; }
-        public GameArea Field { get; set; }
-        public void MakeTurn()
+        public void MakeTurn(IGameArea gameArea)
         {
+            // Do nothing
         }
 
         public int HealthIncome()
