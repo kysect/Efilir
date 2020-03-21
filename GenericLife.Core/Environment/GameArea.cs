@@ -1,19 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using GenericLife.Interfaces;
-using GenericLife.Models.Cells;
-using GenericLife.Tools;
-using GenericLife.Types;
+using GenericLife.Core.Algorithms;
+using GenericLife.Core.Cells;
+using GenericLife.Core.Tools;
+using GenericLife.Core.Types;
 
-namespace GenericLife.Models
+namespace GenericLife.Core.Environment
 {
-    public class GameArea
+    public class GameArea : IGameArea
     {
-        public GameArea()
-        {
-            CleanField();
-        }
-
         public IBaseCell[,] Cells { get; private set; }
 
         public void CleanField()
@@ -22,7 +18,7 @@ namespace GenericLife.Models
             GenerateRandomWall();
         }
 
-        public IEnumerable<T> Select<T>()
+        public IEnumerable<T> SelectIf<T>()
         {
             return Cells.Cast<IBaseCell>().Where(cell => cell is T).Cast<T>();
         }
@@ -34,15 +30,27 @@ namespace GenericLife.Models
 
         public IBaseCell GetCellOnPosition(Coordinate position)
         {
-            if (position.X < 0 || position.X >= Configuration.FieldSize
-                               || position.Y < 0
-                               || position.Y >= Configuration.FieldSize)
+            if (position.X < 0
+                || position.X >= Configuration.FieldSize
+                || position.Y < 0
+                || position.Y >= Configuration.FieldSize)
                 return new WallCell
                 {
                     Position = position
                 };
 
             return Cells[position.Y, position.X];
+        }
+
+        public void TryEat(IGenericCell sender, Coordinate foodPosition)
+        {
+            IBaseCell cellOnWay = GetCellOnPosition(foodPosition);
+            PointType cellType = cellOnWay.GetPointType();
+            if (cellType != PointType.Food)
+                throw new ArgumentException();
+
+            sender.Health += ((FoodCell)cellOnWay).HealthIncome();
+            RemoveCell(cellOnWay);
         }
 
         public void RemoveCell(IBaseCell cell)
@@ -63,8 +71,9 @@ namespace GenericLife.Models
 
         private void GenerateRandomWall()
         {
+            //TODO: random, heh
             for (var i = 0; i < Configuration.FieldSize / 3; i++)
-                AddCell(new WallCell {Field = this, Position = new Coordinate(i, Configuration.FieldSize / 3)});
+                AddCell(new WallCell {Position = new Coordinate(i, Configuration.FieldSize / 3)});
         }
     }
 }
