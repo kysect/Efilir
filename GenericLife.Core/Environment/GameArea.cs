@@ -17,6 +17,11 @@ namespace GenericLife.Core.Environment
             Cells = new IBaseCell[Configuration.FieldSize, Configuration.FieldSize];
             GenerateRandomWall();
         }
+        public void CleanField(int[,] cells)
+        {
+            Cells = new IBaseCell[Configuration.FieldSize, Configuration.FieldSize];
+            GenerateGameField(cells);
+        }
 
         public IEnumerable<T> SelectIf<T>()
         {
@@ -74,6 +79,25 @@ namespace GenericLife.Core.Environment
             //TODO: random, heh
             for (var i = 0; i < Configuration.FieldSize / 3; i++)
                 AddCell(new WallCell {Position = new Coordinate(i, Configuration.FieldSize / 3)});
+        }
+
+
+        private void GenerateGameField(int[,] cells)
+        {
+            //TODO: random, heh
+            for (var i = 0; i < Configuration.FieldSize; i++)
+            {
+                for(var j = 0; j < Configuration.FieldSize; j++)
+                {
+                    switch(cells[i, j])
+                    {
+                        case 1: AddCell(new WallCell { Position = new Coordinate(j, i)}); break;
+                        default: Console.WriteLine($"An unexpected value"); break;
+
+                    }
+                }
+            }
+               
         }
     }
 }
