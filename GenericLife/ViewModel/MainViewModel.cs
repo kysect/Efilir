@@ -17,14 +17,18 @@ namespace GenericLife.ViewModel
 
         public void StartSimulator()
         {
-            while (Polygon.CellField.GetAliveCellCount() > 8)
+            while (!Polygon.SimulationFinished)
             {
                 if (!IsActive)
                     return;
-                Polygon.RandomMove();
+
+                Polygon.SimulateRound();
                 //TODO: Fix
                 Application.Current.Dispatcher.Invoke(() => Polygon.UpdateUi());
             }
+
+            Polygon.SaveCells();
+            Polygon.LoadCells();
         }
     }
 }
