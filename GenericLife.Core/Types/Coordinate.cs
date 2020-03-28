@@ -17,5 +17,15 @@
             int newY = left.Y + right.Y;
             return new Coordinate(newX, newY);
         }
+
+        public static bool operator ==(Coordinate left, Coordinate right)
+        {
+            return left.X == right.X && left.Y == right.Y;
+        }
+
+        public static bool operator !=(Coordinate left, Coordinate right)
+        {
+            return !(left == right);
+        }
     }
 }
