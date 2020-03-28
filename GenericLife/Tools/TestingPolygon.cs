@@ -12,35 +12,16 @@ namespace GenericLife.Tools
         private readonly PixelDrawer _pd;
         public readonly SimulationManger CellField;
 
-        public TestingPolygon(PixelDrawer pd, SimulationManger cellField)
-        {
-            _pd = pd;
-            CellField = cellField;
-        }
-
         public TestingPolygon(Image image)
         {
-            _pd = new PixelDrawer(image);
+            _pd = new PixelDrawer(image, Configuration.FieldSize, Configuration.ScaleSize);
             CellField = new SimulationManger();
         }
 
-
-        public void UpdateUi()
-        {
-            IBaseCell[,] cells = CellField.GetAllCells();
-            _pd.DrawPoints(cells);
-        }
-
-        public void RandomMove()
-        {
-            CellField.MakeCellsMove();
-        }
-
-        public void SaveCells()
-        {
-            List<IGenericCell> cells = CellField.GetAllGenericCells();
-            DataSaver.Save(cells);
-        }
+        public void UpdateUi() => _pd.DrawPoints(CellField.GetAllCells());
+        public void SimulateRound() => CellField.MakeCellsMove();
+        public bool SimulationFinished => CellField.GetAliveCellCount() <= 8;
+        public void SaveCells() => DataSaver.Save(CellField.GetAllGenericCells());
 
         public void LoadCells()
         {
