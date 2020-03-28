@@ -32,6 +32,7 @@ namespace GenericLife
         {
             while (_viewModel.IsActive)
             {
+                _viewModel.Reload();
                 _viewModel.StartSimulator();
                 UpdateInfoBox();
                 Thread.Sleep(300);
