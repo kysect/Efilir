@@ -1,3 +1,4 @@
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using GenericLife.Core.Cells;
@@ -10,6 +11,7 @@ namespace GenericLife.Core.Environment
     {
         private const int FoodCount = Configuration.FoodCount;
         private readonly GameArea _gameArea = new GameArea();
+        private List<IGenericCell> _allLifeCells;
 
         public SimulationManger()
         {
@@ -18,7 +20,7 @@ namespace GenericLife.Core.Environment
 
         public List<IGenericCell> GetAllGenericCells()
         {
-            return _gameArea.SelectIf<IGenericCell>().ToList();
+            return _allLifeCells;
         }
 
         public void DeleteAllElements()
@@ -45,19 +47,17 @@ namespace GenericLife.Core.Environment
                 }
             }
 
-            //var deadCellList = Cells.Where(c => c.IsAlive() == false).ToList();
-            //foreach (var deadCell in deadCellList)
-            //{
-            //    Cells.Remove(deadCell);
-
-            //    //TODO: replace dead cell with food or ...??
-            //    //_gameArea.RemoveCell(deadCell);
-            //}
+            List<IGenericCell> deadCellList = _gameArea.SelectIf<IGenericCell>().Where(c => c.IsAlive() == false).ToList();
+            foreach (IGenericCell deadCell in deadCellList)
+            {
+                _gameArea.AddCell(new FoodCell(deadCell.Position));
+            }
         }
 
         public void InitializeLiveCells(IEnumerable<IGenericCell> cellsList)
         {
-            foreach (IGenericCell liveCell in cellsList)
+            _allLifeCells = cellsList.ToList();
+            foreach (IGenericCell liveCell in _allLifeCells)
             {
                 liveCell.Position = _gameArea.GetEmptyPosition();
                 _gameArea.AddCell(liveCell);
@@ -66,7 +66,7 @@ namespace GenericLife.Core.Environment
 
         public int GetAliveCellCount()
         {
-            return _gameArea.SelectIf<IGenericCell>().Count(c => c.Health > 0);
+            return _allLifeCells.Count(c => c.Health > 0);
         }
 
         private void AddFood()
