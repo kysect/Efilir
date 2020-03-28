@@ -55,7 +55,12 @@ namespace GenericLife.Core.Environment
 
         public void RemoveCell(IBaseCell cell)
         {
-            Cells[cell.Position.Y, cell.Position.X] = null;
+            RemoveCell(cell.Position);
+        }
+
+        public void RemoveCell(Coordinate position)
+        {
+            Cells[position.Y, position.X] = null;
         }
 
         public Coordinate GetEmptyPosition()

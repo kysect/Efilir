@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using GenericLife.Core.Cells;
 using GenericLife.Core.Tools;
@@ -35,7 +35,15 @@ namespace GenericLife.Core.Environment
         {
             UpdateFoodCount();
             foreach (var cell in _gameArea.SelectIf<IBaseCell>())
+            {
+                Coordinate oldPosition = cell.Position;
                 cell.MakeTurn(_gameArea);
+                if (oldPosition != cell.Position)
+                {
+                    _gameArea.RemoveCell(oldPosition);
+                    _gameArea.AddCell(cell);
+                }
+            }
 
             //var deadCellList = Cells.Where(c => c.IsAlive() == false).ToList();
             //foreach (var deadCell in deadCellList)
