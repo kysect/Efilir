@@ -26,7 +26,10 @@ namespace GenericLife.ViewModel
                 //TODO: Fix
                 Application.Current.Dispatcher.Invoke(() => Polygon.UpdateUi());
             }
+        }
 
+        public void Reload()
+        {
             Polygon.SaveCells();
             Polygon.LoadCells();
         }
