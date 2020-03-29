@@ -32,9 +32,9 @@ namespace GenericLife.Core.Tools
         {
             var gen = new List<List<int>>();
 
-            for (var i = 0; i < 64; i++)
+            for (var i = 0; i < Configuration.LiveCellCount; i++)
             {
-                gen.Add(GlobalRand.GenerateCommandList());
+                gen.Add(GlobalRand.RandomList(Configuration.GenCount, Configuration.GenMaxValue));
             }
 
             return gen;
