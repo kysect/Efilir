@@ -35,6 +35,7 @@ namespace GenericLife.Core.Environment
         public void MakeCellsMove()
         {
             UpdateFoodCount();
+            UpdateTrapCount();
             foreach (var cell in _gameArea.SelectIf<IBaseCell>())
             {
                 Coordinate oldPosition = cell.Position;
@@ -80,5 +81,18 @@ namespace GenericLife.Core.Environment
             while (_gameArea.SelectIf<FoodCell>().Count() < FoodCount)
                 AddFood();
         }
+
+        private void AddTrap()
+        {
+            Coordinate pos = _gameArea.GetEmptyPosition();
+            var newTrap = new TrapCell(pos);
+            _gameArea.AddCell(newTrap);
+        }
+        private void UpdateTrapCount()
+        {
+            while (_gameArea.SelectIf<TrapCell>().Count() < Configuration.TrapCount)
+                AddTrap();
+        }
+
     }
 }

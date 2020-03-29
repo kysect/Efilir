@@ -12,7 +12,7 @@ namespace GenericLife.Tools
             {
                 case FoodCell _:
                     return Colors.GreenYellow;
-                case IGenericCell lc when !lc.IsAlive():
+                case TrapCell _:
                     return Colors.IndianRed;
                 case IGenericCell _:
                     return Colors.AliceBlue;

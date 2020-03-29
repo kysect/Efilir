@@ -11,5 +11,6 @@
         public const int GenCount = 64;
         public const int GenMaxValue = 65;
         public const int LiveCellCount = 64;
+        public const int TrapCount = 7;
     }
 }
