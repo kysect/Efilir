@@ -21,11 +21,6 @@ namespace GenericLife.Core.Tools
             return list;
         }
 
-        public static List<int> GenerateCommandList()
-        {
-            return RandomList(64, 64);
-        }
-
         public static Coordinate GeneratePosition(int maxSize)
         {
             return new Coordinate(Next(maxSize), Next(maxSize));

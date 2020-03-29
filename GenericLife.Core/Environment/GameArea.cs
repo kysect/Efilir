@@ -10,11 +10,17 @@ namespace GenericLife.Core.Environment
 {
     public class GameArea : IGameArea
     {
+        public GameArea(int areaSize)
+        {
+            AreaSize = areaSize;
+        }
+
         public IBaseCell[,] Cells { get; private set; }
+        public int AreaSize { get; }
 
         public void CleanField()
         {
-            Cells = new IBaseCell[Configuration.FieldSize, Configuration.FieldSize];
+            Cells = new IBaseCell[AreaSize, AreaSize];
             GenerateRandomWall();
         }
 
@@ -31,9 +37,9 @@ namespace GenericLife.Core.Environment
         public IBaseCell GetCellOnPosition(Coordinate position)
         {
             if (position.X < 0
-                || position.X >= Configuration.FieldSize
+                || position.X >= AreaSize
                 || position.Y < 0
-                || position.Y >= Configuration.FieldSize)
+                || position.Y >= AreaSize)
                 return new WallCell
                 {
                     Position = position
@@ -68,7 +74,7 @@ namespace GenericLife.Core.Environment
             Coordinate newPos;
             do
             {
-                newPos = GlobalRand.GeneratePosition(Configuration.FieldSize);
+                newPos = GlobalRand.GeneratePosition(AreaSize);
             } while (GetCellOnPosition(newPos) != null);
 
             return newPos;
@@ -77,8 +83,8 @@ namespace GenericLife.Core.Environment
         private void GenerateRandomWall()
         {
             //TODO: random, heh
-            for (var i = 0; i < Configuration.FieldSize / 3; i++)
-                AddCell(new WallCell {Position = new Coordinate(i, Configuration.FieldSize / 3)});
+            for (var i = 0; i < AreaSize / 3; i++)
+                AddCell(new WallCell {Position = new Coordinate(i, AreaSize / 3)});
         }
     }
 }

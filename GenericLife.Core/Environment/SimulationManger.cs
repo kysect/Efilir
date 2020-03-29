@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using GenericLife.Core.Cells;
@@ -10,7 +10,7 @@ namespace GenericLife.Core.Environment
     public class SimulationManger
     {
         private const int FoodCount = Configuration.FoodCount;
-        private readonly GameArea _gameArea = new GameArea();
+        private readonly GameArea _gameArea = new GameArea(Configuration.FieldSize);
         private List<IGenericCell> _allLifeCells;
 
         public SimulationManger()
