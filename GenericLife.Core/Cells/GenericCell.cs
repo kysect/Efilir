@@ -62,6 +62,11 @@ namespace GenericLife.Core.Cells
             {
                 //Attack?
             }
+
+            if (cellType == PointType.Trap)
+            {
+                Health = 0;
+            }
         }
 
         public Coordinate AnalyzePosition(int commandRotate)
