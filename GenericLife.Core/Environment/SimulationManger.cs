@@ -1,5 +1,4 @@
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using GenericLife.Core.Cells;
 using GenericLife.Core.Tools;
@@ -47,7 +46,7 @@ namespace GenericLife.Core.Environment
                 }
             }
 
-            List<IGenericCell> deadCellList = _gameArea.SelectIf<IGenericCell>().Where(c => c.IsAlive() == false).ToList();
+            List<IGenericCell> deadCellList = _gameArea.SelectIf<IGenericCell>().Where(c => !c.IsAlive()).ToList();
             foreach (IGenericCell deadCell in deadCellList)
             {
                 _gameArea.AddCell(new FoodCell(deadCell.Position));
@@ -66,7 +65,7 @@ namespace GenericLife.Core.Environment
 
         public int GetAliveCellCount()
         {
-            return _allLifeCells.Count(c => c.Health > 0);
+            return _allLifeCells.Count(c => c.IsAlive());
         }
 
         private void AddFood()
@@ -78,7 +77,8 @@ namespace GenericLife.Core.Environment
 
         private void UpdateFoodCount()
         {
-            while (_gameArea.SelectIf<FoodCell>().Count() < FoodCount) AddFood();
+            while (_gameArea.SelectIf<FoodCell>().Count() < FoodCount)
+                AddFood();
         }
     }
 }

@@ -7,6 +7,7 @@ namespace GenericLife.Core.Types
     {
         Void = 0,
         Cell = 1,
+        //TODO: probably, can be safety removed
         DeadCell = 2,
         Wall = 3,
         Food = 4
