@@ -9,17 +9,17 @@ namespace GenericLife.Core.Environment
     public class SimulationManger
     {
         private const int FoodCount = Configuration.FoodCount;
-        private readonly GameArea _gameArea = new GameArea(Configuration.FieldSize);
-        private List<IGenericCell> _allLifeCells;
+        private readonly GameArea _gameArea;
 
         public SimulationManger()
         {
+            _gameArea = new GameArea(Configuration.FieldSize);
             DeleteAllElements();
         }
 
         public List<IGenericCell> GetAllGenericCells()
         {
-            return _allLifeCells;
+            return _gameArea.GenericCells;
         }
 
         public void DeleteAllElements()
@@ -55,8 +55,8 @@ namespace GenericLife.Core.Environment
 
         public void InitializeLiveCells(IEnumerable<IGenericCell> cellsList)
         {
-            _allLifeCells = cellsList.ToList();
-            foreach (IGenericCell liveCell in _allLifeCells)
+            _gameArea.GenericCells = cellsList.ToList();
+            foreach (IGenericCell liveCell in _gameArea.GenericCells)
             {
                 liveCell.Position = _gameArea.GetEmptyPosition();
                 _gameArea.AddCell(liveCell);
@@ -65,7 +65,7 @@ namespace GenericLife.Core.Environment
 
         public int GetAliveCellCount()
         {
-            return _allLifeCells.Count(c => c.IsAlive());
+            return _gameArea.GenericCells.Count(c => c.IsAlive());
         }
 
         private void AddFood()

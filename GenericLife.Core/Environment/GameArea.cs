@@ -10,6 +10,8 @@ namespace GenericLife.Core.Environment
 {
     public class GameArea : IGameArea
     {
+        public List<IGenericCell> GenericCells { get; set; }
+
         public GameArea(int areaSize)
         {
             AreaSize = areaSize;
@@ -57,6 +59,23 @@ namespace GenericLife.Core.Environment
 
             sender.Health += ((FoodCell)cellOnWay).HealthIncome();
             RemoveCell(cellOnWay);
+        }
+
+        public bool TryCreateCellChild(IGenericCell cell)
+        {
+            foreach (Coordinate coordinate in cell.Position.EnumerateAround(cell.CurrentRotate))
+            {
+                if (GetCellOnPosition(coordinate) is null)
+                {
+                    var child = new GenericCell(cell.Brain) {Health = cell.Health / 3, Position = coordinate};
+                    AddCell(child);
+                    cell.Health /= 3;
+                    GenericCells.Add(child);
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public void RemoveCell(IBaseCell cell)

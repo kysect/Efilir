@@ -1,4 +1,6 @@
-﻿namespace GenericLife.Core.Types
+﻿using System.Collections.Generic;
+
+namespace GenericLife.Core.Types
 {
     public class Coordinate
     {
@@ -10,6 +12,12 @@
 
         public int X { get; }
         public int Y { get; }
+
+        public IEnumerable<Coordinate> EnumerateAround(AngleRotation from)
+        {
+            for (var i = 0; i < 8; i++)
+                yield return this + (from + i).GetRotation();
+        }
 
         public static Coordinate operator +(Coordinate left, Coordinate right)
         {
