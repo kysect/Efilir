@@ -12,7 +12,7 @@ namespace GenericLife.Core.Algorithms
             var cellsList = new List<IGenericCell>();
             foreach (List<int> commandList in jsonData)
             {
-                List<int> newList = commandList.Select(v => GlobalRand.Next(64)).ToList();
+                List<int> newList = commandList.Select(v => GlobalRand.Next(Configuration.GenMaxValue)).ToList();
                 cellsList.Add(new GenericCell(new CellBrain(newList)));
             }
 

@@ -7,5 +7,6 @@ namespace GenericLife.Core.Algorithms
     {
         IBaseCell GetCellOnPosition(Coordinate position);
         void TryEat(IGenericCell sender, Coordinate foodPosition);
+        bool TryCreateCellChild(IGenericCell cell);
     }
 }
