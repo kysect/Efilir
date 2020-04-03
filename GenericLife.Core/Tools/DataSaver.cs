@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using GenericLife.Core.Cells;
@@ -9,6 +10,7 @@ namespace GenericLife.Core.Tools
     public static class DataSaver
     {
         private const string FileName = @"data.json";
+        private const string FieldFileName = @"dataField.json";
 
         public static void Save(IEnumerable<IGenericCell> list)
         {
@@ -38,6 +40,25 @@ namespace GenericLife.Core.Tools
             }
 
             return gen;
+        }
+
+        public static int[,] LoadField()
+        {
+           if(File.Exists(FieldFileName) == false)
+            {
+                return null;
+            }
+           else
+            {
+                try
+                {
+                    return JsonConvert.DeserializeObject<int[,]>(File.ReadAllText(FieldFileName));
+                }
+                catch(Exception e)
+                {
+                    throw e;
+                }
+            }
         }
     }
 }

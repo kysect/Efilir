@@ -15,7 +15,15 @@ namespace GenericLife.Tools
         public TestingPolygon(Image image)
         {
             _pd = new PixelDrawer(image, Configuration.FieldSize, Configuration.ScaleSize);
-            CellField = new SimulationManger();
+            int[,] field = DataSaver.LoadField();
+            if (field == null)
+            {
+                CellField = new SimulationManger();
+            }
+            else
+            {
+                CellField = new SimulationManger(field);
+            }
         }
 
         public void UpdateUi() => _pd.DrawPoints(CellField.GetAllCells());
@@ -27,8 +35,12 @@ namespace GenericLife.Tools
         {
             List<List<int>> jsonData = DataSaver.Load();
             List<IGenericCell> generatedCells = GeneticCellMutation.GenerateNewCells(jsonData);
+            var field = DataSaver.LoadField(); 
+            if(field == null)
+                CellField.DeleteAllElements();
+            else
+                CellField.DeleteAllElements(field);
 
-            CellField.DeleteAllElements();
             CellField.InitializeLiveCells(generatedCells);
         }
     }
