@@ -92,7 +92,7 @@ namespace GenericLife.Core.Environment
                     switch(cells[i, j])
                     {
                         case 1: AddCell(new WallCell { Position = new Coordinate(j, i)}); break;
-                        default: Console.WriteLine($"An unexpected value"); break;
+     
 
                     }
                 }
