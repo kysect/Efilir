@@ -1,7 +1,9 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using GenericLife.Core.Cells;
 using GenericLife.ViewModel;
 
 namespace GenericLife
@@ -30,22 +32,22 @@ namespace GenericLife
         {
             while (_viewModel.IsActive)
             {
+                _viewModel.Reload();
                 _viewModel.StartSimulator();
                 UpdateInfoBox();
-
-                _viewModel.Polygon.SaveCells();
-                _viewModel.Polygon.LoadCells();
                 Thread.Sleep(300);
             }
         }
 
         private void UpdateInfoBox()
         {
-            var cellList = _viewModel.Polygon.CellField.GetAllGenericCells();
-            var orderByDescending = cellList
+            List<IGenericCell> cellList = _viewModel.Polygon.CellField.GetAllGenericCells();
+
+            IOrderedEnumerable<IGenericCell> orderByDescending = cellList
                 .OrderByDescending(c => c.Age)
                 .ThenByDescending(c => c.Health);
 
+            // UI-thread executing.
             Application.Current.Dispatcher.Invoke(() =>
             {
                 CellData.ItemsSource = orderByDescending;

@@ -7,9 +7,11 @@ namespace GenericLife.Core.Types
     {
         Void = 0,
         Cell = 1,
+        //TODO: probably, can be safety removed
         DeadCell = 2,
         Wall = 3,
-        Food = 4
+        Food = 4,
+        Trap = 5
     }
 
     public static class Extension
@@ -24,6 +26,8 @@ namespace GenericLife.Core.Types
                     return PointType.Wall;
                 case IGenericCell lc:
                     return lc.IsAlive() ? PointType.Cell : PointType.DeadCell;
+                case TrapCell _:
+                    return PointType.Trap;
                 default:
                     throw new ArgumentException();
             }
