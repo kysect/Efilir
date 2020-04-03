@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using GenericLife.Core.Cells;
@@ -49,7 +50,14 @@ namespace GenericLife.Core.Tools
             }
            else
             {
-                return JsonConvert.DeserializeObject<int[,]>(File.ReadAllText(FieldFileName));
+                try
+                {
+                    return JsonConvert.DeserializeObject<int[,]>(File.ReadAllText(FieldFileName));
+                }
+                catch(Exception e)
+                {
+                    throw e;
+                }
             }
         }
     }
