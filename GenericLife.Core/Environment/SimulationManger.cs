@@ -16,6 +16,10 @@ namespace GenericLife.Core.Environment
             _gameArea = new GameArea(Configuration.FieldSize);
             DeleteAllElements();
         }
+        public SimulationManger(int[,] cells)
+        {
+            DeleteAllElements(cells);
+        }
 
         public List<IGenericCell> GetAllGenericCells()
         {
@@ -25,6 +29,10 @@ namespace GenericLife.Core.Environment
         public void DeleteAllElements()
         {
             _gameArea.CleanField();
+        }
+        public void DeleteAllElements(int[,] cells)
+        {
+            _gameArea.CleanField(cells);
         }
 
         public IBaseCell[,] GetAllCells()
