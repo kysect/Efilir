@@ -9,10 +9,11 @@ namespace GenericLife.Core.Environment
     public class SimulationManger
     {
         private const int FoodCount = Configuration.FoodCount;
-        private readonly GameArea _gameArea = new GameArea();
+        private readonly GameArea _gameArea;
 
         public SimulationManger()
         {
+            _gameArea = new GameArea(Configuration.FieldSize);
             DeleteAllElements();
         }
         public SimulationManger(int[,] cells)
@@ -22,7 +23,7 @@ namespace GenericLife.Core.Environment
 
         public List<IGenericCell> GetAllGenericCells()
         {
-            return _gameArea.SelectIf<IGenericCell>().ToList();
+            return _gameArea.GenericCells;
         }
 
         public void DeleteAllElements()
@@ -42,22 +43,29 @@ namespace GenericLife.Core.Environment
         public void MakeCellsMove()
         {
             UpdateFoodCount();
+            UpdateTrapCount();
             foreach (var cell in _gameArea.SelectIf<IBaseCell>())
+            {
+                Coordinate oldPosition = cell.Position;
                 cell.MakeTurn(_gameArea);
+                if (oldPosition != cell.Position)
+                {
+                    _gameArea.RemoveCell(oldPosition);
+                    _gameArea.AddCell(cell);
+                }
+            }
 
-            //var deadCellList = Cells.Where(c => c.IsAlive() == false).ToList();
-            //foreach (var deadCell in deadCellList)
-            //{
-            //    Cells.Remove(deadCell);
-
-            //    //TODO: replace dead cell with food or ...??
-            //    //_gameArea.RemoveCell(deadCell);
-            //}
+            List<IGenericCell> deadCellList = _gameArea.SelectIf<IGenericCell>().Where(c => !c.IsAlive()).ToList();
+            foreach (IGenericCell deadCell in deadCellList)
+            {
+                _gameArea.AddCell(new FoodCell(deadCell.Position));
+            }
         }
 
         public void InitializeLiveCells(IEnumerable<IGenericCell> cellsList)
         {
-            foreach (IGenericCell liveCell in cellsList)
+            _gameArea.GenericCells = cellsList.ToList();
+            foreach (IGenericCell liveCell in _gameArea.GenericCells)
             {
                 liveCell.Position = _gameArea.GetEmptyPosition();
                 _gameArea.AddCell(liveCell);
@@ -66,7 +74,7 @@ namespace GenericLife.Core.Environment
 
         public int GetAliveCellCount()
         {
-            return _gameArea.SelectIf<IGenericCell>().Count(c => c.Health > 0);
+            return _gameArea.GenericCells.Count(c => c.IsAlive());
         }
 
         private void AddFood()
@@ -78,7 +86,21 @@ namespace GenericLife.Core.Environment
 
         private void UpdateFoodCount()
         {
-            while (_gameArea.SelectIf<FoodCell>().Count() < FoodCount) AddFood();
+            while (_gameArea.SelectIf<FoodCell>().Count() < FoodCount)
+                AddFood();
         }
+
+        private void AddTrap()
+        {
+            Coordinate pos = _gameArea.GetEmptyPosition();
+            var newTrap = new TrapCell(pos);
+            _gameArea.AddCell(newTrap);
+        }
+        private void UpdateTrapCount()
+        {
+            while (_gameArea.SelectIf<TrapCell>().Count() < Configuration.TrapCount)
+                AddTrap();
+        }
+
     }
 }

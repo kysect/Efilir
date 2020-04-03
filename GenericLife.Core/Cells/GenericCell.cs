@@ -27,10 +27,7 @@ namespace GenericLife.Core.Cells
             IncreaseAge();
         }
 
-        public bool IsAlive()
-        {
-            return Health > 0;
-        }
+        public bool IsAlive() => Health > 0;
 
         public void MoveCommand(int commandRotate, IGameArea gameArea)
         {
@@ -64,6 +61,11 @@ namespace GenericLife.Core.Cells
             if (cellType == PointType.Cell)
             {
                 //Attack?
+            }
+
+            if (cellType == PointType.Trap)
+            {
+                Health = 0;
             }
         }
 

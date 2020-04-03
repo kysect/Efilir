@@ -10,11 +10,19 @@ namespace GenericLife.Core.Environment
 {
     public class GameArea : IGameArea
     {
+        public List<IGenericCell> GenericCells { get; set; }
+
+        public GameArea(int areaSize)
+        {
+            AreaSize = areaSize;
+        }
+
         public IBaseCell[,] Cells { get; private set; }
+        public int AreaSize { get; }
 
         public void CleanField()
         {
-            Cells = new IBaseCell[Configuration.FieldSize, Configuration.FieldSize];
+            Cells = new IBaseCell[AreaSize, AreaSize];
             GenerateRandomWall();
         }
         public void CleanField(int[,] cells)
@@ -36,9 +44,9 @@ namespace GenericLife.Core.Environment
         public IBaseCell GetCellOnPosition(Coordinate position)
         {
             if (position.X < 0
-                || position.X >= Configuration.FieldSize
+                || position.X >= AreaSize
                 || position.Y < 0
-                || position.Y >= Configuration.FieldSize)
+                || position.Y >= AreaSize)
                 return new WallCell
                 {
                     Position = position
@@ -58,9 +66,31 @@ namespace GenericLife.Core.Environment
             RemoveCell(cellOnWay);
         }
 
+        public bool TryCreateCellChild(IGenericCell cell)
+        {
+            foreach (Coordinate coordinate in cell.Position.EnumerateAround(cell.CurrentRotate))
+            {
+                if (GetCellOnPosition(coordinate) is null)
+                {
+                    var child = new GenericCell(cell.Brain) {Health = cell.Health / 3, Position = coordinate};
+                    AddCell(child);
+                    cell.Health /= 3;
+                    GenericCells.Add(child);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public void RemoveCell(IBaseCell cell)
         {
-            Cells[cell.Position.Y, cell.Position.X] = null;
+            RemoveCell(cell.Position);
+        }
+
+        public void RemoveCell(Coordinate position)
+        {
+            Cells[position.Y, position.X] = null;
         }
 
         public Coordinate GetEmptyPosition()
@@ -68,7 +98,7 @@ namespace GenericLife.Core.Environment
             Coordinate newPos;
             do
             {
-                newPos = GlobalRand.GeneratePosition(Configuration.FieldSize);
+                newPos = GlobalRand.GeneratePosition(AreaSize);
             } while (GetCellOnPosition(newPos) != null);
 
             return newPos;
@@ -77,8 +107,8 @@ namespace GenericLife.Core.Environment
         private void GenerateRandomWall()
         {
             //TODO: random, heh
-            for (var i = 0; i < Configuration.FieldSize / 3; i++)
-                AddCell(new WallCell {Position = new Coordinate(i, Configuration.FieldSize / 3)});
+            for (var i = 0; i < AreaSize / 3; i++)
+                AddCell(new WallCell {Position = new Coordinate(i, AreaSize / 3)});
         }
 
 

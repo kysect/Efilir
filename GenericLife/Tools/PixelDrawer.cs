@@ -3,17 +3,21 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GenericLife.Core.Cells;
-using GenericLife.Core.Tools;
 
 namespace GenericLife.Tools
 {
     public class PixelDrawer
     {
-        private const int Size = Configuration.FieldSize * Configuration.ScaleSize;
+        private int Size => _fieldSize * _scaleSize;
+        private readonly int _fieldSize;
+        private readonly int _scaleSize;
+
         private readonly WriteableBitmap _writableBitmap;
 
-        public PixelDrawer(Image image)
+        public PixelDrawer(Image image, int fieldSize, int scaleSize)
         {
+            _fieldSize = fieldSize;
+            _scaleSize = scaleSize;
             image.Height = Size;
             image.Width = Size;
 
@@ -33,17 +37,17 @@ namespace GenericLife.Tools
             var pixels = new byte[Size, Size, 4];
             PrintBackgroundWithBlack(pixels);
 
-            for (var y = 0; y < Configuration.FieldSize; y++)
-                for (var x = 0; x < Configuration.FieldSize; x++)
+            for (var y = 0; y < _fieldSize; y++)
+                for (var x = 0; x < _fieldSize; x++)
                 {
                     IBaseCell cell = cells[y, x];
                     if (cell == null) continue;
 
-                    for (var addX = 0; addX < Configuration.ScaleSize; addX++)
-                        for (var addY = 0; addY < Configuration.ScaleSize; addY++)
+                    for (var addX = 0; addX < _scaleSize; addX++)
+                        for (var addY = 0; addY < _scaleSize; addY++)
                             PutPixel(pixels,
-                                cell.Position.X * Configuration.ScaleSize + addX,
-                                cell.Position.Y * Configuration.ScaleSize + addY,
+                                cell.Position.X * _scaleSize + addX,
+                                cell.Position.Y * _scaleSize + addY,
                                 cell);
                 }
 
@@ -58,7 +62,7 @@ namespace GenericLife.Tools
             pixels[positionY, positionX, 2] = color.R;
         }
 
-        private static void PrintBackgroundWithBlack(byte[,,] pixels)
+        private void PrintBackgroundWithBlack(byte[,,] pixels)
         {
             for (var row = 0; row < Size; row++)
                 for (var col = 0; col < Size; col++)
@@ -69,7 +73,7 @@ namespace GenericLife.Tools
                 }
         }
 
-        private static byte[] TransformTo1D(byte[,,] pixels)
+        private byte[] TransformTo1D(byte[,,] pixels)
         {
             var pixels1D = new byte[Size * Size * 4];
 
@@ -86,7 +90,7 @@ namespace GenericLife.Tools
         {
             byte[] pixels1D = TransformTo1D(pixels);
             var rect = new Int32Rect(0, 0, Size, Size);
-            const int stride = 4 * Size;
+            int stride = 4 * Size;
 
             _writableBitmap.WritePixels(rect, pixels1D, stride, 0);
         }

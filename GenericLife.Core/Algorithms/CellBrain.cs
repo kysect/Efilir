@@ -38,6 +38,12 @@ namespace GenericLife.Core.Algorithms
 
         private bool GenerateCommand(int commandId, IGenericCell cell, IGameArea gameArea)
         {
+            //TODO: fix
+            if (commandId == 64)
+            {
+                CreateChild(cell, gameArea);
+            }
+
             //Command shift
             if (commandId >= 32)
             {
@@ -91,6 +97,15 @@ namespace GenericLife.Core.Algorithms
                 shift = 4;
 
             CurrentCommandIndex += shift;
+        }
+
+        private void CreateChild(IGenericCell cell, IGameArea gameArea)
+        {
+            //TODO: replace const with gen parameter
+            if (cell.Health > 60)
+            {
+                gameArea.TryCreateCellChild(cell);
+            }
         }
     }
 }
