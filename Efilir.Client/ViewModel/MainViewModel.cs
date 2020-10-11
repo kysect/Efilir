@@ -17,6 +17,9 @@ namespace Efilir.Client.ViewModel
 
         public void StartSimulator()
         {
+            if (Polygon.SimulationFinished)
+                Reload();
+
             while (!Polygon.SimulationFinished)
             {
                 if (!IsActive)
