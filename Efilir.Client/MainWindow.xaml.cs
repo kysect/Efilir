@@ -16,11 +16,6 @@ namespace Efilir.Client
         {
             InitializeComponent();
             _viewModel = new MainViewModel(ImageView);
-        }
-
-        private void Start_ButtonClick(object sender, RoutedEventArgs e)
-        {
-            _viewModel.IsActive = true;
             _viewModel.Polygon.LoadCells();
 
             var worker = new BackgroundWorker();
@@ -28,14 +23,28 @@ namespace Efilir.Client
             worker.RunWorkerAsync();
         }
 
+        private void Start_ButtonClick(object sender, RoutedEventArgs e)
+        {
+            _viewModel.IsActive = true;
+        }
+
+        private void PauseButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.IsActive = false;
+        }
+
         private void StartSimulation(object sender, DoWorkEventArgs e)
         {
-            while (_viewModel.IsActive)
+            while (true)
             {
-                _viewModel.Reload();
-                _viewModel.StartSimulator();
-                UpdateInfoBox();
-                Thread.Sleep(300);
+                while (_viewModel.IsActive)
+                {
+                    _viewModel.StartSimulator();
+                    UpdateInfoBox();
+                    Thread.Sleep(300);
+                }
+
+                Thread.Sleep(100);
             }
         }
 
