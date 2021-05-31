@@ -2,6 +2,7 @@
 using System.Windows.Media;
 using Efilir.Core.Cells;
 using Efilir.Core.Generics.Cells;
+using Efilir.Core.PredefinedCells.Cells;
 
 namespace Efilir.Client.Tools
 {
@@ -16,6 +17,7 @@ namespace Efilir.Client.Tools
                 case TrapCell:
                     return Colors.IndianRed;
                 case IGenericCell:
+                case PredefinedCell:
                     return Colors.AliceBlue;
                 case WallCell:
                     return Colors.Gold;

@@ -16,8 +16,10 @@ namespace Efilir.Core.Types
             get => _rotate;
             set
             {
-                while (value < 0) value += 8;
-                if (value > 8) _rotate = value % 8;
+                while (value < 0)
+                    value += 8;
+
+                _rotate = value % 8;
             }
         }
 

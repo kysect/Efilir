@@ -17,7 +17,7 @@ namespace Efilir.Client
         {
             InitializeComponent();
 
-            GenericExecutionContext = CreateGenericContext();
+            GenericExecutionContext = CreatePredefined();
 
             var worker = new BackgroundWorker();
             worker.DoWork += StartSimulation;
@@ -39,7 +39,7 @@ namespace Efilir.Client
             while (true)
             {
                 GenericExecutionContext.StartSimulator();
-                Thread.Sleep(1000);
+                Thread.Sleep(300);
             }
         }
 
@@ -55,6 +55,12 @@ namespace Efilir.Client
         {
             var pixelDrawer = new PixelDrawer(ImageView, Configuration.FieldSize, Configuration.ScaleSize);
             return new GenericExecutionContext(pixelDrawer, this);
+        }
+
+        private IExecutionContext CreatePredefined()
+        {
+            var pixelDrawer = new PixelDrawer(ImageView, Configuration.FieldSize, Configuration.ScaleSize);
+            return new PredefinedCellExecutionContext(pixelDrawer);
         }
     }
 }
