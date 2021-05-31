@@ -1,4 +1,7 @@
-﻿using Efilir.Core.Cells;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Efilir.Core.Cells;
 using Efilir.Core.Environment;
 using Efilir.Core.Generics.Environment;
 using Efilir.Core.Tools;
@@ -12,31 +15,86 @@ namespace Efilir.Core.PredefinedCells.Cells
         public AngleRotation CurrentRotate { get; set; }
 
         private GameArea _gameArea;
+        private Vector _direction;
+        private Vector _realPosition;
 
         public PredefinedCell(GameArea gameArea, Coordinate position)
         {
             _gameArea = gameArea;
             Position = position;
-            CurrentRotate = GetRandomRotation();
+
+            _realPosition = new Vector(position.X, position.Y);
+            _direction = GetRandomRotation();
         }
 
         public void MakeTurn(IGenericGameArea gameArea)
         {
-            Coordinate newPosition = Position + CurrentRotate.GetRotation();
-            if (_gameArea.GetCellOnPosition(newPosition) is WallCell wallCell)
+            Vector newDirection = CalculateNewDirection();
+
+            _gameArea.RemoveCell(this);
+            _realPosition = RoundPosition(_realPosition + newDirection with {X = newDirection.X / newDirection.Length(), Y = newDirection.Y / newDirection.Length()});
+            Position = _realPosition.ToCoordinate();
+            _gameArea.AddCell(this);
+
+            if (_gameArea.GetCellOnPosition(_realPosition.ToCoordinate()) is WallCell wallCell)
             {
                 if (wallCell.WallType.HasFlag(WallType.Left) || wallCell.WallType.HasFlag(WallType.Right))
-                    CurrentRotate.InverseX();
+                {
+                    newDirection = newDirection with { X = newDirection.X * -1 };
+                }
 
                 if (wallCell.WallType.HasFlag(WallType.Top) || wallCell.WallType.HasFlag(WallType.Bottom))
-                    CurrentRotate.InverseY();
+                {
+                    newDirection = newDirection with { Y = newDirection.Y * -1 };
+                }
             }
-            else
+
+            _direction = newDirection;
+        }
+
+        public Vector CalculateNewDirection()
+        {
+            int maxLength = 100000;
+
+            List<PredefinedCell> predefinedCells = _gameArea.Cells
+                .OfType<PredefinedCell>()
+                .Where(c => Position.Distance(c.Position) < maxLength)
+                .ToList();
+
+            Vector newDirection = _direction;
+
+            foreach (PredefinedCell predefinedCell in predefinedCells)
             {
-                _gameArea.RemoveCell(this);
-                Position = newPosition;
-                _gameArea.AddCell(this);
+                Coordinate distance = predefinedCell.Position - Position;
+                newDirection += new Vector(CalcMoveVector(distance.X), CalcMoveVector(distance.Y));
             }
+
+            return newDirection;
+        }
+
+        private double CalcMoveVector(double distance)
+        {
+            if (Math.Abs(distance) < 1)
+                return 0;
+            return 5.0 / distance /*/ Math.Abs(distance)*/;
+
+        }
+
+        private Vector RoundPosition(Vector position)
+        {
+            double x = position.X;
+            if (x < 0)
+                x = 0;
+            if (x >= _gameArea.AreaSize)
+                x = _gameArea.AreaSize - 1;
+
+            double y = position.Y;
+            if (y < 0)
+                y = 0;
+            if (y >= _gameArea.AreaSize)
+                y = _gameArea.AreaSize - 1;
+
+            return new Vector(x, y);
         }
 
         public override string ToString()
@@ -44,9 +102,11 @@ namespace Efilir.Core.PredefinedCells.Cells
             return $"PredefinedCell on {Position} with angle {CurrentRotate} age";
         }
 
-        private AngleRotation GetRandomRotation()
+        private Vector GetRandomRotation()
         {
-            return new AngleRotation(GlobalRand.Next(8));
+            var rotation = new AngleRotation(GlobalRand.Next(8));
+            (int x, int y) = rotation.GetRotation();
+            return new Vector(x, y);
         }
     }
 }
