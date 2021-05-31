@@ -1,5 +1,6 @@
 ﻿using Efilir.Core.Cells;
 using Efilir.Core.Generics.Algorithms;
+using Efilir.Core.Generics.Environment;
 using Efilir.Core.Types;
 
 namespace Efilir.Core.Generics.Cells
@@ -19,7 +20,7 @@ namespace Efilir.Core.Generics.Cells
         public int Age { get; private set; }
         public Coordinate Position { get; set; }
 
-        public void MakeTurn(IGameArea gameArea)
+        public void MakeTurn(IGenericGameArea gameArea)
         {
             if (!IsAlive())
                 return;
@@ -30,7 +31,7 @@ namespace Efilir.Core.Generics.Cells
 
         public bool IsAlive() => Health > 0;
 
-        public void MoveCommand(int commandRotate, IGameArea gameArea)
+        public void MoveCommand(int commandRotate, IGenericGameArea gameArea)
         {
             ActionCommand(commandRotate, gameArea);
             
@@ -41,7 +42,7 @@ namespace Efilir.Core.Generics.Cells
                 Position = targetPosition;
         }
 
-        public void ActionCommand(int commandRotate, IGameArea gameArea)
+        public void ActionCommand(int commandRotate, IGenericGameArea gameArea)
         {
             //TODO: return cell, not only type
             Coordinate targetPosition = AnalyzePosition(commandRotate);

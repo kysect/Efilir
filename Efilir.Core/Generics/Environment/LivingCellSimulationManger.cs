@@ -11,98 +11,97 @@ namespace Efilir.Core.Generics.Environment
     public class LivingCellSimulationManger : IDrawableSimulation
     {
         private const int FoodCount = Configuration.FoodCount;
-        private readonly GameArea _gameArea;
+        private readonly GenericGameArea _genericGameArea;
 
         public LivingCellSimulationManger()
         {
-            _gameArea = new GameArea(Configuration.FieldSize);
+            _genericGameArea = new GenericGameArea(Configuration.FieldSize);
         }
 
-        public List<IGenericCell> GetAllGenericCells()
+        public IReadOnlyCollection<IGenericCell> GetAllGenericCells()
         {
-            return _gameArea.GenericCells;
+            return _genericGameArea.Cells.OfType<IGenericCell>().ToList();
         }
 
         public void DeleteAllElements()
         {
-            _gameArea.CleanField();
-            _gameArea.GenerateRandomWall();
+            _genericGameArea.CleanField();
+            _genericGameArea.GenerateRandomWall();
         }
 
         public void GenerateGameField(int[,] cells = null)
         {
             if (cells is null)
-                _gameArea.GenerateRandomWall();
+                _genericGameArea.GenerateRandomWall();
             else
-                _gameArea.GenerateGameField(cells);
+                _genericGameArea.GenerateGameField(cells);
         }
 
         public IBaseCell[,] GetAllCells()
         {
-            return _gameArea.Cells;
+            return _genericGameArea.Cells;
         }
 
         public void ProcessIteration()
         {
             UpdateFoodCount();
             UpdateTrapCount();
-            foreach (IBaseCell cell in _gameArea.SelectIf<IBaseCell>())
+            foreach (IBaseCell cell in _genericGameArea.Cells.OfType<IBaseCell>())
             {
                 Coordinate oldPosition = cell.Position;
-                cell.MakeTurn(_gameArea);
+                cell.MakeTurn(_genericGameArea);
                 if (oldPosition != cell.Position)
                 {
-                    _gameArea.RemoveCell(oldPosition);
-                    _gameArea.AddCell(cell);
+                    _genericGameArea.RemoveCell(oldPosition);
+                    _genericGameArea.AddCell(cell);
                 }
             }
 
-            List<IGenericCell> deadCellList = _gameArea.SelectIf<IGenericCell>().Where(c => !c.IsAlive()).ToList();
+            List<IGenericCell> deadCellList = _genericGameArea.Cells.OfType<IGenericCell>().Where(c => !c.IsAlive()).ToList();
             foreach (IGenericCell deadCell in deadCellList)
             {
-                _gameArea.AddCell(new FoodCell(deadCell.Position));
+                _genericGameArea.AddCell(new FoodCell(deadCell.Position));
             }
         }
 
         public void InitializeLiveCells(IEnumerable<IGenericCell> cellsList)
         {
-            _gameArea.GenericCells = cellsList.ToList();
-            foreach (IGenericCell liveCell in _gameArea.GenericCells)
+            foreach (IGenericCell liveCell in cellsList)
             {
-                liveCell.Position = _gameArea.GetEmptyPosition();
-                _gameArea.AddCell(liveCell);
+                liveCell.Position = _genericGameArea.GetEmptyPosition();
+                _genericGameArea.AddCell(liveCell);
             }
         }
 
         public bool IsSimulationActive()
         {
             //TODO: move as argument
-            return _gameArea.GenericCells.Count(c => c.IsAlive()) <= 8;
+            return _genericGameArea.Cells.OfType<IGenericCell>().Count(c => c.IsAlive()) <= 8;
         }
 
         private void AddFood()
         {
-            Coordinate pos = _gameArea.GetEmptyPosition();
+            Coordinate pos = _genericGameArea.GetEmptyPosition();
             var newFood = new FoodCell(pos);
-            _gameArea.AddCell(newFood);
+            _genericGameArea.AddCell(newFood);
         }
 
         private void UpdateFoodCount()
         {
-            while (_gameArea.SelectIf<FoodCell>().Count() < FoodCount)
+            while (_genericGameArea.Cells.OfType<FoodCell>().Count() < FoodCount)
                 AddFood();
         }
 
         private void AddTrap()
         {
-            Coordinate pos = _gameArea.GetEmptyPosition();
+            Coordinate pos = _genericGameArea.GetEmptyPosition();
             var newTrap = new TrapCell(pos);
-            _gameArea.AddCell(newTrap);
+            _genericGameArea.AddCell(newTrap);
         }
 
         private void UpdateTrapCount()
         {
-            while (_gameArea.SelectIf<TrapCell>().Count() < Configuration.TrapCount)
+            while (_genericGameArea.Cells.OfType<TrapCell>().Count() < Configuration.TrapCount)
                 AddTrap();
         }
     }
