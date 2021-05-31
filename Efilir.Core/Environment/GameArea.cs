@@ -11,24 +11,18 @@ namespace Efilir.Core.Environment
     public class GameArea : IGameArea
     {
         public List<IGenericCell> GenericCells { get; set; }
+        public IBaseCell[,] Cells { get; private set; }
 
         public GameArea(int areaSize)
         {
-            AreaSize = areaSize;
+            _areaSize = areaSize;
         }
 
-        public IBaseCell[,] Cells { get; private set; }
-        public int AreaSize { get; }
+        private readonly int _areaSize;
 
         public void CleanField()
         {
-            Cells = new IBaseCell[AreaSize, AreaSize];
-            GenerateRandomWall();
-        }
-        public void CleanField(int[,] cells)
-        {
-            Cells = new IBaseCell[Configuration.FieldSize, Configuration.FieldSize];
-            GenerateGameField(cells);
+            Cells = new IBaseCell[_areaSize, _areaSize];
         }
 
         public IEnumerable<T> SelectIf<T>()
@@ -44,9 +38,9 @@ namespace Efilir.Core.Environment
         public IBaseCell GetCellOnPosition(Coordinate position)
         {
             if (position.X < 0
-                || position.X >= AreaSize
+                || position.X >= _areaSize
                 || position.Y < 0
-                || position.Y >= AreaSize)
+                || position.Y >= _areaSize)
                 return new WallCell
                 {
                     Position = position
@@ -98,36 +92,35 @@ namespace Efilir.Core.Environment
             Coordinate newPos;
             do
             {
-                newPos = GlobalRand.GeneratePosition(AreaSize);
+                newPos = GlobalRand.GeneratePosition(_areaSize);
             } while (GetCellOnPosition(newPos) != null);
 
             return newPos;
         }
 
-        private void GenerateRandomWall()
-        {
-            //TODO: random, heh
-            for (var i = 0; i < AreaSize / 3; i++)
-                AddCell(new WallCell {Position = new Coordinate(i, AreaSize / 3)});
-        }
-
-
-        private void GenerateGameField(int[,] cells)
+        public void GenerateGameField(int[,] cells)
         {
             //TODO: random, heh
             for (var i = 0; i < Configuration.FieldSize; i++)
             {
-                for(var j = 0; j < Configuration.FieldSize; j++)
+                for (var j = 0; j < Configuration.FieldSize; j++)
                 {
-                    switch(cells[i, j])
+                    switch (cells[i, j])
                     {
-                        case 1: AddCell(new WallCell { Position = new Coordinate(j, i)}); break;
-     
+                        case 1: AddCell(new WallCell { Position = new Coordinate(j, i) }); break;
+
 
                     }
                 }
             }
-               
+
+        }
+
+        public void GenerateRandomWall()
+        {
+            //TODO: random, heh
+            for (var i = 0; i < _areaSize / 3; i++)
+                AddCell(new WallCell {Position = new Coordinate(i, _areaSize / 3)});
         }
     }
 }

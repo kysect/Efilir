@@ -6,19 +6,14 @@ using Efilir.Core.Types;
 
 namespace Efilir.Core.Environment
 {
-    public class SimulationManger
+    public class LivingCellSimulationManger
     {
         private const int FoodCount = Configuration.FoodCount;
         private readonly GameArea _gameArea;
 
-        public SimulationManger()
+        public LivingCellSimulationManger()
         {
             _gameArea = new GameArea(Configuration.FieldSize);
-            DeleteAllElements();
-        }
-        public SimulationManger(int[,] cells)
-        {
-            DeleteAllElements(cells);
         }
 
         public List<IGenericCell> GetAllGenericCells()
@@ -29,10 +24,15 @@ namespace Efilir.Core.Environment
         public void DeleteAllElements()
         {
             _gameArea.CleanField();
+            _gameArea.GenerateRandomWall();
         }
-        public void DeleteAllElements(int[,] cells)
+
+        public void GenerateGameField(int[,] cells = null)
         {
-            _gameArea.CleanField(cells);
+            if (cells is null)
+                _gameArea.GenerateRandomWall();
+            else
+                _gameArea.GenerateGameField(cells);
         }
 
         public IBaseCell[,] GetAllCells()
@@ -40,11 +40,11 @@ namespace Efilir.Core.Environment
             return _gameArea.Cells;
         }
 
-        public void MakeCellsMove()
+        public void ProcessIteration()
         {
             UpdateFoodCount();
             UpdateTrapCount();
-            foreach (var cell in _gameArea.SelectIf<IBaseCell>())
+            foreach (IBaseCell cell in _gameArea.SelectIf<IBaseCell>())
             {
                 Coordinate oldPosition = cell.Position;
                 cell.MakeTurn(_gameArea);
@@ -72,9 +72,10 @@ namespace Efilir.Core.Environment
             }
         }
 
-        public int GetAliveCellCount()
+        public bool IsSimulationActive()
         {
-            return _gameArea.GenericCells.Count(c => c.IsAlive());
+            //TODO: move as argument
+            return _gameArea.GenericCells.Count(c => c.IsAlive()) <= 8;
         }
 
         private void AddFood()
@@ -96,11 +97,11 @@ namespace Efilir.Core.Environment
             var newTrap = new TrapCell(pos);
             _gameArea.AddCell(newTrap);
         }
+
         private void UpdateTrapCount()
         {
             while (_gameArea.SelectIf<TrapCell>().Count() < Configuration.TrapCount)
                 AddTrap();
         }
-
     }
 }
