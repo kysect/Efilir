@@ -3,19 +3,21 @@ using System.ComponentModel;
 using System.Threading;
 using System.Windows;
 using Efilir.Client.ExecutionContexts;
+using Efilir.Client.Tools;
 using Efilir.Core.Generics.Cells;
+using Efilir.Core.Tools;
 
 namespace Efilir.Client
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, ICellStatConsumer
     {
-        public GenericExecutionContext GenericExecutionContext { get; }
+        public IExecutionContext GenericExecutionContext { get; }
 
         public MainWindow()
         {
             InitializeComponent();
-            GenericExecutionContext = new GenericExecutionContext(ImageView);
-            GenericExecutionContext.LoadCells();
+
+            GenericExecutionContext = CreateGenericContext();
 
             var worker = new BackgroundWorker();
             worker.DoWork += StartSimulation;
@@ -24,38 +26,35 @@ namespace Efilir.Client
 
         private void Start_ButtonClick(object sender, RoutedEventArgs e)
         {
-            GenericExecutionContext.IsActive = true;
+            GenericExecutionContext.SetActivity(true);
         }
 
         private void PauseButton_Click(object sender, RoutedEventArgs e)
         {
-            GenericExecutionContext.IsActive = false;
+            GenericExecutionContext.SetActivity(false);
         }
 
         private void StartSimulation(object sender, DoWorkEventArgs e)
         {
             while (true)
             {
-                while (GenericExecutionContext.IsActive)
-                {
-                    GenericExecutionContext.StartSimulator();
-                    UpdateInfoBox();
-                    Thread.Sleep(300);
-                }
-
-                Thread.Sleep(100);
+                GenericExecutionContext.StartSimulator();
+                Thread.Sleep(1000);
             }
         }
 
-        private void UpdateInfoBox()
+        public void NotifyStatUpdate(IReadOnlyCollection<IGenericCell> cellStatistic)
         {
-            IReadOnlyCollection<IGenericCell> cellList = GenericExecutionContext.GetCellRating();
-
-            // UI-thread executing.
             Application.Current.Dispatcher.Invoke(() =>
             {
-                CellData.ItemsSource = cellList;
+                CellData.ItemsSource = cellStatistic;
             });
+        }
+
+        private IExecutionContext CreateGenericContext()
+        {
+            var pixelDrawer = new PixelDrawer(ImageView, Configuration.FieldSize, Configuration.ScaleSize);
+            return new GenericExecutionContext(pixelDrawer, this);
         }
     }
 }

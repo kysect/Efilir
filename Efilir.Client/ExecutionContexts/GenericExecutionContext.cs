@@ -1,72 +1,81 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using Efilir.Client.Tools;
 using Efilir.Core.Generics.Algorithms;
 using Efilir.Core.Generics.Cells;
 using Efilir.Core.Generics.Environment;
 using Efilir.Core.Generics.Tools;
-using Efilir.Core.Tools;
 
 namespace Efilir.Client.ExecutionContexts
 {
-    public class GenericExecutionContext
-    {
-        private readonly PixelDrawer _pd;
+    
 
-        public GenericExecutionContext(Image image)
+    public class GenericExecutionContext : IExecutionContext
+    {
+        private bool _isActive;
+        private readonly PixelDrawer _pd;
+        private readonly ICellStatConsumer _cellStatConsumer;
+        private readonly LivingCellSimulationManger _simulationManger;
+
+        public GenericExecutionContext(PixelDrawer pixelDrawer, ICellStatConsumer cellStatConsumer)
         {
-            _pd = new PixelDrawer(image, Configuration.FieldSize, Configuration.ScaleSize);
+            _cellStatConsumer = cellStatConsumer;
+            _pd = pixelDrawer;
+
             int[,] field = DataSaver.LoadField();
 
-            SimulationManger = new LivingCellSimulationManger();
-            SimulationManger.GenerateGameField(field);
+            _simulationManger = new LivingCellSimulationManger();
+            _simulationManger.GenerateGameField(field);
+            ReloadCells();
 
-            IsActive = false;
+            _isActive = false;
         }
 
-        public LivingCellSimulationManger SimulationManger { get; }
-        public bool IsActive { get; set; }
-
-        public void UpdateUi() => _pd.DrawPoints(SimulationManger.GetAllCells());
-        public void SimulateRound() => SimulationManger.ProcessIteration();
-        public bool SimulationFinished => SimulationManger.IsSimulationActive();
-        public void SaveCells() => DataSaver.Save(SimulationManger.GetAllGenericCells());
+        public void SetActivity(bool isActive)
+        {
+            _isActive = isActive;
+        }
 
         public void StartSimulator()
         {
-            if (SimulationFinished)
+            if (!_isActive)
+                return;
+
+            if (_simulationManger.IsSimulationActive())
             {
-                SaveCells();
-                LoadCells();
+                DataSaver.Save(_simulationManger.GetAllGenericCells());
+                ReloadCells();
             }
 
-            while (!SimulationFinished)
+            while (!_simulationManger.IsSimulationActive())
             {
-                if (!IsActive)
+                if (!_isActive)
                     return;
 
-                SimulateRound();
+                _simulationManger.ProcessIteration();
                 //TODO: Fix
-                Application.Current.Dispatcher.Invoke(() => UpdateUi());
+                Application.Current.Dispatcher.Invoke(() => _pd.DrawPoints(_simulationManger.GetAllCells()));
             }
+
+            IReadOnlyCollection<IGenericCell> cellList = GetCellRating();
+            _cellStatConsumer.NotifyStatUpdate(cellList);
         }
 
-        public void LoadCells()
+        private void ReloadCells()
         {
             List<List<int>> jsonData = DataSaver.Load();
             List<IGenericCell> generatedCells = GeneticCellMutation.GenerateNewCells(jsonData);
             int[,] field = DataSaver.LoadField();
 
-            SimulationManger.DeleteAllElements();
-            SimulationManger.GenerateGameField(field);
-            SimulationManger.InitializeLiveCells(generatedCells);
+            _simulationManger.DeleteAllElements();
+            _simulationManger.GenerateGameField(field);
+            _simulationManger.InitializeLiveCells(generatedCells);
         }
 
-        public IReadOnlyCollection<IGenericCell> GetCellRating()
+        private IReadOnlyCollection<IGenericCell> GetCellRating()
         {
-            IReadOnlyCollection<IGenericCell> cellList = SimulationManger.GetAllGenericCells();
+            IReadOnlyCollection<IGenericCell> cellList = _simulationManger.GetAllGenericCells();
 
             List<IGenericCell> orderByDescending = cellList
                 .OrderByDescending(c => c.Age)
