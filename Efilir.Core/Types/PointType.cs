@@ -1,5 +1,6 @@
 ﻿using System;
 using Efilir.Core.Cells;
+using Efilir.Core.Generics.Cells;
 
 namespace Efilir.Core.Types
 {
