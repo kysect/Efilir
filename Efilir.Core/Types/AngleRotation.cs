@@ -5,10 +5,14 @@ namespace Efilir.Core.Types
     public class AngleRotation
     {
         private int _rotate;
+        private bool _inversedX;
+        private bool _inversedY;
 
         public AngleRotation(int rotate)
         {
             Rotate = rotate;
+            _inversedX = false;
+            _inversedY = false;
         }
 
         public int Rotate
@@ -24,6 +28,21 @@ namespace Efilir.Core.Types
         }
 
         public Coordinate GetRotation()
+        {
+            (int x, int y) = GetRotationWithoutInverse();
+
+            if (_inversedY)
+                y *= -1;
+            if (_inversedX)
+                x *= -1;
+
+            return new Coordinate(x, y);
+        }
+
+        public void InverseX() => _inversedX = !_inversedX;
+        public void InverseY() => _inversedY = !_inversedY;
+
+        public Coordinate GetRotationWithoutInverse()
         {
             switch (_rotate)
             {

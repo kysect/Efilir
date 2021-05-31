@@ -23,9 +23,13 @@ namespace Efilir.Core.PredefinedCells.Cells
         public void MakeTurn(IGenericGameArea gameArea)
         {
             Coordinate newPosition = Position + CurrentRotate.GetRotation();
-            if (_gameArea.GetCellOnPosition(newPosition) is WallCell)
+            if (_gameArea.GetCellOnPosition(newPosition) is WallCell wallCell)
             {
-                CurrentRotate = GetRandomRotation();
+                if (wallCell.WallType.HasFlag(WallType.Left) || wallCell.WallType.HasFlag(WallType.Right))
+                    CurrentRotate.InverseX();
+
+                if (wallCell.WallType.HasFlag(WallType.Top) || wallCell.WallType.HasFlag(WallType.Bottom))
+                    CurrentRotate.InverseY();
             }
             else
             {
