@@ -12,6 +12,7 @@ namespace Efilir.Core.Environment
         public GameArea(int areaSize)
         {
             _areaSize = areaSize;
+            CleanField();
         }
 
         private readonly int _areaSize;
