@@ -1,5 +1,4 @@
-﻿using Efilir.Core.Generics.Algorithms;
-using Efilir.Core.Generics.Environment;
+﻿using Efilir.Core.Generics.Environment;
 using Efilir.Core.Types;
 
 namespace Efilir.Core.Generics.Cells
