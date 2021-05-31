@@ -1,23 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Threading;
 using System.Windows;
-using Efilir.Client.ViewModel;
-using Efilir.Core.Cells;
+using Efilir.Client.ExecutionContexts;
 using Efilir.Core.Generics.Cells;
 
 namespace Efilir.Client
 {
     public partial class MainWindow : Window
     {
-        private readonly MainViewModel _viewModel;
+        public GenericExecutionContext GenericExecutionContext { get; }
 
         public MainWindow()
         {
             InitializeComponent();
-            _viewModel = new MainViewModel(ImageView);
-            _viewModel.Polygon.LoadCells();
+            GenericExecutionContext = new GenericExecutionContext(ImageView);
+            GenericExecutionContext.LoadCells();
 
             var worker = new BackgroundWorker();
             worker.DoWork += StartSimulation;
@@ -26,21 +24,21 @@ namespace Efilir.Client
 
         private void Start_ButtonClick(object sender, RoutedEventArgs e)
         {
-            _viewModel.IsActive = true;
+            GenericExecutionContext.IsActive = true;
         }
 
         private void PauseButton_Click(object sender, RoutedEventArgs e)
         {
-            _viewModel.IsActive = false;
+            GenericExecutionContext.IsActive = false;
         }
 
         private void StartSimulation(object sender, DoWorkEventArgs e)
         {
             while (true)
             {
-                while (_viewModel.IsActive)
+                while (GenericExecutionContext.IsActive)
                 {
-                    _viewModel.StartSimulator();
+                    GenericExecutionContext.StartSimulator();
                     UpdateInfoBox();
                     Thread.Sleep(300);
                 }
@@ -51,16 +49,12 @@ namespace Efilir.Client
 
         private void UpdateInfoBox()
         {
-            IReadOnlyCollection<IGenericCell> cellList = _viewModel.Polygon.SimulationManger.GetAllGenericCells();
-
-            IOrderedEnumerable<IGenericCell> orderByDescending = cellList
-                .OrderByDescending(c => c.Age)
-                .ThenByDescending(c => c.Health);
+            IReadOnlyCollection<IGenericCell> cellList = GenericExecutionContext.GetCellRating();
 
             // UI-thread executing.
             Application.Current.Dispatcher.Invoke(() =>
             {
-                CellData.ItemsSource = orderByDescending;
+                CellData.ItemsSource = cellList;
             });
         }
     }
