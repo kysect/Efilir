@@ -10,38 +10,32 @@ namespace Efilir.Client.Tools
     public class TestingPolygon
     {
         private readonly PixelDrawer _pd;
-        public readonly SimulationManger CellField;
+        public readonly LivingCellSimulationManger SimulationManger;
 
         public TestingPolygon(Image image)
         {
             _pd = new PixelDrawer(image, Configuration.FieldSize, Configuration.ScaleSize);
             int[,] field = DataSaver.LoadField();
-            if (field == null)
-            {
-                CellField = new SimulationManger();
-            }
-            else
-            {
-                CellField = new SimulationManger(field);
-            }
+
+            SimulationManger = new LivingCellSimulationManger();
+            SimulationManger.GenerateGameField(field);
         }
 
-        public void UpdateUi() => _pd.DrawPoints(CellField.GetAllCells());
-        public void SimulateRound() => CellField.MakeCellsMove();
-        public bool SimulationFinished => CellField.GetAliveCellCount() <= 8;
-        public void SaveCells() => DataSaver.Save(CellField.GetAllGenericCells());
+        public void UpdateUi() => _pd.DrawPoints(SimulationManger.GetAllCells());
+        public void SimulateRound() => SimulationManger.ProcessIteration();
+        public bool SimulationFinished => SimulationManger.IsSimulationActive();
+        public void SaveCells() => DataSaver.Save(SimulationManger.GetAllGenericCells());
 
         public void LoadCells()
         {
             List<List<int>> jsonData = DataSaver.Load();
             List<IGenericCell> generatedCells = GeneticCellMutation.GenerateNewCells(jsonData);
-            var field = DataSaver.LoadField(); 
-            if(field == null)
-                CellField.DeleteAllElements();
-            else
-                CellField.DeleteAllElements(field);
+            var field = DataSaver.LoadField();
 
-            CellField.InitializeLiveCells(generatedCells);
+            SimulationManger.DeleteAllElements();
+            SimulationManger.GenerateGameField(field);
+
+            SimulationManger.InitializeLiveCells(generatedCells);
         }
     }
 }

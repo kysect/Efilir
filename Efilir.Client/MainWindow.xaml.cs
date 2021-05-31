@@ -50,7 +50,7 @@ namespace Efilir.Client
 
         private void UpdateInfoBox()
         {
-            List<IGenericCell> cellList = _viewModel.Polygon.CellField.GetAllGenericCells();
+            List<IGenericCell> cellList = _viewModel.Polygon.SimulationManger.GetAllGenericCells();
 
             IOrderedEnumerable<IGenericCell> orderByDescending = cellList
                 .OrderByDescending(c => c.Age)
