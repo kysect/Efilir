@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Efilir.Core.Cells;
+using Efilir.Core.Generics.Cells;
+using Efilir.Core.Tools;
 using Newtonsoft.Json;
 
-namespace Efilir.Core.Tools
+namespace Efilir.Core.Generics.Tools
 {
     public static class DataSaver
     {

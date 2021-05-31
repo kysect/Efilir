@@ -5,6 +5,7 @@ using System.Threading;
 using System.Windows;
 using Efilir.Client.ViewModel;
 using Efilir.Core.Cells;
+using Efilir.Core.Generics.Cells;
 
 namespace Efilir.Client
 {

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Efilir.Core.Cells;
+using Efilir.Core.Generics.Cells;
 using Efilir.Core.Tools;
 
-namespace Efilir.Core.Algorithms
+namespace Efilir.Core.Generics.Algorithms
 {
     public static class GeneticCellMutation
     {

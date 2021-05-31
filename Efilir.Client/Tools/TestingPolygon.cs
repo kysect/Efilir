@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Controls;
-using Efilir.Core.Algorithms;
 using Efilir.Core.Cells;
 using Efilir.Core.Environment;
+using Efilir.Core.Generics.Algorithms;
+using Efilir.Core.Generics.Cells;
+using Efilir.Core.Generics.Environment;
+using Efilir.Core.Generics.Tools;
 using Efilir.Core.Tools;
 
 namespace Efilir.Client.Tools
@@ -30,11 +33,10 @@ namespace Efilir.Client.Tools
         {
             List<List<int>> jsonData = DataSaver.Load();
             List<IGenericCell> generatedCells = GeneticCellMutation.GenerateNewCells(jsonData);
-            var field = DataSaver.LoadField();
+            int[,] field = DataSaver.LoadField();
 
             SimulationManger.DeleteAllElements();
             SimulationManger.GenerateGameField(field);
-
             SimulationManger.InitializeLiveCells(generatedCells);
         }
     }

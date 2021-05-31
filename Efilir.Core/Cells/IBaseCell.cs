@@ -1,4 +1,4 @@
-﻿using Efilir.Core.Algorithms;
+﻿using Efilir.Core.Generics.Algorithms;
 using Efilir.Core.Types;
 
 namespace Efilir.Core.Cells
