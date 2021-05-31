@@ -1,5 +1,4 @@
 ﻿using Efilir.Core.Cells;
-using Efilir.Core.Generics.Algorithms;
 using Efilir.Core.Generics.Environment;
 using Efilir.Core.Types;
 
@@ -16,7 +15,6 @@ namespace Efilir.Core.Generics.Cells
 
         public void MakeTurn(IGenericGameArea gameArea)
         {
-            
         }
     }
 }

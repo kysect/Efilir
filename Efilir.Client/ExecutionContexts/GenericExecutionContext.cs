@@ -9,8 +9,6 @@ using Efilir.Core.Generics.Tools;
 
 namespace Efilir.Client.ExecutionContexts
 {
-    
-
     public class GenericExecutionContext : IExecutionContext
     {
         private bool _isActive;
