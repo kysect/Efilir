@@ -28,14 +28,22 @@ namespace Efilir.Core.Environment
 
         public IBaseCell GetCellOnPosition(Coordinate position)
         {
-            if (position.X < 0
-                || position.X >= _areaSize
-                || position.Y < 0
-                || position.Y >= _areaSize)
-                return new WallCell
-                {
-                    Position = position
-                };
+            WallType result = WallType.Undefined;
+
+            if (position.X < 0)
+                result |= WallType.Left;
+
+            if (position.X >= _areaSize)
+                result |= WallType.Right;
+
+            if (position.Y < 0)
+                result |= WallType.Bottom;
+
+            if (position.Y >= _areaSize)
+                result |= WallType.Top;
+
+            if (result != WallType.Undefined)
+                return new WallCell(position, result);
 
             return Cells[position.Y, position.X];
         }
@@ -70,7 +78,7 @@ namespace Efilir.Core.Environment
                 {
                     switch (cells[i, j])
                     {
-                        case 1: AddCell(new WallCell { Position = new Coordinate(j, i) }); break;
+                        case 1: AddCell(new WallCell(new Coordinate(j, i), WallType.Undefined)); break;
                     }
                 }
             }
@@ -80,7 +88,7 @@ namespace Efilir.Core.Environment
         {
             //TODO: random, heh
             for (var i = 0; i < _areaSize / 3; i++)
-                AddCell(new WallCell { Position = new Coordinate(i, _areaSize / 3) });
+                AddCell(new WallCell(new Coordinate(i, _areaSize / 3), WallType.Undefined));
         }
     }
 }

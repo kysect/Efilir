@@ -1,17 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Efilir.Core.Types
 {
-    public class Coordinate
+    public record Coordinate(int X, int Y)
     {
-        public Coordinate(int x, int y)
+        public double Length()
         {
-            Y = y;
-            X = x;
+            return Math.Sqrt(X * X + Y * Y);
         }
-
-        public int X { get; }
-        public int Y { get; }
 
         public IEnumerable<Coordinate> EnumerateAround(AngleRotation from)
         {
@@ -24,16 +21,6 @@ namespace Efilir.Core.Types
             int newX = left.X + right.X;
             int newY = left.Y + right.Y;
             return new Coordinate(newX, newY);
-        }
-
-        public static bool operator ==(Coordinate left, Coordinate right)
-        {
-            return left.X == right.X && left.Y == right.Y;
-        }
-
-        public static bool operator !=(Coordinate left, Coordinate right)
-        {
-            return !(left == right);
         }
     }
 }
