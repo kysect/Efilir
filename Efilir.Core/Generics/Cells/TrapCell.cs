@@ -1,7 +1,8 @@
-﻿using Efilir.Core.Algorithms;
+﻿using Efilir.Core.Cells;
+using Efilir.Core.Generics.Environment;
 using Efilir.Core.Types;
 
-namespace Efilir.Core.Cells
+namespace Efilir.Core.Generics.Cells
 {
     public class TrapCell : IBaseCell
     {
@@ -12,9 +13,8 @@ namespace Efilir.Core.Cells
             Position = position;
         }
 
-        public void MakeTurn(IGameArea gameArea)
+        public void MakeTurn(IGenericGameArea gameArea)
         {
-            
         }
     }
 }

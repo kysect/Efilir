@@ -1,8 +1,9 @@
-﻿using Efilir.Core.Algorithms;
+﻿using Efilir.Core.Cells;
+using Efilir.Core.Generics.Environment;
 using Efilir.Core.Tools;
 using Efilir.Core.Types;
 
-namespace Efilir.Core.Cells
+namespace Efilir.Core.Generics.Cells
 {
     public class FoodCell : IBaseCell
     {
@@ -12,7 +13,7 @@ namespace Efilir.Core.Cells
         }
 
         public Coordinate Position { get; set; }
-        public void MakeTurn(IGameArea gameArea)
+        public void MakeTurn(IGenericGameArea gameArea)
         {
             // Do nothing
         }

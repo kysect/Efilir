@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
-using Efilir.Core.Cells;
+using Efilir.Core.Generics.Cells;
+using Efilir.Core.Generics.Environment;
 using Efilir.Core.Tools;
 using Efilir.Core.Types;
 
-namespace Efilir.Core.Algorithms
+namespace Efilir.Core.Generics.Algorithms
 {
     public class CellBrain : ICellBrain
     {
@@ -23,7 +24,7 @@ namespace Efilir.Core.Algorithms
 
         public List<int> CommandList { get; }
 
-        public void MakeTurn(IGenericCell cell, IGameArea gameArea)
+        public void MakeTurn(IGenericCell cell, IGenericGameArea gameArea)
         {
             var recursionDeep = 0;
             var isTurnMade = false;
@@ -36,7 +37,7 @@ namespace Efilir.Core.Algorithms
             }
         }
 
-        private bool GenerateCommand(int commandId, IGenericCell cell, IGameArea gameArea)
+        private bool GenerateCommand(int commandId, IGenericCell cell, IGenericGameArea gameArea)
         {
             //TODO: fix
             if (commandId == 64)
@@ -80,7 +81,7 @@ namespace Efilir.Core.Algorithms
             return true;
         }
 
-        private void CommandShift(int commandId, IGenericCell cell, IGameArea gameArea)
+        private void CommandShift(int commandId, IGenericCell cell, IGenericGameArea gameArea)
         {
             Coordinate targetPosition = cell.AnalyzePosition(commandId);
             PointType type = gameArea.GetCellOnPosition(targetPosition)?.GetPointType() ?? PointType.Void;
@@ -99,7 +100,7 @@ namespace Efilir.Core.Algorithms
             CurrentCommandIndex += shift;
         }
 
-        private void CreateChild(IGenericCell cell, IGameArea gameArea)
+        private void CreateChild(IGenericCell cell, IGenericGameArea gameArea)
         {
             //TODO: replace const with gen parameter
             if (cell.Health > 60)

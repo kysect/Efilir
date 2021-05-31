@@ -1,57 +1,60 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Threading;
 using System.Windows;
-using Efilir.Client.ViewModel;
-using Efilir.Core.Cells;
+using Efilir.Client.ExecutionContexts;
+using Efilir.Client.Tools;
+using Efilir.Core.Generics.Cells;
+using Efilir.Core.Tools;
 
 namespace Efilir.Client
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, ICellStatConsumer
     {
-        private readonly MainViewModel _viewModel;
+        public IExecutionContext GenericExecutionContext { get; }
 
         public MainWindow()
         {
             InitializeComponent();
-            _viewModel = new MainViewModel(ImageView);
-        }
 
-        private void Start_ButtonClick(object sender, RoutedEventArgs e)
-        {
-            _viewModel.IsActive = true;
-            _viewModel.Polygon.LoadCells();
+            GenericExecutionContext = CreateGenericContext();
 
             var worker = new BackgroundWorker();
             worker.DoWork += StartSimulation;
             worker.RunWorkerAsync();
         }
 
+        private void Start_ButtonClick(object sender, RoutedEventArgs e)
+        {
+            GenericExecutionContext.SetActivity(true);
+        }
+
+        private void PauseButton_Click(object sender, RoutedEventArgs e)
+        {
+            GenericExecutionContext.SetActivity(false);
+        }
+
         private void StartSimulation(object sender, DoWorkEventArgs e)
         {
-            while (_viewModel.IsActive)
+            while (true)
             {
-                _viewModel.Reload();
-                _viewModel.StartSimulator();
-                UpdateInfoBox();
-                Thread.Sleep(300);
+                GenericExecutionContext.StartSimulator();
+                Thread.Sleep(1000);
             }
         }
 
-        private void UpdateInfoBox()
+        public void NotifyStatUpdate(IReadOnlyCollection<IGenericCell> cellStatistic)
         {
-            List<IGenericCell> cellList = _viewModel.Polygon.CellField.GetAllGenericCells();
-
-            IOrderedEnumerable<IGenericCell> orderByDescending = cellList
-                .OrderByDescending(c => c.Age)
-                .ThenByDescending(c => c.Health);
-
-            // UI-thread executing.
             Application.Current.Dispatcher.Invoke(() =>
             {
-                CellData.ItemsSource = orderByDescending;
+                CellData.ItemsSource = cellStatistic;
             });
+        }
+
+        private IExecutionContext CreateGenericContext()
+        {
+            var pixelDrawer = new PixelDrawer(ImageView, Configuration.FieldSize, Configuration.ScaleSize);
+            return new GenericExecutionContext(pixelDrawer, this);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Media;
 using Efilir.Core.Cells;
+using Efilir.Core.Generics.Cells;
 
 namespace Efilir.Client.Tools
 {
@@ -10,13 +11,13 @@ namespace Efilir.Client.Tools
         {
             switch (cell)
             {
-                case FoodCell _:
+                case FoodCell:
                     return Colors.GreenYellow;
-                case TrapCell _:
+                case TrapCell:
                     return Colors.IndianRed;
-                case IGenericCell _:
+                case IGenericCell:
                     return Colors.AliceBlue;
-                case WallCell _:
+                case WallCell:
                     return Colors.Gold;
                 default:
                     throw new ArgumentException($"{cell.GetType()}");
