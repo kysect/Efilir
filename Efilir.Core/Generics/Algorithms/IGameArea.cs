@@ -1,7 +1,8 @@
 ﻿using Efilir.Core.Cells;
+using Efilir.Core.Generics.Cells;
 using Efilir.Core.Types;
 
-namespace Efilir.Core.Algorithms
+namespace Efilir.Core.Generics.Algorithms
 {
     public interface IGameArea
     {

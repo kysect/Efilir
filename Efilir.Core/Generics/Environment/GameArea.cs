@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Efilir.Core.Algorithms;
 using Efilir.Core.Cells;
+using Efilir.Core.Generics.Algorithms;
+using Efilir.Core.Generics.Cells;
 using Efilir.Core.Tools;
 using Efilir.Core.Types;
 
-namespace Efilir.Core.Environment
+namespace Efilir.Core.Generics.Environment
 {
     public class GameArea : IGameArea
     {

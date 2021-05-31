@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Efilir.Core.Cells;
+using Efilir.Core.Generics.Cells;
 using Efilir.Core.Tools;
 using Efilir.Core.Types;
 
-namespace Efilir.Core.Algorithms
+namespace Efilir.Core.Generics.Algorithms
 {
     public class CellBrain : ICellBrain
     {

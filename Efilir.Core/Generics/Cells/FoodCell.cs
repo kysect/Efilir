@@ -1,8 +1,9 @@
-﻿using Efilir.Core.Algorithms;
+﻿using Efilir.Core.Cells;
+using Efilir.Core.Generics.Algorithms;
 using Efilir.Core.Tools;
 using Efilir.Core.Types;
 
-namespace Efilir.Core.Cells
+namespace Efilir.Core.Generics.Cells
 {
     public class FoodCell : IBaseCell
     {

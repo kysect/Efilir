@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Media;
 using Efilir.Core.Cells;
+using Efilir.Core.Generics.Cells;
 
 namespace Efilir.Client.Tools
 {
