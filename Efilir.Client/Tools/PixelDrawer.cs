@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -50,6 +51,24 @@ namespace Efilir.Client.Tools
                                 cell.Position.Y * _scaleSize + addY,
                                 cell);
                 }
+
+            PrintPixels(pixels);
+        }
+
+        public void DrawPoints<T>(ICollection<T> cells) where T : IBaseCell
+        {
+            var pixels = new byte[Size, Size, 4];
+            PrintBackgroundWithBlack(pixels);
+
+            foreach (T cell in cells)
+            {
+                for (var addX = 0; addX < _scaleSize; addX++)
+                for (var addY = 0; addY < _scaleSize; addY++)
+                    PutPixel(pixels,
+                        cell.Position.X * _scaleSize + addX,
+                        cell.Position.Y * _scaleSize + addY,
+                        cell);
+            }
 
             PrintPixels(pixels);
         }

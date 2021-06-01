@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Windows;
+﻿using System.Windows;
 using Efilir.Client.Tools;
-using Efilir.Core.Environment;
+using Efilir.Core.PredefinedCells;
 using Efilir.Core.PredefinedCells.Cells;
 using Efilir.Core.Tools;
 using Efilir.Core.Types;
@@ -12,20 +11,18 @@ namespace Efilir.Client.ExecutionContexts
     {
         private bool _isActive;
         private readonly PixelDrawer _pd;
-        private readonly GameArea _gameArea;
-
-        private List<PredefinedCell> _cells;
+        private readonly PredefinedCellGameArea _gameArea;
 
         public PredefinedCellExecutionContext(PixelDrawer pd)
         {
             _pd = pd;
 
-            _gameArea = new GameArea(Configuration.FieldSize);
-            _cells = new List<PredefinedCell>();
+            _gameArea = new PredefinedCellGameArea(Configuration.FieldSize);
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 1000; i++)
             {
-                _cells.Add(new PredefinedCell(_gameArea, new Coordinate(i + 1, i + 1)));
+                var predefinedCell = new PredefinedCell(_gameArea, new Coordinate(GlobalRand.Next(Configuration.FieldSize), GlobalRand.Next(Configuration.FieldSize)));
+                _gameArea.PredefinedCells.Add(predefinedCell);
             }
         }
 
@@ -37,8 +34,8 @@ namespace Efilir.Client.ExecutionContexts
         public void StartSimulator()
         {
             //TODO: Fix
-            _cells.ForEach(c => c.MakeTurn(null));
-            Application.Current.Dispatcher.Invoke(() => _pd.DrawPoints(_gameArea.Cells));
+            _gameArea.PredefinedCells.ForEach(c => c.MakeTurn(null));
+            Application.Current.Dispatcher.Invoke(() => _pd.DrawPoints(_gameArea.PredefinedCells));
         }
     }
 }

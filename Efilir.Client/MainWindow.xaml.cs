@@ -39,7 +39,7 @@ namespace Efilir.Client
             while (true)
             {
                 GenericExecutionContext.StartSimulator();
-                Thread.Sleep(300);
+                Thread.Sleep(1000 / 80);
             }
         }
 

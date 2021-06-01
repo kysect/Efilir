@@ -1,8 +1,6 @@
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using Efilir.Core.Cells;
-using Efilir.Core.Environment;
 using Efilir.Core.Generics.Environment;
 using Efilir.Core.Tools;
 using Efilir.Core.Types;
@@ -14,11 +12,11 @@ namespace Efilir.Core.PredefinedCells.Cells
         public Coordinate Position { get; set; }
         public AngleRotation CurrentRotate { get; set; }
 
-        private GameArea _gameArea;
+        private PredefinedCellGameArea _gameArea;
         private Vector _realPosition;
         private Vector _velocityDirection;
 
-        public PredefinedCell(GameArea gameArea, Coordinate position)
+        public PredefinedCell(PredefinedCellGameArea gameArea, Coordinate position)
         {
             _gameArea = gameArea;
             Position = position;
@@ -35,7 +33,6 @@ namespace Efilir.Core.PredefinedCells.Cells
             var newPosition = _realPosition + newVelocity * timeDelta;
             _realPosition = RoundPosition(newPosition);
             Position = _realPosition.ToCoordinate();
-            _gameArea.AddCell(this);
 
             var wallType = _gameArea.GetWallType(newPosition);
             if (wallType != WallType.Undefined)
