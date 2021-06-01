@@ -15,8 +15,8 @@ namespace Efilir.Core.PredefinedCells.Cells
         public AngleRotation CurrentRotate { get; set; }
 
         private GameArea _gameArea;
-        private Vector _direction;
         private Vector _realPosition;
+        private Vector _velocityDirection;
 
         public PredefinedCell(GameArea gameArea, Coordinate position)
         {
@@ -24,15 +24,16 @@ namespace Efilir.Core.PredefinedCells.Cells
             Position = position;
 
             _realPosition = new Vector(position.X, position.Y);
-            _direction = GetRandomRotation();
+            _velocityDirection = GetRandomRotation();
         }
 
         public void MakeTurn(IGenericGameArea gameArea)
         {
-            Vector newDirection = CalculateNewDirection();
-
-            _gameArea.RemoveCell(this);
-            _realPosition = RoundPosition(_realPosition + newDirection with {X = newDirection.X / newDirection.Length(), Y = newDirection.Y / newDirection.Length()});
+            double timeDelta = 0.1;
+            Vector newAcceleration = CalculateNewAcceleration();
+            Vector newVelocity = _velocityDirection + newAcceleration * timeDelta;
+            var newPosition = _realPosition + newVelocity * timeDelta;
+            _realPosition = RoundPosition(newPosition);
             Position = _realPosition.ToCoordinate();
             _gameArea.AddCell(this);
 
@@ -53,21 +54,14 @@ namespace Efilir.Core.PredefinedCells.Cells
                 }
             }
 
-            _direction = newDirection;
+            _velocityDirection = newVelocity;
         }
 
-        public Vector CalculateNewDirection()
+        public Vector CalculateNewAcceleration()
         {
-            int maxLength = 100000;
+            Vector newDirection = new Vector(0, 0);
 
-            List<PredefinedCell> predefinedCells = _gameArea.Cells
-                .OfType<PredefinedCell>()
-                .Where(c => Position.Distance(c.Position) < maxLength)
-                .ToList();
-
-            Vector newDirection = _direction;
-
-            foreach (PredefinedCell predefinedCell in predefinedCells)
+            foreach (PredefinedCell predefinedCell in _gameArea.PredefinedCells)
             {
                 Coordinate distance = predefinedCell.Position - Position;
                 newDirection += new Vector(CalcMoveVector(distance.X), CalcMoveVector(distance.Y));
@@ -80,7 +74,7 @@ namespace Efilir.Core.PredefinedCells.Cells
         {
             if (Math.Abs(distance) < 1)
                 return 0;
-            return 5.0 / distance /*/ Math.Abs(distance)*/;
+            return 1.0 / distance / Math.Abs(distance);
 
         }
 
