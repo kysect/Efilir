@@ -1,9 +1,11 @@
-﻿using System.Windows;
+using System;
+using System.Windows;
 using Efilir.Client.Tools;
 using Efilir.Core.PredefinedCells;
 using Efilir.Core.PredefinedCells.Cells;
 using Efilir.Core.Tools;
 using Efilir.Core.Types;
+using Vector = Efilir.Core.Types.Vector;
 
 namespace Efilir.Client.ExecutionContexts
 {
@@ -19,9 +21,20 @@ namespace Efilir.Client.ExecutionContexts
 
             _gameArea = new PredefinedCellGameArea(Configuration.FieldSize);
 
-            for (int i = 0; i < 1000; i++)
+            //for (int i = 0; i < 1000; i++)
+            //{
+            //    var predefinedCell = new PredefinedCell(
+            //        _gameArea,
+            //        new Coordinate(GlobalRand.Next(Configuration.FieldSize), GlobalRand.Next(Configuration.FieldSize)));
+            //    _gameArea.PredefinedCells.Add(predefinedCell);
+            //}
+
+            for (double degrees = 0; degrees < 360 * 2; degrees += 1.0 / 2)
             {
-                var predefinedCell = new PredefinedCell(_gameArea, new Coordinate(GlobalRand.Next(Configuration.FieldSize), GlobalRand.Next(Configuration.FieldSize)));
+                int maxVelocity = 200;
+                var position = new Vector(Configuration.FieldSize / 2.0, Configuration.FieldSize / 2.0);
+                var velocity = new Vector(Math.Sin(Math.PI * degrees / 180.0), Math.Cos(Math.PI * degrees / 180.0)) * maxVelocity;
+                var predefinedCell = new PredefinedCell(_gameArea, position, velocity);
                 _gameArea.PredefinedCells.Add(predefinedCell);
             }
         }

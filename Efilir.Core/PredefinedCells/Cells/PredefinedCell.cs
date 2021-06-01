@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Efilir.Core.Cells;
 using Efilir.Core.Generics.Environment;
@@ -10,19 +10,18 @@ namespace Efilir.Core.PredefinedCells.Cells
     public class PredefinedCell : IBaseCell
     {
         public Coordinate Position { get; set; }
+        public Vector RealPosition { get; private set; }
         public AngleRotation CurrentRotate { get; set; }
 
         private PredefinedCellGameArea _gameArea;
-        private Vector _realPosition;
         private Vector _velocityDirection;
 
-        public PredefinedCell(PredefinedCellGameArea gameArea, Coordinate position)
+        public PredefinedCell(PredefinedCellGameArea gameArea, Vector position, Vector velocity)
         {
             _gameArea = gameArea;
-            Position = position;
-
-            _realPosition = new Vector(position.X, position.Y);
-            _velocityDirection = GetRandomRotation();
+            RealPosition = position;
+            Position = RealPosition.ToCoordinate();
+            _velocityDirection = velocity;
         }
 
         public void MakeTurn(IGenericGameArea gameArea)
@@ -30,9 +29,9 @@ namespace Efilir.Core.PredefinedCells.Cells
             double timeDelta = 0.1;
             Vector newAcceleration = CalculateNewAcceleration();
             Vector newVelocity = _velocityDirection + newAcceleration * timeDelta;
-            var newPosition = _realPosition + newVelocity * timeDelta;
-            _realPosition = RoundPosition(newPosition);
-            Position = _realPosition.ToCoordinate();
+            var newPosition = RealPosition + newVelocity * timeDelta;
+            RealPosition = RoundPosition(newPosition);
+            Position = RealPosition.ToCoordinate();
 
             var wallType = _gameArea.GetWallType(newPosition);
             if (wallType != WallType.Undefined)
@@ -97,7 +96,7 @@ namespace Efilir.Core.PredefinedCells.Cells
             return $"PredefinedCell on {Position} with angle {CurrentRotate} age";
         }
 
-        private Vector GetRandomRotation()
+        private static Vector GetRandomRotation()
         {
             var rotation = new AngleRotation(GlobalRand.Next(8));
             (int x, int y) = rotation.GetRotation();
