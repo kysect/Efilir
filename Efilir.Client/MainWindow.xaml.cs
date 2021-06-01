@@ -45,10 +45,10 @@ namespace Efilir.Client
 
         public void NotifyStatUpdate(IReadOnlyCollection<IGenericCell> cellStatistic)
         {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                CellData.ItemsSource = cellStatistic;
-            });
+            //Application.Current.Dispatcher.Invoke(() =>
+            //{
+            //    CellData.ItemsSource = cellStatistic;
+            //});
         }
 
         private IExecutionContext CreateGenericContext()
