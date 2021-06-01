@@ -31,7 +31,7 @@ namespace Efilir.Client.ExecutionContexts
 
             for (double degrees = 0; degrees < 360 * 2; degrees += 1.0 / 2)
             {
-                int maxVelocity = 200;
+                int maxVelocity = 40;
                 var position = new Vector(Configuration.FieldSize / 2.0, Configuration.FieldSize / 2.0);
                 var velocity = new Vector(Math.Sin(Math.PI * degrees / 180.0), Math.Cos(Math.PI * degrees / 180.0)) * maxVelocity;
                 var predefinedCell = new PredefinedCell(_gameArea, position, velocity);
