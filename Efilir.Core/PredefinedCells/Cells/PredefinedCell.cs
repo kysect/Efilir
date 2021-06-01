@@ -25,7 +25,7 @@ namespace Efilir.Core.PredefinedCells.Cells
 
         public void MakeTurn(IGenericGameArea gameArea)
         {
-            double timeDelta = 0.01;
+            double timeDelta = 0.1;
             Vector newAcceleration = CalculateNewAccelerationWithoutDistance();
             Vector newVelocity = _velocityDirection + newAcceleration * timeDelta;
             var newPosition = RealPosition + newVelocity * timeDelta;
@@ -69,7 +69,7 @@ namespace Efilir.Core.PredefinedCells.Cells
             if (newDirection.Length() < Double.Epsilon)
                 return newDirection;
 
-            return newDirection ;
+            return newDirection / 100;
         }
 
         public Vector CalculateNewAcceleration()
