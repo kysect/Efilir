@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using Efilir.Client.Tools;
 using Efilir.Core.PredefinedCells;
@@ -47,7 +48,9 @@ namespace Efilir.Client.ExecutionContexts
         public void StartSimulator()
         {
             //TODO: Fix
-            _gameArea.PredefinedCells.ForEach(c => c.MakeTurn(null));
+            _gameArea.PredefinedCells
+                .AsParallel()
+                .ForAll(c => c.MakeTurn(null));
             _gameArea.UpdatePreviousPositions();
             Application.Current.Dispatcher.Invoke(() => _pd.DrawPoints(_gameArea.PredefinedCells));
         }
