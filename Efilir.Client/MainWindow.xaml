@@ -17,25 +17,19 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top" />
         <Button
-            Width="74"
-            Margin="615,35,0,0"
-            HorizontalAlignment="Left"
+            Margin="0,35,240,0"
             VerticalAlignment="Top"
             Click="Start_ButtonClick"
-            Content="Start" />
+            Content="Start" HorizontalAlignment="Right" Width="74" />
         <ListBox
             Name="CellData"
-            Width="272"
             Height="199"
-            Margin="615,60,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top" />
+            Margin="0,60,42,0"
+            VerticalAlignment="Top" HorizontalAlignment="Right" Width="272" />
         <Button
-            Width="74"
-            Margin="714,35,0,0"
-            HorizontalAlignment="Left"
+            Margin="0,35,141,0"
             VerticalAlignment="Top"
             Click="PauseButton_Click"
-            Content="Pause" />
+            Content="Pause" HorizontalAlignment="Right" Width="74" />
     </Grid>
 </Window>
