@@ -8,18 +8,18 @@ namespace Efilir.Core.PredefinedCells
 {
     public class PredefinedCellGameArea : GameArea
     {
-        public List<Vector> PreviousCellPosition { get; private set; }
+        public List<(PredefinedCellType, Vector)> PreviousCellPosition { get; private set; }
         public List<PredefinedCell> PredefinedCells { get; }
 
         public PredefinedCellGameArea(int areaSize) : base(areaSize)
         {
-            PreviousCellPosition = new List<Vector>();
+            PreviousCellPosition = new List<(PredefinedCellType, Vector)>();
             PredefinedCells = new List<PredefinedCell>();
         }
 
         public void UpdatePreviousPositions()
         {
-            PreviousCellPosition = PredefinedCells.Select(c => c.RealPosition).ToList();
+            PreviousCellPosition = PredefinedCells.Select(c => (c.CellType, c.RealPosition)).ToList();
         }
     }
 }

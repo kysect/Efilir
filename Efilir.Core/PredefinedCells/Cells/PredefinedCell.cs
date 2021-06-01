@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Efilir.Core.Cells;
 using Efilir.Core.Generics.Environment;
 using Efilir.Core.Tools;
@@ -11,16 +11,18 @@ namespace Efilir.Core.PredefinedCells.Cells
         public Coordinate Position { get; set; }
         public Vector RealPosition { get; private set; }
         public AngleRotation CurrentRotate { get; set; }
+        public PredefinedCellType CellType { get; }
 
         private PredefinedCellGameArea _gameArea;
         private Vector _velocityDirection;
 
-        public PredefinedCell(PredefinedCellGameArea gameArea, Vector position, Vector velocity)
+        public PredefinedCell(PredefinedCellGameArea gameArea, Vector position, Vector velocity, PredefinedCellType cellType)
         {
             _gameArea = gameArea;
             RealPosition = position;
             Position = RealPosition.ToCoordinate();
             _velocityDirection = velocity;
+            CellType = cellType;
         }
 
         public void MakeTurn(IGenericGameArea gameArea)
@@ -56,7 +58,7 @@ namespace Efilir.Core.PredefinedCells.Cells
         {
             Vector newDirection = new Vector(0, 0);
 
-            foreach (var predefinedCellPosition in _gameArea.PreviousCellPosition)
+            foreach ((var type, Vector predefinedCellPosition) in _gameArea.PreviousCellPosition)
             {
                 if (predefinedCellPosition.Distance(RealPosition) > 50)
                     continue;
