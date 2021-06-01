@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Efilir.Core.Cells;
 using Efilir.Core.Generics.Environment;
 using Efilir.Core.Tools;
@@ -60,31 +60,36 @@ namespace Efilir.Core.PredefinedCells.Cells
 
             foreach ((var type, Vector predefinedCellPosition) in _gameArea.PreviousCellPosition)
             {
-                if (predefinedCellPosition.Distance(RealPosition) > 50)
+                if (predefinedCellPosition.Distance(RealPosition) > 50 || predefinedCellPosition.Distance(RealPosition) > Double.Epsilon)
+                    continue;
+
+                if (!IsCellOnWay(predefinedCellPosition))
                     continue;
 
                 Vector moveDirection = predefinedCellPosition - RealPosition;
-                if (moveDirection.Length() > Double.Epsilon)
+                if (type == CellType)
                     newDirection += moveDirection / moveDirection.Length();
+                //else
+                //    newDirection -= moveDirection / moveDirection.Length();
             }
 
             if (newDirection.Length() < Double.Epsilon)
                 return newDirection;
 
-            return newDirection / 100;
+            return newDirection / 2;
         }
 
-        public Vector CalculateNewAcceleration()
+        public bool IsCellOnWay(Vector cellPosition)
         {
-            Vector newDirection = new Vector(0, 0);
+            double visibleAngle = 10.0 / 180;
 
-            foreach (var predefinedCellPosition in _gameArea.PreviousCellPosition)
-            {
-                var distance = predefinedCellPosition - RealPosition;
-                newDirection += new Vector(CalcMoveVector(distance.X), CalcMoveVector(distance.Y));
-            }
+            Vector moveDirection = cellPosition - RealPosition;
+            double velocityAngle = Math.Atan(_velocityDirection.Y / _velocityDirection.X);
+            double toObjectAngle = Math.Atan(moveDirection.Y / moveDirection.X);
 
-            return newDirection;
+            var maxAngle = Math.Max(velocityAngle, toObjectAngle);
+            var minAngle = Math.Min(velocityAngle, toObjectAngle);
+            return (maxAngle - minAngle < visibleAngle || (360 - (maxAngle - minAngle) < visibleAngle));
         }
 
         private double CalcMoveVector(double distance)

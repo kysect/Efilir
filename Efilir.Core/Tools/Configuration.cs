@@ -2,9 +2,9 @@
 {
     public static class Configuration
     {
-        public const int FieldSize = 200;
+        public const int FieldSize = 150;
         public const int FoodCount = 250;
-        public const int ScaleSize = 2;
+        public const int ScaleSize = 4;
 
         public const int HealthIncomeFromFood = 10;
         public const int CommandListSize = 64;

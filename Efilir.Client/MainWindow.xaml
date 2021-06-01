@@ -16,7 +16,7 @@
             Margin="10,10,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top" />
-        <Button
+        <!--<Button
             Margin="0,35,240,0"
             VerticalAlignment="Top"
             Click="Start_ButtonClick"
@@ -30,6 +30,6 @@
             Margin="0,35,141,0"
             VerticalAlignment="Top"
             Click="PauseButton_Click"
-            Content="Pause" HorizontalAlignment="Right" Width="74" />
+            Content="Pause" HorizontalAlignment="Right" Width="74" />-->
     </Grid>
 </Window>
