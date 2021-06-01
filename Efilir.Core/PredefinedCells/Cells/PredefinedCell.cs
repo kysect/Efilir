@@ -1,5 +1,4 @@
-using System;
-using System.Linq;
+﻿using System;
 using Efilir.Core.Cells;
 using Efilir.Core.Generics.Environment;
 using Efilir.Core.Tools;
@@ -26,8 +25,8 @@ namespace Efilir.Core.PredefinedCells.Cells
 
         public void MakeTurn(IGenericGameArea gameArea)
         {
-            double timeDelta = 0.1;
-            Vector newAcceleration = CalculateNewAcceleration();
+            double timeDelta = 0.01;
+            Vector newAcceleration = CalculateNewAccelerationWithoutDistance();
             Vector newVelocity = _velocityDirection + newAcceleration * timeDelta;
             var newPosition = RealPosition + newVelocity * timeDelta;
             RealPosition = RoundPosition(newPosition);
@@ -36,7 +35,7 @@ namespace Efilir.Core.PredefinedCells.Cells
             var wallType = _gameArea.GetWallType(newPosition);
             if (wallType != WallType.Undefined)
             {
-                double pushCoefficient = -0.5;
+                double pushCoefficient = -1;
                 if (wallType.HasFlag(WallType.Left) && newVelocity.X < 0 
                     || wallType.HasFlag(WallType.Right) && newVelocity.X > 0)
                 {
@@ -53,13 +52,33 @@ namespace Efilir.Core.PredefinedCells.Cells
             _velocityDirection = newVelocity;
         }
 
+        public Vector CalculateNewAccelerationWithoutDistance()
+        {
+            Vector newDirection = new Vector(0, 0);
+
+            foreach (var predefinedCellPosition in _gameArea.PreviousCellPosition)
+            {
+                if (predefinedCellPosition.Distance(RealPosition) > 50)
+                    continue;
+
+                Vector moveDirection = predefinedCellPosition - RealPosition;
+                if (moveDirection.Length() > Double.Epsilon)
+                    newDirection += moveDirection / moveDirection.Length();
+            }
+
+            if (newDirection.Length() < Double.Epsilon)
+                return newDirection;
+
+            return newDirection ;
+        }
+
         public Vector CalculateNewAcceleration()
         {
             Vector newDirection = new Vector(0, 0);
 
-            foreach (PredefinedCell predefinedCell in _gameArea.PredefinedCells)
+            foreach (var predefinedCellPosition in _gameArea.PreviousCellPosition)
             {
-                Coordinate distance = predefinedCell.Position - Position;
+                var distance = predefinedCellPosition - RealPosition;
                 newDirection += new Vector(CalcMoveVector(distance.X), CalcMoveVector(distance.Y));
             }
 
@@ -68,10 +87,9 @@ namespace Efilir.Core.PredefinedCells.Cells
 
         private double CalcMoveVector(double distance)
         {
-            if (Math.Abs(distance) < 1)
+            if (Math.Abs(distance) < 0.5)
                 return 0;
             return 1.0 / distance / Math.Abs(distance);
-
         }
 
         private Vector RoundPosition(Vector position)
