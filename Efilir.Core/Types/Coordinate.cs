@@ -82,6 +82,11 @@ namespace Efilir.Core.Types
             return new Vector(left.X * coefficient, left.Y * coefficient);
         }
 
+        public static Vector operator /(Vector left, double coefficient)
+        {
+            return new Vector(left.X / coefficient, left.Y / coefficient);
+        }
+
         public Coordinate ToCoordinate()
         {
             return new Coordinate((int)X, (int)Y);
