@@ -1,4 +1,6 @@
-﻿using Efilir.Core.Cells;
+﻿using System.Collections.Generic;
+using Efilir.Core.Cells;
+using Efilir.Core.PredefinedCells.Cells;
 using Efilir.Core.Tools;
 using Efilir.Core.Types;
 
@@ -46,6 +48,25 @@ namespace Efilir.Core.Environment
                 return new WallCell(position, result);
 
             return Cells[position.Y, position.X];
+        }
+
+        public WallType GetWallType(Vector position)
+        {
+            WallType result = WallType.Undefined;
+
+            if (position.X < 0)
+                result |= WallType.Left;
+
+            if (position.X >= AreaSize)
+                result |= WallType.Right;
+
+            if (position.Y < 0)
+                result |= WallType.Bottom;
+
+            if (position.Y >= AreaSize)
+                result |= WallType.Top;
+
+            return result;
         }
 
         public void RemoveCell(IBaseCell cell)

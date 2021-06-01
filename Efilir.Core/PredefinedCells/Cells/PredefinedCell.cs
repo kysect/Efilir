@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Efilir.Core.Cells;
@@ -36,16 +36,20 @@ namespace Efilir.Core.PredefinedCells.Cells
             Position = _realPosition.ToCoordinate();
             _gameArea.AddCell(this);
 
-            if (_gameArea.GetCellOnPosition(_realPosition.ToCoordinate()) is WallCell wallCell)
+            var wallType = _gameArea.GetWallType(newPosition);
+            if (wallType != WallType.Undefined)
             {
-                if (wallCell.WallType.HasFlag(WallType.Left) || wallCell.WallType.HasFlag(WallType.Right))
+                double pushCoefficient = -0.5;
+                if (wallType.HasFlag(WallType.Left) && newVelocity.X < 0 
+                    || wallType.HasFlag(WallType.Right) && newVelocity.X > 0)
                 {
-                    newDirection = newDirection with { X = newDirection.X * -1 };
+                    newVelocity = newVelocity with { X = newVelocity.X * pushCoefficient };
                 }
 
-                if (wallCell.WallType.HasFlag(WallType.Top) || wallCell.WallType.HasFlag(WallType.Bottom))
+                if (wallType.HasFlag(WallType.Bottom) && newVelocity.Y < 0
+                    || wallType.HasFlag(WallType.Top) && newVelocity.Y > 0)
                 {
-                    newDirection = newDirection with { Y = newDirection.Y * -1 };
+                    newVelocity = newVelocity with { Y = newVelocity.Y * pushCoefficient };
                 }
             }
 
