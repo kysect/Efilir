@@ -84,12 +84,14 @@ namespace Efilir.Client.Tools
         private void PrintBackgroundWithBlack(byte[,,] pixels)
         {
             for (var row = 0; row < Size; row++)
+            {
                 for (var col = 0; col < Size; col++)
                 {
-                    for (var i = 0; i < 3; i++)
-                        pixels[row, col, i] = 0;
+                    //for (var i = 0; i < 3; i++)
+                    //    pixels[row, col, i] = 0;
                     pixels[row, col, 3] = 255;
                 }
+            }
         }
 
         private byte[] TransformTo1D(byte[,,] pixels)
@@ -105,6 +107,7 @@ namespace Efilir.Client.Tools
             return pixels1D;
         }
 
+        //TODO: optimization is needed. We can always use 1D
         private void PrintPixels(byte[,,] pixels)
         {
             byte[] pixels1D = TransformTo1D(pixels);

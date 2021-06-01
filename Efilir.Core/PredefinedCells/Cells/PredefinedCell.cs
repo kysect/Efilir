@@ -60,13 +60,13 @@ namespace Efilir.Core.PredefinedCells.Cells
 
             foreach ((var type, Vector predefinedCellPosition) in _gameArea.PreviousCellPosition)
             {
-                if (predefinedCellPosition.Distance(RealPosition) > 50 || predefinedCellPosition.Distance(RealPosition) > Double.Epsilon)
-                    continue;
-
-                if (!IsCellOnWay(predefinedCellPosition))
-                    continue;
-
                 Vector moveDirection = predefinedCellPosition - RealPosition;
+                if (moveDirection.Length() > 50 || moveDirection.Length() > Double.Epsilon)
+                    continue;
+
+                if (!IsCellOnWay(moveDirection))
+                    continue;
+
                 if (type == CellType)
                     newDirection += moveDirection / moveDirection.Length();
                 //else
@@ -79,11 +79,10 @@ namespace Efilir.Core.PredefinedCells.Cells
             return newDirection / 2;
         }
 
-        public bool IsCellOnWay(Vector cellPosition)
+        public bool IsCellOnWay(Vector moveDirection)
         {
             double visibleAngle = 10.0 / 180;
 
-            Vector moveDirection = cellPosition - RealPosition;
             double velocityAngle = Math.Atan(_velocityDirection.Y / _velocityDirection.X);
             double toObjectAngle = Math.Atan(moveDirection.Y / moveDirection.X);
 
@@ -119,13 +118,6 @@ namespace Efilir.Core.PredefinedCells.Cells
         public override string ToString()
         {
             return $"PredefinedCell on {Position} with angle {CurrentRotate} age";
-        }
-
-        private static Vector GetRandomRotation()
-        {
-            var rotation = new AngleRotation(GlobalRand.Next(8));
-            (int x, int y) = rotation.GetRotation();
-            return new Vector(x, y);
         }
     }
 }
