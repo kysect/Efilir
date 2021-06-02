@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Efilir.Core.Environment;
-using Efilir.Core.PredefinedCells.Cells;
 using Efilir.Core.Types;
 
 namespace Efilir.Core.PredefinedCells

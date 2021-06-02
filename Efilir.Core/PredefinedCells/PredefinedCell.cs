@@ -1,10 +1,9 @@
 ﻿using System;
 using Efilir.Core.Cells;
 using Efilir.Core.Generics.Environment;
-using Efilir.Core.Tools;
 using Efilir.Core.Types;
 
-namespace Efilir.Core.PredefinedCells.Cells
+namespace Efilir.Core.PredefinedCells
 {
     public class PredefinedCell : IBaseCell
     {

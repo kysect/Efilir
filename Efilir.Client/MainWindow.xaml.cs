@@ -3,7 +3,10 @@ using System.ComponentModel;
 using System.Windows;
 using Efilir.Client.ExecutionContexts;
 using Efilir.Client.Tools;
+using Efilir.Core.Environment;
+using Efilir.Core.Generics;
 using Efilir.Core.Generics.Cells;
+using Efilir.Core.PredefinedCells;
 using Efilir.Core.Tools;
 
 namespace Efilir.Client

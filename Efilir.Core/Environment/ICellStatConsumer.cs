@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Efilir.Core.Generics.Cells;
 
-namespace Efilir.Client.ExecutionContexts
+namespace Efilir.Core.Environment
 {
     public interface ICellStatConsumer
     {

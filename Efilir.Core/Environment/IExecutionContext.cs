@@ -1,4 +1,4 @@
-﻿namespace Efilir.Client.ExecutionContexts
+﻿namespace Efilir.Core.Environment
 {
     public interface IExecutionContext
     {

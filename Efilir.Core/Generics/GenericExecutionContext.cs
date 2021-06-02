@@ -6,7 +6,7 @@ using Efilir.Core.Generics.Cells;
 using Efilir.Core.Generics.Environment;
 using Efilir.Core.Generics.Tools;
 
-namespace Efilir.Client.ExecutionContexts
+namespace Efilir.Core.Generics
 {
     public class GenericExecutionContext : IExecutionContext
     {

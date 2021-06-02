@@ -1,11 +1,9 @@
 ﻿using System;
 using Efilir.Core.Environment;
-using Efilir.Core.PredefinedCells;
-using Efilir.Core.PredefinedCells.Cells;
 using Efilir.Core.Tools;
-using Vector = Efilir.Core.Types.Vector;
+using Efilir.Core.Types;
 
-namespace Efilir.Client.ExecutionContexts
+namespace Efilir.Core.PredefinedCells
 {
     public class PredefinedCellExecutionContext : IExecutionContext
     {
