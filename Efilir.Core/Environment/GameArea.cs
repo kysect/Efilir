@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Efilir.Core.Cells;
-using Efilir.Core.PredefinedCells.Cells;
+﻿using Efilir.Core.Cells;
 using Efilir.Core.Tools;
 using Efilir.Core.Types;
 

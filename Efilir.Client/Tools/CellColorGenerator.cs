@@ -2,7 +2,7 @@
 using System.Windows.Media;
 using Efilir.Core.Cells;
 using Efilir.Core.Generics.Cells;
-using Efilir.Core.PredefinedCells.Cells;
+using Efilir.Core.PredefinedCells;
 
 namespace Efilir.Client.Tools
 {
@@ -31,11 +31,11 @@ namespace Efilir.Client.Tools
         {
             switch (cell.CellType)
             {
-                case Core.PredefinedCells.PredefinedCellType.Red:
+                case PredefinedCellType.Red:
                     return Colors.IndianRed;
-                case Core.PredefinedCells.PredefinedCellType.Blue:
+                case PredefinedCellType.Blue:
                     return Colors.DodgerBlue;
-                case Core.PredefinedCells.PredefinedCellType.Green:
+                case PredefinedCellType.Green:
                     return Colors.LightGreen;
 
                 default:
