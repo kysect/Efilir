@@ -1,22 +1,18 @@
 ﻿using System;
-using System.Linq;
-using System.Windows;
-using Efilir.Client.Tools;
+using Efilir.Core.Environment;
 using Efilir.Core.PredefinedCells;
 using Efilir.Core.PredefinedCells.Cells;
 using Efilir.Core.Tools;
-using Efilir.Core.Types;
 using Vector = Efilir.Core.Types.Vector;
 
 namespace Efilir.Client.ExecutionContexts
 {
     public class PredefinedCellExecutionContext : IExecutionContext
     {
-        private bool _isActive;
-        private readonly PixelDrawer _pd;
+        private readonly IPixelDrawer _pd;
         private readonly PredefinedCellGameArea _gameArea;
 
-        public PredefinedCellExecutionContext(PixelDrawer pd)
+        public PredefinedCellExecutionContext(IPixelDrawer pd)
         {
             _pd = pd;
 
@@ -43,19 +39,25 @@ namespace Efilir.Client.ExecutionContexts
             }
         }
 
-        public void SetActivity(bool isActive)
+        public void OnRoundStart()
         {
-            _isActive = isActive;
         }
 
-        public void StartSimulator()
+        public bool OnIterationStart()
         {
-            //TODO: Fix
             _gameArea.PredefinedCells
-                .AsParallel()
-                .ForAll(c => c.MakeTurn(null));
+                .ForEach(c => c.MakeTurn(null));
             _gameArea.UpdatePreviousPositions();
-            Application.Current.Dispatcher.Invoke(() => _pd.DrawPoints(_gameArea.PredefinedCells));
+            return true;
+        }
+
+        public void OnRoundEnd()
+        {
+        }
+
+        public void OnUiRender()
+        {
+            _pd.DrawPoints(_gameArea.PredefinedCells);
         }
     }
 }
