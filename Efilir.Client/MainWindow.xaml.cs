@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Threading;
 using System.Windows;
 using Efilir.Client.ExecutionContexts;
 using Efilir.Client.Tools;
@@ -11,13 +10,13 @@ namespace Efilir.Client
 {
     public partial class MainWindow : Window, ICellStatConsumer
     {
-        public IExecutionContext GenericExecutionContext { get; }
+        public BaseExecutionContext GenericExecutionContext { get; }
 
         public MainWindow()
         {
             InitializeComponent();
 
-            GenericExecutionContext = CreatePredefined();
+            GenericExecutionContext = new BaseExecutionContext(CreatePredefined());
 
             var worker = new BackgroundWorker();
             worker.DoWork += StartSimulation;
@@ -39,7 +38,7 @@ namespace Efilir.Client
             while (true)
             {
                 GenericExecutionContext.StartSimulator();
-                Thread.Sleep(50);
+                //Thread.Sleep(50);
             }
         }
 

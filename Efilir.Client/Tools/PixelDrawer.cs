@@ -4,10 +4,11 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Efilir.Core.Cells;
+using Efilir.Core.Environment;
 
 namespace Efilir.Client.Tools
 {
-    public class PixelDrawer
+    public class PixelDrawer : IPixelDrawer
     {
         private int Size => _fieldSize * _scaleSize;
         private readonly int _fieldSize;

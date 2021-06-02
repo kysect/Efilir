@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
-using Efilir.Client.Tools;
+using Efilir.Core.Environment;
 using Efilir.Core.Generics.Algorithms;
 using Efilir.Core.Generics.Cells;
 using Efilir.Core.Generics.Environment;
@@ -11,12 +10,11 @@ namespace Efilir.Client.ExecutionContexts
 {
     public class GenericExecutionContext : IExecutionContext
     {
-        private bool _isActive;
-        private readonly PixelDrawer _pd;
+        private readonly IPixelDrawer _pd;
         private readonly ICellStatConsumer _cellStatConsumer;
         private readonly LivingCellSimulationManger _simulationManger;
 
-        public GenericExecutionContext(PixelDrawer pixelDrawer, ICellStatConsumer cellStatConsumer)
+        public GenericExecutionContext(IPixelDrawer pixelDrawer, ICellStatConsumer cellStatConsumer)
         {
             _cellStatConsumer = cellStatConsumer;
             _pd = pixelDrawer;
@@ -26,38 +24,6 @@ namespace Efilir.Client.ExecutionContexts
             _simulationManger = new LivingCellSimulationManger();
             _simulationManger.GenerateGameField(field);
             ReloadCells();
-
-            _isActive = false;
-        }
-
-        public void SetActivity(bool isActive)
-        {
-            _isActive = isActive;
-        }
-
-        public void StartSimulator()
-        {
-            if (!_isActive)
-                return;
-
-            if (_simulationManger.IsSimulationActive())
-            {
-                DataSaver.Save(_simulationManger.GetAllGenericCells());
-                ReloadCells();
-            }
-
-            while (!_simulationManger.IsSimulationActive())
-            {
-                if (!_isActive)
-                    return;
-
-                _simulationManger.ProcessIteration();
-                //TODO: Fix
-                Application.Current.Dispatcher.Invoke(() => _pd.DrawPoints(_simulationManger.GetAllCells()));
-            }
-
-            IReadOnlyCollection<IGenericCell> cellList = GetCellRating();
-            _cellStatConsumer.NotifyStatUpdate(cellList);
         }
 
         private void ReloadCells()
@@ -81,6 +47,27 @@ namespace Efilir.Client.ExecutionContexts
                 .ToList();
 
             return orderByDescending;
+        }
+
+        public void OnRoundStart()
+        {
+        }
+
+        public bool OnIterationStart()
+        {
+            _simulationManger.ProcessIteration();
+            return _simulationManger.IsSimulationActive();
+        }
+
+        public void OnRoundEnd()
+        {
+            IReadOnlyCollection<IGenericCell> cellList = GetCellRating();
+            _cellStatConsumer.NotifyStatUpdate(cellList);
+        }
+
+        public void OnUiRender()
+        {
+            _pd.DrawPoints(_simulationManger.GetAllCells());
         }
     }
 }
