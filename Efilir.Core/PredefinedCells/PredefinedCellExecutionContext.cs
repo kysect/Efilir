@@ -26,7 +26,7 @@ namespace Efilir.Core.PredefinedCells
             //    _gameArea.PredefinedCells.Add(predefinedCell);
             //}
 
-            for (double degrees = 0; degrees < 360.0; degrees += 0.5)
+            for (double degrees = 0; degrees < 360.0; degrees += 1)
             {
                 double cellDegree = Math.PI * degrees / 180.0;
                 Vector velocity = new Vector(Math.Sin(cellDegree), Math.Cos(cellDegree)) * Configuration.StartVelocity;

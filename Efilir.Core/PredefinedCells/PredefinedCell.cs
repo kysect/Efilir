@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Efilir.Core.Cells;
 using Efilir.Core.Generics.Environment;
 using Efilir.Core.Tools;
@@ -29,8 +30,10 @@ namespace Efilir.Core.PredefinedCells
         {
             double timeDelta = Configuration.RecalculationRoundDelta;
 
-            Vector newAcceleration = CalculateNewAccelerationWithoutDistance();
+            Vector newAcceleration = CalculateNewAccelerationWithoutDistanceForSteps();
             Vector newVelocity = _velocityDirection + newAcceleration * timeDelta;
+            newVelocity = (newVelocity  * Configuration.PredefinedCellVelocity / newVelocity.Length());
+
             Vector newPosition = RealPosition + newVelocity * timeDelta;
             RealPosition = RoundPosition(newPosition);
             Position = RealPosition.ToCoordinate();
@@ -79,7 +82,34 @@ namespace Efilir.Core.PredefinedCells
             if (newDirection.Length() < double.Epsilon)
                 return newDirection;
 
-            return newDirection / 10;
+            return newDirection / 2;
+        }
+
+        public Vector CalculateNewAccelerationWithoutDistanceForSteps()
+        {
+            Vector newDirection = new Vector(0, 0);
+
+            foreach (List<(PredefinedCellType, Vector)> stepOnIteration in _gameArea.PreviousSteps)
+            foreach ((PredefinedCellType type, Vector predefinedCellPosition) in stepOnIteration)
+            {
+                Vector moveDirection = predefinedCellPosition - RealPosition;
+
+                if (moveDirection.Length() > Configuration.MaxLengthForInteraction || moveDirection.Length() < double.Epsilon)
+                    continue;
+
+                if (!IsCellOnWay(moveDirection))
+                    continue;
+
+                if (type == CellType)
+                    newDirection += moveDirection /*/ moveDirection.Length()*/;
+                //else
+                //    newDirection -= moveDirection / moveDirection.Length();
+            }
+
+            if (newDirection.Length() < double.Epsilon)
+                return newDirection;
+
+            return newDirection / newDirection.Length() / 3;
         }
 
         public bool IsCellOnWay(Vector moveDirection)
