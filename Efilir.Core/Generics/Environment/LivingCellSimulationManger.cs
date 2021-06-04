@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Efilir.Core.Cells;
-using Efilir.Core.Environment;
 using Efilir.Core.Generics.Cells;
 using Efilir.Core.Tools;
 using Efilir.Core.Types;
 
 namespace Efilir.Core.Generics.Environment
 {
-    public class LivingCellSimulationManger : IDrawableSimulation
+    public class LivingCellSimulationManger
     {
         private const int FoodCount = Configuration.FoodCount;
         private readonly GenericGameArea _genericGameArea;
