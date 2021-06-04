@@ -16,14 +16,11 @@
         public const int TrapCount = 7;
 
         // Predefined
-        public const double StartVelocity = 20;
-        public const double CellVisibleAngle = 10.0 / 180;
+        public const double CellVisibleAngle = 30.0 / 180;
         public const double MaxLengthForInteraction = 30;
         public const double WallPushCoefficient = 1;
-        public const double RecalculationRoundDelta = 0.15;
+        public const double RecalculationRoundDelta = 0.1;
         public const double PreviousStepCount = 5;
         public const double PredefinedCellVelocity = 10;
-
-
     }
 }
