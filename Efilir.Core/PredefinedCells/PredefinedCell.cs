@@ -64,7 +64,7 @@ namespace Efilir.Core.PredefinedCells
             {
                 Vector moveDirection = predefinedCellPosition - RealPosition;
 
-                if (moveDirection.Length() > Configuration.MaxLengthForInteraction || moveDirection.Length() > double.Epsilon)
+                if (moveDirection.Length() > Configuration.MaxLengthForInteraction || moveDirection.Length() < double.Epsilon)
                     continue;
 
                 if (!IsCellOnWay(moveDirection))
