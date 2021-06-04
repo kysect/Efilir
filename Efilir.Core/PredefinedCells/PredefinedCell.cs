@@ -30,20 +30,33 @@ namespace Efilir.Core.PredefinedCells
         {
             double timeDelta = Configuration.RecalculationRoundDelta;
 
-            Vector newAcceleration = CalculateNewAccelerationWithoutDistanceForSteps();
-            Vector newVelocity = _velocityDirection + newAcceleration * timeDelta;
-            newVelocity = (newVelocity  * Configuration.PredefinedCellVelocity / newVelocity.Length());
+            Vector newVelocity = RecalculateVelocity();
+            newVelocity = newVelocity  * Configuration.PredefinedCellVelocity / newVelocity.Length();
 
             Vector newPosition = RealPosition + newVelocity * timeDelta;
             RealPosition = RoundPosition(newPosition);
             Position = RealPosition.ToCoordinate();
 
+            _velocityDirection = HandleWallInteraction(newPosition, newVelocity);
+        }
+
+        private Vector RecalculateVelocity()
+        {
+            double timeDelta = Configuration.RecalculationRoundDelta;
+
+            Vector newAcceleration = CalculateNewAccelerationWithoutDistanceForSteps();
+            Vector newVelocity = _velocityDirection + newAcceleration * timeDelta;
+            return newVelocity;
+        }
+
+        private Vector HandleWallInteraction(Vector newPosition, Vector newVelocity)
+        {
             WallType wallType = _gameArea.GetWallType(newPosition);
             if (wallType != WallType.Undefined)
             {
                 double pushCoefficient = -Configuration.WallPushCoefficient;
-                
-                if (wallType.HasFlag(WallType.Left) && newVelocity.X < 0 
+
+                if (wallType.HasFlag(WallType.Left) && newVelocity.X < 0
                     || wallType.HasFlag(WallType.Right) && newVelocity.X > 0)
                 {
                     newVelocity = newVelocity with { X = newVelocity.X * pushCoefficient };
@@ -56,10 +69,10 @@ namespace Efilir.Core.PredefinedCells
                 }
             }
 
-            _velocityDirection = newVelocity;
+            return newVelocity;
         }
 
-        public Vector CalculateNewAccelerationWithoutDistance()
+        private Vector CalculateNewAccelerationWithoutDistance()
         {
             Vector newDirection = new Vector(0, 0);
 
@@ -85,7 +98,7 @@ namespace Efilir.Core.PredefinedCells
             return newDirection / 2;
         }
 
-        public Vector CalculateNewAccelerationWithoutDistanceForSteps()
+        private Vector CalculateNewAccelerationWithoutDistanceForSteps()
         {
             Vector newDirection = new Vector(0, 0);
 
@@ -112,14 +125,23 @@ namespace Efilir.Core.PredefinedCells
             return newDirection / newDirection.Length() / 3;
         }
 
-        public bool IsCellOnWay(Vector moveDirection)
+        private double AngleToObject(Vector cellMoveVector, Vector vectorToObject)
         {
-            double velocityAngle = Math.Atan(_velocityDirection.Y / _velocityDirection.X);
-            double toObjectAngle = Math.Atan(moveDirection.Y / moveDirection.X);
+            double velocityAngle = Math.Atan(cellMoveVector.Y / cellMoveVector.X);
+            double toObjectAngle = Math.Atan(vectorToObject.Y / vectorToObject.X);
 
-            double maxAngle = Math.Max(velocityAngle, toObjectAngle);
-            double minAngle = Math.Min(velocityAngle, toObjectAngle);
-            return maxAngle - minAngle < Configuration.CellVisibleAngle || (360 - (maxAngle - minAngle) < Configuration.CellVisibleAngle);
+            double delta = toObjectAngle - velocityAngle;
+            if (delta > Math.PI)
+                delta -= Math.PI * 2;
+
+
+            return delta;
+        }
+
+        private bool IsCellOnWay(Vector moveDirection)
+        {
+            double delta = AngleToObject(_velocityDirection, moveDirection);
+            return Math.Abs(delta) <= Configuration.CellVisibleAngle;
         }
 
         private Vector RoundPosition(Vector position)
