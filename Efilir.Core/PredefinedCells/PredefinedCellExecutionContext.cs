@@ -28,10 +28,10 @@ namespace Efilir.Core.PredefinedCells
 
             for (double degrees = 0; degrees < 360.0; degrees += 0.5)
             {
-                int maxVelocity = 20;
-                
-                var velocity = new Vector(Math.Sin(Math.PI * degrees / 180.0), Math.Cos(Math.PI * degrees / 180.0)) * maxVelocity;
+                double cellDegree = Math.PI * degrees / 180.0;
+                Vector velocity = new Vector(Math.Sin(cellDegree), Math.Cos(cellDegree)) * Configuration.StartVelocity;
                 var position = new Vector(Configuration.FieldSize / 2.0, Configuration.FieldSize / 2.0);
+
                 var predefinedCell = new PredefinedCell(_gameArea, position, velocity, PredefinedCellType.Red);
                 _gameArea.PredefinedCells.Add(predefinedCell);
             }

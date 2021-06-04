@@ -1,6 +1,7 @@
 ﻿using System;
 using Efilir.Core.Cells;
 using Efilir.Core.Generics.Environment;
+using Efilir.Core.Tools;
 using Efilir.Core.Types;
 
 namespace Efilir.Core.PredefinedCells
@@ -26,17 +27,19 @@ namespace Efilir.Core.PredefinedCells
 
         public void MakeTurn(IGenericGameArea gameArea)
         {
-            double timeDelta = 0.1;
+            double timeDelta = Configuration.RecalculationRoundDelta;
+
             Vector newAcceleration = CalculateNewAccelerationWithoutDistance();
             Vector newVelocity = _velocityDirection + newAcceleration * timeDelta;
-            var newPosition = RealPosition + newVelocity * timeDelta;
+            Vector newPosition = RealPosition + newVelocity * timeDelta;
             RealPosition = RoundPosition(newPosition);
             Position = RealPosition.ToCoordinate();
 
-            var wallType = _gameArea.GetWallType(newPosition);
+            WallType wallType = _gameArea.GetWallType(newPosition);
             if (wallType != WallType.Undefined)
             {
-                double pushCoefficient = -1;
+                double pushCoefficient = -Configuration.WallPushCoefficient;
+                
                 if (wallType.HasFlag(WallType.Left) && newVelocity.X < 0 
                     || wallType.HasFlag(WallType.Right) && newVelocity.X > 0)
                 {
@@ -57,10 +60,11 @@ namespace Efilir.Core.PredefinedCells
         {
             Vector newDirection = new Vector(0, 0);
 
-            foreach ((var type, Vector predefinedCellPosition) in _gameArea.PreviousCellPosition)
+            foreach ((PredefinedCellType type, Vector predefinedCellPosition) in _gameArea.PreviousCellPosition)
             {
                 Vector moveDirection = predefinedCellPosition - RealPosition;
-                if (moveDirection.Length() > 50 || moveDirection.Length() > Double.Epsilon)
+
+                if (moveDirection.Length() > Configuration.MaxLengthForInteraction || moveDirection.Length() > double.Epsilon)
                     continue;
 
                 if (!IsCellOnWay(moveDirection))
@@ -72,7 +76,7 @@ namespace Efilir.Core.PredefinedCells
                 //    newDirection -= moveDirection / moveDirection.Length();
             }
 
-            if (newDirection.Length() < Double.Epsilon)
+            if (newDirection.Length() < double.Epsilon)
                 return newDirection;
 
             return newDirection / 2;
@@ -80,21 +84,12 @@ namespace Efilir.Core.PredefinedCells
 
         public bool IsCellOnWay(Vector moveDirection)
         {
-            double visibleAngle = 10.0 / 180;
-
             double velocityAngle = Math.Atan(_velocityDirection.Y / _velocityDirection.X);
             double toObjectAngle = Math.Atan(moveDirection.Y / moveDirection.X);
 
-            var maxAngle = Math.Max(velocityAngle, toObjectAngle);
-            var minAngle = Math.Min(velocityAngle, toObjectAngle);
-            return (maxAngle - minAngle < visibleAngle || (360 - (maxAngle - minAngle) < visibleAngle));
-        }
-
-        private double CalcMoveVector(double distance)
-        {
-            if (Math.Abs(distance) < 0.5)
-                return 0;
-            return 1.0 / distance / Math.Abs(distance);
+            double maxAngle = Math.Max(velocityAngle, toObjectAngle);
+            double minAngle = Math.Min(velocityAngle, toObjectAngle);
+            return maxAngle - minAngle < Configuration.CellVisibleAngle || (360 - (maxAngle - minAngle) < Configuration.CellVisibleAngle);
         }
 
         private Vector RoundPosition(Vector position)
