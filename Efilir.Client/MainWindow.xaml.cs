@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading;
 using System.Windows;
 using Efilir.Client.ExecutionContexts;
 using Efilir.Client.Tools;
@@ -38,10 +39,10 @@ namespace Efilir.Client
 
         private void StartSimulation(object sender, DoWorkEventArgs e)
         {
+            GenericExecutionContext.SetActivity(true);
             while (true)
             {
                 GenericExecutionContext.StartSimulator();
-                //Thread.Sleep(50);
             }
         }
 
