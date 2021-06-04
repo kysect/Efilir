@@ -79,7 +79,7 @@ namespace Efilir.Core.PredefinedCells
             if (newDirection.Length() < double.Epsilon)
                 return newDirection;
 
-            return newDirection / 2;
+            return newDirection / 10;
         }
 
         public bool IsCellOnWay(Vector moveDirection)
