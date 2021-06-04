@@ -18,7 +18,7 @@
         // Predefined
         public const double StartVelocity = 20;
         public const double CellVisibleAngle = 10.0 / 180;
-        public const double MaxLengthForInteraction = 50;
+        public const double MaxLengthForInteraction = 30;
         public const double WallPushCoefficient = 1;
         public const double RecalculationRoundDelta = 0.1;
 
