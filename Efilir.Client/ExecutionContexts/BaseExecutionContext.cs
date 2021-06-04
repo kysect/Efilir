@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Threading;
+using System.Windows;
 using Efilir.Core.Environment;
 
 namespace Efilir.Client.ExecutionContexts
@@ -33,6 +34,7 @@ namespace Efilir.Client.ExecutionContexts
 
                 runNextRound = _executionContext.OnIterationStart();
                 Application.Current.Dispatcher.Invoke(() => _executionContext.OnUiRender());
+                Thread.Sleep(50);
             } while (runNextRound);
 
             _executionContext.OnRoundEnd();
