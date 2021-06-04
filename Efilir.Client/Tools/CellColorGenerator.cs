@@ -3,6 +3,7 @@ using System.Windows.Media;
 using Efilir.Core.Cells;
 using Efilir.Core.Generics.Cells;
 using Efilir.Core.PredefinedCells;
+using Efilir.Core.PredefinedCells.Cells;
 
 namespace Efilir.Client.Tools
 {
@@ -12,7 +13,7 @@ namespace Efilir.Client.Tools
         {
             switch (cell)
             {
-                case PredefinedCell predefinedCell:
+                case BasePredefinedCell predefinedCell:
                     return PredefinedCellColors(predefinedCell);
                 case FoodCell:
                     return Colors.GreenYellow;
@@ -27,7 +28,7 @@ namespace Efilir.Client.Tools
             }
         }
 
-        public static Color PredefinedCellColors(PredefinedCell cell)
+        public static Color PredefinedCellColors(BasePredefinedCell cell)
         {
             switch (cell.CellType)
             {

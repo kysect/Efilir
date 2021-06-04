@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Efilir.Core.Environment;
+using Efilir.Core.PredefinedCells.Cells;
 using Efilir.Core.Tools;
 using Efilir.Core.Types;
 
@@ -11,13 +12,13 @@ namespace Efilir.Core.PredefinedCells
 
         public LinkedList<List<(PredefinedCellType, Vector)>> PreviousSteps { get; private set; }
         public List<(PredefinedCellType, Vector)> PreviousCellPosition { get; private set; }
-        public List<PredefinedCell> PredefinedCells { get; }
+        public List<BasePredefinedCell> PredefinedCells { get; }
 
         public PredefinedCellGameArea(int areaSize) : base(areaSize)
         {
             PreviousSteps = new LinkedList<List<(PredefinedCellType, Vector)>>();
             PreviousCellPosition = new List<(PredefinedCellType, Vector)>();
-            PredefinedCells = new List<PredefinedCell>();
+            PredefinedCells = new List<BasePredefinedCell>();
         }
 
         public void UpdatePreviousPositions()
