@@ -1,5 +1,4 @@
-﻿using System;
-using Efilir.Core.Cells;
+﻿using Efilir.Core.Cells;
 using Efilir.Core.Generics.Environment;
 using Efilir.Core.Tools;
 using Efilir.Core.Types;
@@ -14,7 +13,7 @@ namespace Efilir.Core.PredefinedCells.Cells
         public PredefinedCellType CellType { get; }
 
         protected readonly PredefinedCellGameArea GameArea;
-        protected Vector VelocityDirection;
+        protected Vector VelocityDirection { get; private set; }
 
         public BasePredefinedCell(PredefinedCellGameArea gameArea, Vector position, PredefinedCellType cellType, Vector velocityDirection)
         {
@@ -30,7 +29,7 @@ namespace Efilir.Core.PredefinedCells.Cells
             double timeDelta = Configuration.RecalculationRoundDelta;
 
             Vector newVelocity = RecalculateVelocity();
-            newVelocity = newVelocity * Configuration.PredefinedCellVelocity / newVelocity.Length();
+            newVelocity = newVelocity.ResizeTo(Configuration.PredefinedCellVelocity);
 
             Vector newPosition = RealPosition + newVelocity * timeDelta;
             RealPosition = RoundPosition(newPosition);
@@ -62,18 +61,6 @@ namespace Efilir.Core.PredefinedCells.Cells
             }
 
             return newVelocity;
-        }
-
-        protected double AngleToObject(Vector cellMoveVector, Vector vectorToObject)
-        {
-            double velocityAngle = Math.Atan(cellMoveVector.Y / cellMoveVector.X);
-            double toObjectAngle = Math.Atan(vectorToObject.Y / vectorToObject.X);
-
-            double delta = toObjectAngle - velocityAngle;
-            if (delta > Math.PI)
-                delta -= Math.PI * 2;
-
-            return delta;
         }
 
         private Vector RoundPosition(Vector position)
