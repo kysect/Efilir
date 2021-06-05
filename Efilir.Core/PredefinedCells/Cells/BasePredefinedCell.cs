@@ -35,7 +35,7 @@ namespace Efilir.Core.PredefinedCells.Cells
             RealPosition = RoundPosition(newPosition);
             Position = RealPosition.ToCoordinate();
 
-            VelocityDirection = HandleWallInteraction(newPosition, VelocityDirection);
+            VelocityDirection = HandleWallInteraction(newPosition, newVelocity);
         }
 
         protected abstract Vector RecalculateVelocity();

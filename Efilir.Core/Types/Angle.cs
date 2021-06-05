@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace Efilir.Core.Types
 {
+    [DebuggerDisplay("{_angle}")]
     public readonly struct Angle
     {
         public static Angle Zero = FromDegree(0);

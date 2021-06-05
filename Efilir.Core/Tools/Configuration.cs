@@ -5,7 +5,9 @@ namespace Efilir.Core.Tools
     public static class Configuration
     {
         // Common
-        public const int FieldSize = 150;
+        public const int FieldXSize = 150;
+        public const int FieldYSize = 100;
+        public const int FieldSize = 100;
         public const int ScaleSize = 4;
 
         // Gen algo
@@ -18,12 +20,12 @@ namespace Efilir.Core.Tools
         public const int TrapCount = 7;
 
         // Predefined
-        public static Angle CellVisibleAngle = Angle.FromDegree(30.0);
-        public const double MaxLengthForInteraction = 50;
+        public static Angle CellVisibleAngle = Angle.FromDegree(60.0);
+        public const double MaxLengthForInteraction = 20;
         public const double WallPushCoefficient = 1;
-        public const double RecalculationRoundDelta = 0.1;
-        public const double PreviousStepCount = 10;
-        public const double PredefinedCellVelocity = 10;
+        public const double RecalculationRoundDelta = 0.15;
+        public const double PreviousStepCount = 20;
+        public const double PredefinedCellVelocity = 5;
         public static Angle TurnAngleChange = Angle.FromDegree(10.0);
     }
 }

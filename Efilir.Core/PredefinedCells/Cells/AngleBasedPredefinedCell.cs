@@ -14,14 +14,14 @@ namespace Efilir.Core.PredefinedCells.Cells
         {
             double timeDelta = Configuration.RecalculationRoundDelta;
 
-            var angle = CalcRotateAngle();
+            Angle angle = CalcRotateAngle();
 
             return VelocityDirection.RotateToAngle(angle);
         }
 
         private Angle CalcRotateAngle()
         {
-            int weight = 0;
+            double weight = 0;
 
             int stepNumber = 0;
             foreach (List<(PredefinedCellType, Vector)> stepOnIteration in GameArea.PreviousSteps)
@@ -39,10 +39,10 @@ namespace Efilir.Core.PredefinedCells.Cells
                         continue;
 
                     if (angleToObject > Angle.Zero)
-                        weight = 1 / stepNumber;
+                        weight = 1.0 / stepNumber;
 
                     if (angleToObject < Angle.Zero)
-                        weight -= 1 / stepNumber;
+                        weight -= 1.0 / stepNumber;
                 }
             }
 
