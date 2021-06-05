@@ -20,7 +20,8 @@
         public const double MaxLengthForInteraction = 30;
         public const double WallPushCoefficient = 1;
         public const double RecalculationRoundDelta = 0.1;
-        public const double PreviousStepCount = 5;
+        public const double PreviousStepCount = 10;
         public const double PredefinedCellVelocity = 10;
+        public const double TurnAngleChange = 10.0;
     }
 }
