@@ -33,7 +33,7 @@ namespace Efilir.Core.PredefinedCells
                 Vector velocity = new Vector(Math.Sin(cellDegree), Math.Cos(cellDegree)) * Configuration.PredefinedCellVelocity;
                 var position = new Vector(Configuration.FieldSize / 2.0, Configuration.FieldSize / 2.0);
 
-                var predefinedCell = new VectorBasedPredefinedCell(_gameArea, position, velocity, PredefinedCellType.Red);
+                var predefinedCell = new AngleBasedPredefinedCell(_gameArea, position, velocity, PredefinedCellType.Red);
                 _gameArea.PredefinedCells.Add(predefinedCell);
             }
         }

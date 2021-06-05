@@ -73,7 +73,6 @@ namespace Efilir.Core.PredefinedCells.Cells
             if (delta > Math.PI)
                 delta -= Math.PI * 2;
 
-
             return delta;
         }
 
