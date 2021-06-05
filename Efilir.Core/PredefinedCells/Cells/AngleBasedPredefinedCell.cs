@@ -23,10 +23,10 @@ namespace Efilir.Core.PredefinedCells.Cells
         {
             double weight = 0;
 
-            int stepNumber = 0;
+            int stepNumber = GameArea.PreviousSteps.Count + 1;
             foreach (List<(PredefinedCellType, Vector)> stepOnIteration in GameArea.PreviousSteps)
             {
-                stepNumber++;
+                stepNumber--;
                 foreach ((PredefinedCellType type, Vector predefinedCellPosition) in stepOnIteration)
                 {
                     Vector moveDirection = predefinedCellPosition - RealPosition;
@@ -39,7 +39,7 @@ namespace Efilir.Core.PredefinedCells.Cells
                         continue;
 
                     if (angleToObject > Angle.Zero)
-                        weight = 1.0 / stepNumber;
+                        weight += 1.0 / stepNumber;
 
                     if (angleToObject < Angle.Zero)
                         weight -= 1.0 / stepNumber;
