@@ -19,15 +19,9 @@ namespace Efilir.Core.Types
             _angle = angle;
         }
 
-        public static bool operator >(Angle a, Angle b)
-        {
-            return a._angle > b._angle;
-        }
-
-        public static bool operator <(Angle a, Angle b)
-        {
-            return a._angle < b._angle;
-        }
+        public static bool operator >(Angle a, Angle b) => a._angle > b._angle;
+        public static bool operator <(Angle a, Angle b) => a._angle < b._angle;
+        public static Angle operator *(Angle a, double b) => new Angle(a._angle * b);
 
         public Angle Abs()
         {

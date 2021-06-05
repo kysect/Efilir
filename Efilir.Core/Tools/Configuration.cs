@@ -19,11 +19,11 @@ namespace Efilir.Core.Tools
 
         // Predefined
         public static Angle CellVisibleAngle = Angle.FromDegree(30.0);
-        public const double MaxLengthForInteraction = 30;
+        public const double MaxLengthForInteraction = 50;
         public const double WallPushCoefficient = 1;
         public const double RecalculationRoundDelta = 0.1;
         public const double PreviousStepCount = 10;
         public const double PredefinedCellVelocity = 10;
-        public const double TurnAngleChange = 10.0;
+        public static Angle TurnAngleChange = Angle.FromDegree(10.0);
     }
 }
