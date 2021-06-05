@@ -15,11 +15,9 @@ namespace Efilir.Core.PredefinedCells.Cells
         {
             double timeDelta = Configuration.RecalculationRoundDelta;
 
-            var angle = CalcRotateAngle();
-            var newX = VelocityDirection.X * Math.Cos(angle) - VelocityDirection.Y * Math.Sin(angle);
-            var newY = VelocityDirection.X * Math.Sin(angle) + VelocityDirection.Y * Math.Cos(angle);
-            
-            return new Vector(newX, newY);
+            double angle = CalcRotateAngle();
+
+            return VelocityDirection.RotateToAngle(angle);
         }
 
         private double CalcRotateAngle()
@@ -34,7 +32,7 @@ namespace Efilir.Core.PredefinedCells.Cells
                 if (moveDirection.Length() > Configuration.MaxLengthForInteraction || moveDirection.Length() < double.Epsilon)
                     continue;
 
-                double angleToObject = AngleToObject(VelocityDirection, moveDirection);
+                double angleToObject = VelocityDirection.AngleTo(moveDirection);
                 if (Math.Abs(angleToObject) > Configuration.CellVisibleAngle)
                     continue;
 
@@ -43,11 +41,6 @@ namespace Efilir.Core.PredefinedCells.Cells
 
                 if (angleToObject < 0)
                     weight--;
-                
-                //if (type == CellType)
-                    //newDirection += moveDirection /*/ moveDirection.Length()*/;
-                //else
-                //    newDirection -= moveDirection / moveDirection.Length();
             }
 
             if (weight > 0)

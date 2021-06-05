@@ -76,7 +76,7 @@ namespace Efilir.Core.PredefinedCells.Cells
 
         private bool IsCellOnWay(Vector moveDirection)
         {
-            double delta = AngleToObject(VelocityDirection, moveDirection);
+            double delta = VelocityDirection.AngleTo(moveDirection);
             return Math.Abs(delta) <= Configuration.CellVisibleAngle;
         }
     }
