@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Efilir.Core.Tools;
 using Efilir.Core.Types;
 
@@ -7,7 +6,6 @@ namespace Efilir.Core.PredefinedCells.Cells
 {
     public class VectorBasedPredefinedCell : BasePredefinedCell
     {
-
         public VectorBasedPredefinedCell(PredefinedCellGameArea gameArea, Vector position, Vector velocity, PredefinedCellType cellType) : base(gameArea, position, cellType, velocity)
         {
         }
@@ -76,8 +74,8 @@ namespace Efilir.Core.PredefinedCells.Cells
 
         private bool IsCellOnWay(Vector moveDirection)
         {
-            double delta = VelocityDirection.AngleTo(moveDirection);
-            return Math.Abs(delta) <= Configuration.CellVisibleAngle;
+            Angle delta = VelocityDirection.AngleTo(moveDirection);
+            return delta.Abs() < Configuration.CellVisibleAngle;
         }
     }
 }
