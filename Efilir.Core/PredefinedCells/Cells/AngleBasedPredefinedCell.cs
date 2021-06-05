@@ -43,9 +43,9 @@ namespace Efilir.Core.PredefinedCells.Cells
             }
 
             if (weight > 0)
-                return Angle.FromDegree(Configuration.TurnAngleChange);
+                return Configuration.TurnAngleChange;
             if (weight < 0)
-                return Angle.FromDegree(-Configuration.TurnAngleChange);
+                return Configuration.TurnAngleChange * -1;
 
             return Angle.FromDegree(0);
         }
