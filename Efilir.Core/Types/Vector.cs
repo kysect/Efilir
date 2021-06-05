@@ -4,9 +4,9 @@ namespace Efilir.Core.Types
 {
     public record Vector(double X, double Y)
     {
-        public static Vector CreateFromAngle(double angle, double length)
+        public static Vector CreateFromAngle(Angle angle, double length)
         {
-            return new Vector(Math.Sin(angle) * length, Math.Cos(angle) * length);
+            return new Vector(Math.Sin(angle.AngleInRadians) * length, Math.Cos(angle.AngleInRadians) * length);
         }
 
         public double Length()
@@ -24,15 +24,15 @@ namespace Efilir.Core.Types
             return new Vector(Math.Abs(X), Math.Abs(Y));
         }
 
-        public Vector RotateToAngle(double angle)
+        public Vector RotateToAngle(Angle angle)
         {
-            double newX = X * Math.Cos(angle) - Y * Math.Sin(angle);
-            double newY = X * Math.Sin(angle) + Y * Math.Cos(angle);
+            double newX = X * Math.Cos(angle.AngleInRadians) - Y * Math.Sin(angle.AngleInRadians);
+            double newY = X * Math.Sin(angle.AngleInRadians) + Y * Math.Cos(angle.AngleInRadians);
 
             return new Vector(newX, newY);
         }
 
-        public double AngleTo(Vector other)
+        public Angle AngleTo(Vector other)
         {
             double velocityAngle = Math.Atan(Y / X);
             double toObjectAngle = Math.Atan(other.Y / other.X);
@@ -41,7 +41,7 @@ namespace Efilir.Core.Types
             if (delta > Math.PI)
                 delta -= Math.PI * 2;
 
-            return delta;
+            return Angle.FromRadian(delta);
         }
 
         public Vector ResizeTo(double length)

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Efilir.Core.Tools;
 using Efilir.Core.Types;
 
@@ -15,12 +14,12 @@ namespace Efilir.Core.PredefinedCells.Cells
         {
             double timeDelta = Configuration.RecalculationRoundDelta;
 
-            double angle = CalcRotateAngle();
+            var angle = CalcRotateAngle();
 
             return VelocityDirection.RotateToAngle(angle);
         }
 
-        private double CalcRotateAngle()
+        private Angle CalcRotateAngle()
         {
             int weight = 0;
 
@@ -32,24 +31,23 @@ namespace Efilir.Core.PredefinedCells.Cells
                 if (moveDirection.Length() > Configuration.MaxLengthForInteraction || moveDirection.Length() < double.Epsilon)
                     continue;
 
-                double angleToObject = VelocityDirection.AngleTo(moveDirection);
-                if (Math.Abs(angleToObject) > Configuration.CellVisibleAngle)
+                Angle angleToObject = VelocityDirection.AngleTo(moveDirection);
+                if (angleToObject > Configuration.CellVisibleAngle)
                     continue;
 
-                if (angleToObject > 0)
+                if (angleToObject > Angle.Zero)
                     weight++;
 
-                if (angleToObject < 0)
+                if (angleToObject < Angle.Zero)
                     weight--;
             }
 
             if (weight > 0)
-                return Configuration.TurnAngleChange / 180.0;
-
+                return Angle.FromDegree(Configuration.TurnAngleChange);
             if (weight < 0)
-                return -Configuration.TurnAngleChange / 180;
+                return Angle.FromDegree(-Configuration.TurnAngleChange);
 
-            return 0;
+            return Angle.FromDegree(0);
         }
     }
 }

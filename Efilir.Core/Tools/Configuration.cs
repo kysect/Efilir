@@ -1,4 +1,6 @@
-﻿namespace Efilir.Core.Tools
+﻿using Efilir.Core.Types;
+
+namespace Efilir.Core.Tools
 {
     public static class Configuration
     {
@@ -16,7 +18,7 @@
         public const int TrapCount = 7;
 
         // Predefined
-        public const double CellVisibleAngle = 30.0 / 180;
+        public static Angle CellVisibleAngle = Angle.FromDegree(30.0);
         public const double MaxLengthForInteraction = 30;
         public const double WallPushCoefficient = 1;
         public const double RecalculationRoundDelta = 0.1;
