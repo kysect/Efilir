@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -11,8 +12,11 @@ namespace Efilir.Client.Tools
     public class PixelDrawer : IPixelDrawer
     {
         private int Size => _fieldSize * _scaleSize;
+
         private readonly int _fieldSize;
         private readonly int _scaleSize;
+
+        private readonly byte[] _pixels;
 
         private readonly WriteableBitmap _writableBitmap;
 
@@ -32,12 +36,13 @@ namespace Efilir.Client.Tools
                 null);
 
             image.Source = _writableBitmap;
+
+            _pixels = new byte[Size * Size * 4];
         }
 
         public void DrawPoints(IBaseCell[,] cells)
         {
-            var pixels = new byte[Size, Size, 4];
-            PrintBackgroundWithBlack(pixels);
+            PrintBackgroundWithBlack();
 
             for (var y = 0; y < _fieldSize; y++)
                 for (var x = 0; x < _fieldSize; x++)
@@ -45,77 +50,51 @@ namespace Efilir.Client.Tools
                     IBaseCell cell = cells[y, x];
                     if (cell == null) continue;
 
-                    for (var addX = 0; addX < _scaleSize; addX++)
-                        for (var addY = 0; addY < _scaleSize; addY++)
-                            PutPixel(pixels,
-                                cell.Position.X * _scaleSize + addX,
-                                cell.Position.Y * _scaleSize + addY,
-                                cell);
+                    PutCell(cell);
                 }
 
-            PrintPixels(pixels);
+            PrintPixels();
         }
 
         public void DrawPoints<T>(ICollection<T> cells) where T : IBaseCell
         {
-            var pixels = new byte[Size, Size, 4];
-            PrintBackgroundWithBlack(pixels);
+            PrintBackgroundWithBlack();
 
             foreach (T cell in cells)
-            {
-                for (var addX = 0; addX < _scaleSize; addX++)
+                PutCell( cell);
+            
+            PrintPixels();
+        }
+
+        private void PutCell(IBaseCell cell)
+        {
+            for (var addX = 0; addX < _scaleSize; addX++)
                 for (var addY = 0; addY < _scaleSize; addY++)
-                    PutPixel(pixels,
+                    PutPixel(
                         cell.Position.X * _scaleSize + addX,
                         cell.Position.Y * _scaleSize + addY,
                         cell);
-            }
-
-            PrintPixels(pixels);
         }
 
-        private static void PutPixel(byte[,,] pixels, int positionX, int positionY, IBaseCell cell)
+        private void PutPixel(int positionX, int positionY, IBaseCell cell)
         {
             Color color = CellColorGenerator.GetCellColor(cell);
-            pixels[positionY, positionX, 0] = color.B;
-            pixels[positionY, positionX, 1] = color.G;
-            pixels[positionY, positionX, 2] = color.R;
+            var arrayPosition = (positionY * Size + positionX) * 4;
+
+            _pixels[arrayPosition] = color.B;
+            _pixels[++arrayPosition] = color.G;
+            _pixels[++arrayPosition] = color.R;
         }
 
-        private void PrintBackgroundWithBlack(byte[,,] pixels)
+        private void PrintBackgroundWithBlack() =>
+            Array.Clear(_pixels, 0, _pixels.Length);
+
+        private void PrintPixels()
         {
-            for (var row = 0; row < Size; row++)
-            {
-                for (var col = 0; col < Size; col++)
-                {
-                    //for (var i = 0; i < 3; i++)
-                    //    pixels[row, col, i] = 0;
-                    pixels[row, col, 3] = 255;
-                }
-            }
-        }
-
-        private byte[] TransformTo1D(byte[,,] pixels)
-        {
-            var pixels1D = new byte[Size * Size * 4];
-
-            var index = 0;
-            for (var row = 0; row < Size; row++)
-                for (var col = 0; col < Size; col++)
-                    for (var i = 0; i < 4; i++)
-                        pixels1D[index++] = pixels[row, col, i];
-
-            return pixels1D;
-        }
-
-        //TODO: optimization is needed. We can always use 1D
-        private void PrintPixels(byte[,,] pixels)
-        {
-            byte[] pixels1D = TransformTo1D(pixels);
             var rect = new Int32Rect(0, 0, Size, Size);
             int stride = 4 * Size;
 
-            _writableBitmap.WritePixels(rect, pixels1D, stride, 0);
+            _writableBitmap.WritePixels(rect, _pixels, stride, 0);
         }
     }
 }
