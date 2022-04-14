@@ -10,15 +10,15 @@ namespace Efilir.Core.Environment
 
         public GameArea(int areaSize)
         {
-            _areaSize = areaSize;
+            AreaSize = areaSize;
             CleanField();
         }
 
-        private readonly int _areaSize;
+        public int AreaSize { get; }
 
         public void CleanField()
         {
-            Cells = new IBaseCell[_areaSize, _areaSize];
+            Cells = new IBaseCell[AreaSize, AreaSize];
         }
 
         public void AddCell(IBaseCell cell)
@@ -28,16 +28,43 @@ namespace Efilir.Core.Environment
 
         public IBaseCell GetCellOnPosition(Coordinate position)
         {
-            if (position.X < 0
-                || position.X >= _areaSize
-                || position.Y < 0
-                || position.Y >= _areaSize)
-                return new WallCell
-                {
-                    Position = position
-                };
+            WallType result = WallType.Undefined;
+
+            if (position.X < 0)
+                result |= WallType.Left;
+
+            if (position.X >= AreaSize)
+                result |= WallType.Right;
+
+            if (position.Y < 0)
+                result |= WallType.Bottom;
+
+            if (position.Y >= AreaSize)
+                result |= WallType.Top;
+
+            if (result != WallType.Undefined)
+                return new WallCell(position, result);
 
             return Cells[position.Y, position.X];
+        }
+
+        public WallType GetWallType(Vector position)
+        {
+            WallType result = WallType.Undefined;
+
+            if (position.X < 0)
+                result |= WallType.Left;
+
+            if (position.X >= AreaSize)
+                result |= WallType.Right;
+
+            if (position.Y < 0)
+                result |= WallType.Bottom;
+
+            if (position.Y >= AreaSize)
+                result |= WallType.Top;
+
+            return result;
         }
 
         public void RemoveCell(IBaseCell cell)
@@ -55,7 +82,7 @@ namespace Efilir.Core.Environment
             Coordinate newPos;
             do
             {
-                newPos = GlobalRand.GeneratePosition(_areaSize);
+                newPos = GlobalRand.GeneratePosition(AreaSize);
             } while (GetCellOnPosition(newPos) != null);
 
             return newPos;
@@ -70,7 +97,7 @@ namespace Efilir.Core.Environment
                 {
                     switch (cells[i, j])
                     {
-                        case 1: AddCell(new WallCell { Position = new Coordinate(j, i) }); break;
+                        case 1: AddCell(new WallCell(new Coordinate(j, i), WallType.Undefined)); break;
                     }
                 }
             }
@@ -79,8 +106,8 @@ namespace Efilir.Core.Environment
         public void GenerateRandomWall()
         {
             //TODO: random, heh
-            for (var i = 0; i < _areaSize / 3; i++)
-                AddCell(new WallCell { Position = new Coordinate(i, _areaSize / 3) });
+            for (var i = 0; i < AreaSize / 3; i++)
+                AddCell(new WallCell(new Coordinate(i, AreaSize / 3), WallType.Undefined));
         }
     }
 }
